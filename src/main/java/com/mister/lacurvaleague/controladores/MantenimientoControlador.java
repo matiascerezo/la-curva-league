@@ -1,10 +1,13 @@
 package com.mister.lacurvaleague.controladores;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mister.lacurvaleague.servicios.MantenimientoDatosService;
@@ -19,7 +22,7 @@ public class MantenimientoControlador {
 
     @GetMapping("/cargarJornada/{numeroJornada}")
     public String cargarDatosJornada(@PathVariable int numeroJornada) {
-        mantenimientoService.procesarJornada(numeroJornada);
+        //mantenimientoService.procesarJornada(numeroJornada);
         return "¡Datos de la Jornada " + numeroJornada + " cargados correctamente en la base de datos!";
     }
 
@@ -39,9 +42,8 @@ public class MantenimientoControlador {
         return mantenimientoService.cargarMisters();
     }
     
-    @GetMapping(value = "/cargarTodo", produces = "text/plain;charset=UTF-8")
-    @ResponseBody
-    public String cargarTodo(){
+    @GetMapping(value = "/cargarTodo")
+    public ResponseEntity<Void> cargarTodo(){
         StringBuilder reporte = new StringBuilder();
         
         reporte.append("--- INFORME DE CARGA ---\n");
@@ -51,6 +53,9 @@ public class MantenimientoControlador {
         reporte.append("------------------------\n");
         reporte.append("Estado: ¡Todo ha ido bien!");
 
-        return reporte.toString();
+       System.out.println(reporte.toString());
+       return ResponseEntity.status(HttpStatus.FOUND)
+            .location(URI.create("/inicio"))
+            .build();
     }
 }

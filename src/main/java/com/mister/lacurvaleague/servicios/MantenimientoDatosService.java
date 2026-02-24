@@ -65,12 +65,11 @@ public class MantenimientoDatosService {
      * Método que lee el fichero .json de la jornada recibida por parámetro.
      * @return Jornada con los datos del fichero .json
      */
-    public void procesarJornada(int numeroJornada) {
-        try {
-            String rutaPathFichero = PATH_JSON_JORNADA +  JORNADA + numeroJornada + ".json";
+    public void procesarJornada(Resource recurso) {
+        try (InputStream is = recurso.getInputStream()) {
             
-            InputStream is = getClass().getClassLoader().getResourceAsStream(rutaPathFichero);
             JornadaDTO jornadaDTO = objectMapper.readValue(is, JornadaDTO.class);
+            
             if (!jornadaRepository.findByNumeroJornada(jornadaDTO.getNumeroJornada()).isPresent()) {
                 Jornada jornada = insertarJornada(jornadaDTO);
                 for (EquipoDTO equipoDTO : jornadaDTO.getEquipos()) {
@@ -79,10 +78,10 @@ public class MantenimientoDatosService {
                         insertarJugador(jDto, equipo);
                     }
                 }
-                System.out.println(">> ¡Jornada " + numeroJornada + " cargada en la base de datos!");
+                System.out.println("¡Jornada: " + recurso.getFilename() + " cargada!");
             }         
         } catch (IOException e) {
-            throw new RuntimeException("Error al leer el JSON de la jornada " + numeroJornada, e);
+            throw new RuntimeException("Error al leer el JSON del recurso: " + recurso.getFilename(), e);
         }
     }
 
@@ -93,21 +92,18 @@ public class MantenimientoDatosService {
    public int procesarTodasLasJornadas() {
         int totalJornadas = 0;
         try {
-
             PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-            Resource[] resources = resolver.getResources("classpath:" + PATH_JSON_JORNADA + "*.json");
 
+            Resource[] resources = resolver.getResources("classpath*:" + PATH_JSON_JORNADA + "*.json");
             totalJornadas = resources.length;
-            System.out.println(">> Se han encontrado " + totalJornadas + " archivos de jornada.");
 
-            for (int i = 1; i <= totalJornadas; i++) {
-                procesarJornada(i);
+            for (Resource resource : resources) {
+                procesarJornada(resource);
             }
 
-            System.out.println(">> ¡Proceso masivo finalizado con éxito!");
-
         } catch (IOException e) {
-            throw new RuntimeException("Error al intentar localizar los archivos JSON en " + PATH_JSON_JORNADA, e);
+            System.err.println("Error fatal: " + e.getMessage());
+            throw new RuntimeException("Error al localizar JSON en " + PATH_JSON_JORNADA, e);
         }
         return totalJornadas;
     }
@@ -140,8 +136,6 @@ public class MantenimientoDatosService {
                     System.out.println("El jugador " + jugadorRealDTO.getNombreJugador() + " ya existe en la BBDD.");
                 }
             }
-
-            System.out.println("¡Jugadores cargados!");
         } catch (IOException e) {
             throw new RuntimeException("Error al leer el JSON de los jugadores", e);
         }
@@ -322,8 +316,6 @@ public class MantenimientoDatosService {
                     System.out.println("Misters " + misterDTO.getNombreEquipo() + " ya existe en la BBDD.");
                 }
             }
-
-            System.out.println("Misters cargados!");
         } catch (IOException e) {
             throw new RuntimeException("Error al leer el JSON de los jugadores", e);
         }
