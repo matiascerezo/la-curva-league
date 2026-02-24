@@ -1,0 +1,334 @@
+package com.mister.lacurvaleague.servicios;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mister.lacurvaleague.modelos.Equipo;
+import com.mister.lacurvaleague.modelos.Mister;
+import com.mister.lacurvaleague.modelos.Jornada;
+import com.mister.lacurvaleague.modelos.Jugador;
+import com.mister.lacurvaleague.modelos.JugadorReal;
+import com.mister.lacurvaleague.modelos.dto.EquipoDTO;
+import com.mister.lacurvaleague.modelos.dto.JornadaDTO;
+import com.mister.lacurvaleague.modelos.dto.JugadorDTO;
+import com.mister.lacurvaleague.modelos.dto.JugadorRealDTO;
+import com.mister.lacurvaleague.modelos.dto.MisterDTO;
+import com.mister.lacurvaleague.repository.EquipoRepository;
+import com.mister.lacurvaleague.repository.JornadaRepository;
+import com.mister.lacurvaleague.repository.JugadorRealRepository;
+import com.mister.lacurvaleague.repository.JugadorRepository;
+import com.mister.lacurvaleague.repository.MisterRepository;
+
+import jakarta.transaction.Transactional;
+
+@Service
+public class MantenimientoDatosService {
+
+    @Value("${path.json_jornadas}")
+    private String PATH_JSON_JORNADA;
+    private String JORNADA = "/jornada";
+
+    @Value("${path.json_jugadores}")
+    private String PATH_JSON_JUGADORES;
+
+    @Value("${path.json_misters}")
+    private String PATH_JSON_MISTERS;
+
+    private String SIN_POSICION = "Sin Posición";
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    private JugadorRepository jugadorRepository;   
+    @Autowired
+    private JugadorRealRepository jugadorRealRepository; 
+    @Autowired
+    private EquipoRepository equipoRepository;
+    @Autowired
+    private JornadaRepository jornadaRepository;
+
+    @Autowired
+    private MisterRepository misterRepository;
+
+    /**
+     * Método que lee el fichero .json de la jornada recibida por parámetro.
+     * @return Jornada con los datos del fichero .json
+     */
+    public void procesarJornada(int numeroJornada) {
+        try {
+            String rutaPathFichero = PATH_JSON_JORNADA +  JORNADA + numeroJornada + ".json";
+            
+            InputStream is = getClass().getClassLoader().getResourceAsStream(rutaPathFichero);
+            JornadaDTO jornadaDTO = objectMapper.readValue(is, JornadaDTO.class);
+            if (!jornadaRepository.findByNumeroJornada(jornadaDTO.getNumeroJornada()).isPresent()) {
+                Jornada jornada = insertarJornada(jornadaDTO);
+                for (EquipoDTO equipoDTO : jornadaDTO.getEquipos()) {
+                    Equipo equipo = insertarEquipo(equipoDTO, jornada);
+                    for (JugadorDTO jDto : equipoDTO.getJugadores()) {               
+                        insertarJugador(jDto, equipo);
+                    }
+                }
+                System.out.println(">> ¡Jornada " + numeroJornada + " cargada en la base de datos!");
+            }         
+        } catch (IOException e) {
+            throw new RuntimeException("Error al leer el JSON de la jornada " + numeroJornada, e);
+        }
+    }
+
+    /**
+     * Método que lee la carpeta 'data/jornadas/' y procesa todo lo que hay en formato .json.
+     * @return
+     */
+   public int procesarTodasLasJornadas() {
+        int totalJornadas = 0;
+        try {
+
+            PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+            Resource[] resources = resolver.getResources("classpath:" + PATH_JSON_JORNADA + "*.json");
+
+            totalJornadas = resources.length;
+            System.out.println(">> Se han encontrado " + totalJornadas + " archivos de jornada.");
+
+            for (int i = 1; i <= totalJornadas; i++) {
+                procesarJornada(i);
+            }
+
+            System.out.println(">> ¡Proceso masivo finalizado con éxito!");
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error al intentar localizar los archivos JSON en " + PATH_JSON_JORNADA, e);
+        }
+        return totalJornadas;
+    }
+
+    /**
+     * Cargar todos los jugadores con su posición real.
+     *
+     */
+    public String cargarJugadoresReales() {
+
+        int jugadoresCargados = 0;
+        int jugadoresNoCargados = 0;
+
+        try {
+            String rutaPathFichero = PATH_JSON_JUGADORES + "jugadores_reales.json";
+            
+            InputStream is = getClass().getClassLoader().getResourceAsStream(rutaPathFichero);
+            List<JugadorRealDTO> listaJugadoresDTO = objectMapper.readValue(is, new TypeReference<List<JugadorRealDTO>>() {});
+
+            for (JugadorRealDTO jugadorRealDTO : listaJugadoresDTO) {
+                if(jugadorRealRepository.findById(jugadorRealDTO.getNombreCortoJugador()).isEmpty()){
+                    JugadorReal jr = new JugadorReal();
+                    jr.setNombreCortoJugador(jugadorRealDTO.getNombreCortoJugador());
+                    jr.setNombreJugador(jugadorRealDTO.getNombreJugador());
+                    jr.setPosicion(jugadorRealDTO.getPosicion());
+                    jugadorRealRepository.save(jr);
+                    jugadoresCargados++;
+                } else {
+                    jugadoresNoCargados++;
+                    System.out.println("El jugador " + jugadorRealDTO.getNombreJugador() + " ya existe en la BBDD.");
+                }
+            }
+
+            System.out.println("¡Jugadores cargados!");
+        } catch (IOException e) {
+            throw new RuntimeException("Error al leer el JSON de los jugadores", e);
+        }
+
+        return "Jugadores cargados: " + jugadoresCargados + " y no cargados: " + jugadoresNoCargados;
+    }
+
+    /**
+     * Método que recibe una jornada DTO de JSON, lo transforma a Jornada e inserta.
+     * @param jugadorDTO
+     */
+    public Jornada insertarJornada(JornadaDTO jornadaDto) {
+        return jornadaRepository.save(procesarJornada(jornadaDto));
+    }
+
+    /**
+     * Método que recibe un equipo DTO de JSON, lo transforma a HistorialEquipo e inserta.
+     * @param equipoDto
+     */
+    public Equipo insertarEquipo(EquipoDTO equipoDto, Jornada jornada){
+        return equipoRepository.save(procesarEquipo(equipoDto, jornada));
+    }
+
+    public Mister insertarMister(MisterDTO misterDto){
+        return misterRepository.save(procesarMister(misterDto));
+    }
+
+    /**
+     * Método que recibe un jugador DTO de JSON, lo transforma a Jugador e inserta.
+     * @param jugadorDTO
+     */
+    public Jugador insertarJugador(JugadorDTO jugadorDTO, Equipo equipo) {
+        return jugadorRepository.save(procesarJugador(jugadorDTO, equipo));
+    }
+
+    public Jugador procesarJugador(JugadorDTO jugadorDTO){
+        return this.procesarJugador(jugadorDTO, null);
+    }
+    
+    /**
+     * Método que parsea el JugadorDTO a Jugador
+     * @param jugadorDTO
+     * @return Jugador
+     */
+    public Jugador procesarJugador(JugadorDTO jugadorDTO, Equipo equipo){
+        Jugador jugador = new Jugador();
+        jugador.setNombre(jugadorDTO.getNombre());
+        jugador.setPuntos(jugadorDTO.getPuntos());
+        if (jugadorDTO.getGoles() != null) jugador.setGoles((jugadorDTO.getGoles()));
+        if (jugadorDTO.getAsistencias() != null) jugador.setAsistencias((jugadorDTO.getAsistencias()));
+        if (jugadorDTO.getAmarillas() != null) jugador.setAmarillas(jugadorDTO.getAmarillas());
+        if (jugadorDTO.getRojas() != null) jugador.setRojas(jugadorDTO.getRojas());
+        if (Boolean.TRUE.equals(jugadorDTO.isXiIdeal())) jugador.setXiIdeal(jugadorDTO.isXiIdeal());
+        if (jugadorDTO.getPartidoJugado() != null) jugador.setPartidoJugado(jugadorDTO.getPartidoJugado());
+        if(jugadorDTO.getPenaltisParados()!=null) jugador.setPenaltisParados(jugadorDTO.getPenaltisParados());
+        jugador.setEquipo(equipo);
+        //Recuperar la posición del jugador
+        jugador.setPosicion(this.getPosicionJugador(jugadorDTO));
+        return jugador;
+    }
+
+    /**
+     * Metodo que parsea el EquipoDTO a un objeto Equipo sin jornada.
+     * @param equipoDto
+     * @return
+     */
+    public Equipo procesarEquipo(EquipoDTO equipoDto){
+       return procesarEquipo(equipoDto, null);
+    }
+
+    /**
+     * Método que parsea el EquipoDTO a HistorialEquipo
+     * @param historialDTO
+     * @return HistorialEquipo
+     */
+    public Equipo procesarEquipo(EquipoDTO equipoDto, Jornada jornada){
+        Equipo equipo = new Equipo();
+        equipo.setPuntosJornada(equipoDto.getPuntosJornada());
+        equipo.setPosicionJornada(equipoDto.getPosicionJornada());
+        equipo.setJugadores(obtenerListaJugadores(equipoDto.getJugadores()));
+        equipo.setJornada(jornada);
+        equipo.setMister(misterRepository.getMisterByNombreMister(equipoDto.getNombreMister()));
+        return equipo;
+    }
+
+    public Mister procesarMister(MisterDTO misterDto){
+        Mister mister = new Mister();
+        mister.setNombreEquipo(misterDto.getNombreEquipo());
+        mister.setNombreMister(misterDto.getNombreMister());
+        return mister;
+    }
+
+    /**
+     * Método que parsea el JornadaDTO en objeto Jornada.
+     * @param jornadaDto
+     * @return
+     */
+    public Jornada procesarJornada(JornadaDTO jornadaDto){
+        Jornada jornada = new Jornada();
+        jornada.setNumeroJornada(jornadaDto.getNumeroJornada());
+        jornada.setFechaInicio(jornadaDto.getFechaInicio());
+        jornada.setFechaFin(jornadaDto.getFechaFin());
+        jornada.setEquipos(obtenerListaEquipos((jornadaDto.getEquipos())));
+        return jornada;
+    }
+
+    /**
+     * Mapear la lista de equipos DTO a una lista de equipos
+     * @param equiposDto
+     * @return
+     */
+    private List<Equipo> obtenerListaEquipos(List<EquipoDTO> equiposDto){
+        List<Equipo> equipos = new ArrayList<>();
+        equiposDto.stream()
+                            .map(dto -> procesarEquipo(dto))
+                            .collect(Collectors.toList());
+        return equipos;
+    }
+
+    /**
+     * Mapear la lista de jugadores del DTOs a una lista de Jugador.
+     * @param jugadoresDto
+     * @return
+     */
+    private List<Jugador> obtenerListaJugadores(List<JugadorDTO> jugadoresDto){
+        List<Jugador> jugadores = new ArrayList<>();
+        jugadoresDto.stream()
+                            .map(dto -> procesarJugador(dto))
+                            .collect(Collectors.toList());
+        return jugadores;
+    }
+
+    /**
+     * Obtener la posición real del jugador.
+     * @param nombreJugador
+     * @return
+     */
+    private String getPosicionJugador(JugadorDTO jugadorDto) {
+        String nombreJugadorCorto = jugadorDto.getNombre();
+        
+        String posicionJugador = jugadorRealRepository.findById(nombreJugadorCorto)
+                                .map(jr -> (jr.getPosicion() == null || jr.getPosicion().isEmpty()) 
+                                            ? SIN_POSICION : jr.getPosicion())
+                                .orElse("Desconocido");
+        if(posicionJugador.equals(SIN_POSICION)) {
+            JugadorReal jugadorNoExistente = new JugadorReal(nombreJugadorCorto, null, posicionJugador);
+            jugadorRealRepository.save(jugadorNoExistente);
+        }
+        return posicionJugador;
+    }
+
+    /**
+     * Cargar todos los misters
+     *
+     */
+    @Transactional
+    public String cargarMisters() {
+
+        int misterCargados = 0;
+        int misterNoCargados = 0;
+
+        try {
+            String rutaPathFichero = PATH_JSON_MISTERS + "misters.json";
+            
+            InputStream is = getClass().getClassLoader().getResourceAsStream(rutaPathFichero);
+            List<MisterDTO> misterDTOs = objectMapper.readValue(is, new TypeReference<List<MisterDTO>>() {});
+
+            for (MisterDTO misterDTO : misterDTOs) {
+                if(misterRepository.getMisterByNombreMister(misterDTO.getNombreMister()) == null){
+                    Mister m = new Mister();
+                    m.setNombreEquipo(misterDTO.getNombreEquipo());
+                    m.setNombreMister(misterDTO.getNombreMister());
+                    m.setUrlEquipo(misterDTO.getUrlEquipo());
+                    misterRepository.save(m);
+                    misterCargados++;
+                } else {
+                    misterNoCargados++;
+                    System.out.println("Misters " + misterDTO.getNombreEquipo() + " ya existe en la BBDD.");
+                }
+            }
+
+            System.out.println("Misters cargados!");
+        } catch (IOException e) {
+            throw new RuntimeException("Error al leer el JSON de los jugadores", e);
+        }
+
+        return "Misters cargados: " + misterCargados + " y no cargados: " + misterNoCargados;
+    }
+
+}

@@ -1,0 +1,102 @@
+{
+  "numeroJornada": 2,
+  "fechaInicio": "2025-08-22",
+  "fechaFin":"2025-08-25",
+  "equipos": [
+    {
+      "nombreEquipo": "Los Hokages de Merlès",
+      "nombreMister": "Matias",
+	  "puntosJornada": 56,
+	  "posicionJornada":1,
+      "jugadores": [
+			{"nombre": "H.Duro", "puntos": 1},
+			{"nombre": "F.Torres", "puntos": 10, "goles": 1},
+			{"nombre": "E.Expósito", "puntos": 4},
+			{"nombre": "A.Guler", "puntos": 5,"asistencias":1},
+			{"nombre": "P.Ciss", "puntos": 6},
+			{"nombre": "L.Agoumé", "puntos": 3},
+			{"nombre": "T.Lemar", "puntos": 1},
+			{"nombre": "R.Martin", "puntos": 13, "goles":1,"xiIdeal": true},
+			{"nombre": "C.Tárrega", "puntos": 3, "amarillas":1},
+			{"nombre": "S.Cardona", "puntos": 7, "asistencias":1},
+			{"nombre": "L.Román", "puntos": 3}
+		]
+    },
+	{
+      "nombreEquipo": "Maylova FC",
+      "nombreMister": "Jon",
+	  "puntosJornada": 44,
+	  "posicionJornada":2,
+      "jugadores": [
+			{ "nombre": "G.García", "puntos": 2 },
+			{ "nombre": "T.Kubo", "puntos": 5 },
+			{ "nombre": "R.Riquelme", "puntos": 2 },
+			{ "nombre": "C.Uche", "puntos": 4 },
+			{ "nombre": "T.Almada", "puntos": 3 },
+			{ "nombre": "F.Mastantuono", "puntos": 2 },
+			{ "nombre": "A.Ruibal", "puntos": 5 },
+			{ "nombre": "R.Araújo", "puntos": 3 },
+			{ "nombre": "S.Mouriño", "puntos": 7,"asistencias":1, "amarillas":1},
+			{ "nombre": "J.Aramburu", "puntos": 3 },
+			{ "nombre": "A.Escandell", "puntos": 8 }
+		]
+    },
+	{
+      "nombreEquipo": "Rayo Vaticano",
+      "nombreMister": "Sergi",
+	  "puntosJornada": 35,
+	  "posicionJornada":3,
+      "jugadores": [
+			{ "nombre": "A.Adams", "puntos": -1 },
+			{ "nombre": "E.Eyong", "puntos": 3,"asistencias":1},
+			{ "nombre": "G.Guedes", "puntos": 2 },
+			{ "nombre": "R.Navarro", "puntos": 0, "partidoJugado": false },
+			{ "nombre": "Y.Pino", "puntos": 6, "asistencias":1},
+			{ "nombre": "J.Moncayola", "puntos": 6 },
+			{ "nombre": "S.Altimira", "puntos": 7 },
+			{ "nombre": "A.Paredes", "puntos": 4 },
+			{ "nombre": "É.Militao", "puntos": 0, "partidoJugado": false },
+			{ "nombre": "D.Rico", "puntos": 5 },
+			{ "nombre": "L.Júnior", "puntos": 3 }
+		]
+    },
+	{
+      "nombreEquipo": "Los 11 Yonkos",
+      "nombreMister": "Carlos",
+	  "puntosJornada": 32,
+	  "posicionJornada":4,
+      "jugadores": [
+			{ "nombre": "L.Yamal", "puntos": 6, "asistencias":1},
+			{ "nombre": "I.Chaira", "puntos": 2 },
+			{ "nombre": "P.Fornals", "puntos": 3 },
+			{ "nombre": "B.Méndez", "puntos": 3 },
+			{ "nombre": "Pepelu", "puntos": -1 },
+			{ "nombre": "P.Torre", "puntos": 4 },
+			{ "nombre": "O.Luengo", "puntos": 2 },
+			{ "nombre": "A.de la Fuente", "puntos": 5 },
+			{ "nombre": "J.Rodríguez", "puntos": 2 },
+			{ "nombre": "J.Areso", "puntos": 4 },
+			{ "nombre": "A.Remiro", "puntos": 2 }
+		]
+    },
+	{
+      "nombreEquipo": "Los Pollos Hermanos",
+      "nombreMister": "Dani",
+	  "puntosJornada": 32,
+	  "posicionJornada":5,
+      "jugadores": [
+			{ "nombre": "M.Sannadi", "puntos": 2 },
+			{ "nombre": "A.Danjuma", "puntos": 0 },
+			{ "nombre": "C.Portu", "puntos": 0 },
+			{ "nombre": "S.Cazorla", "puntos": 0 },
+			{ "nombre": "L.Milla", "puntos": 9,"asistencias":2},
+			{ "nombre": "A.Almeida", "puntos": 0, "partidoJugado": false },
+			{ "nombre": "M.Neto", "puntos": 2 },
+			{ "nombre": "M.Bartra", "puntos": 6 },
+			{ "nombre": "R.Alhassane", "puntos": 3 },
+			{ "nombre": "Davinchi", "puntos": 3 },
+			{ "nombre": "I.Radu", "puntos": 7 }
+		]
+    }
+  ]
+}

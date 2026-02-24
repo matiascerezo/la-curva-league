@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "path.json_jugadores",
+    "type": "java.lang.String",
+    "description": "A description for 'path.json_jugadores'"
+  },
+  {
+    "name": "path.json_jornadas",
+    "type": "java.lang.String",
+    "description": "A description for 'path.json_jornadas'"
+  }
+]}

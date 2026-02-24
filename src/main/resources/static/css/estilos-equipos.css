@@ -1,0 +1,55 @@
+/* Contenedor principal expandido */
+.main-container.full-width {
+    width: 95%;
+    max-width: 1600px;
+    margin: 80px auto 40px;
+}
+
+/* Activación de las dos columnas */
+.split-container {
+    display: flex;
+    gap: 40px; /* Espacio entre tabla y gráfica */
+    align-items: flex-start; /* Alinea ambos al inicio superior */
+}
+
+/* Proporciones: la tabla ocupa 1 parte y la gráfica 2 partes */
+.table-column {
+    flex: 1;
+}
+
+.chart-column {
+    flex: 2;
+}
+
+/* Ajustes de la Gráfica para que se vea grande */
+.canvas-wrapper {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    height: 500px; /* Altura aumentada para mejor visibilidad */
+    width: 100%;
+    max-width: 1000px;
+}
+
+/* Estilo de la tabla para que coincida con el diseño general */
+.styled-table {
+    width: 100%;
+    background-color: #fff;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.styled-table th {
+    background-color: #1a237e;
+    color: white;
+    padding: 15px;
+}
+
+.styled-table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}

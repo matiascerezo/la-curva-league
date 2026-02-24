@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+    <nav th:fragment="nav" class="navbar">
+        <ul class="navbar-menu">
+            <li class="navbar-item"><a th:href="@{/inicio}">Inicio</a></li>
+            <li class="navbar-item">
+                <a href="#">Los mejores tops ▼</a>
+                <div class="dropdown-content">
+                    <a th:each="top : ${listaTops}" 
+                       th:href="@{/top/{id}(id=${@stringUtils.parsearRuta(top)})}" 
+                       th:text="${top}">Tops</a>
+                </div>
+            </li>
+            <li class="navbar-item"><a th:href="@{/club/fenix-del-mar}" th:text="#{equipo.fenix}">Fénix del mar</a></li>
+            <li class="navbar-item"><a th:href="@{/club/maylova-fc}" th:text="#{equipo.maylova}">Maylova FC</a></li>
+            <li class="navbar-item"><a th:href="@{/club/los-11-yonkos}" th:text="#{equipo.yonkos}">Los 11 Yonkos</a></li>
+            <li class="navbar-item"><a th:href="@{/club/los-hokages-de-merles}" th:text="#{equipo.hokages}">Los Hokages de Merlès</a></li>
+            <li class="navbar-item"><a th:href="@{/club/los-pollos-hermanos}" th:text="#{equipo.pollos}">Los Pollos Hermanos</a></li>
+            <li class="navbar-item"><a th:href="@{/club/rayo-vaticano}" th:text="#{equipo.rayo}">Rayo Vaticano</a></li>
+            <li class="navbar-item"><a th:href="@{/club/shalke-megino}" th:text="#{equipo.shalke}">Shalke Megiño</a></li>
+        </ul>
+    </nav>
+</body>
+</html>

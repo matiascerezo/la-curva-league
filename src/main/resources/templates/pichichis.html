@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pichichis</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body> <h1 style="text-align: center;" th:text="|Pichichis (J${jornadaActual}/J38)|"> Pichichis (0/38)</h1>
+
+    <table class="tabla-clasificacion">
+        <thead>
+            <tr>
+                <th>Goles</th>
+                <th>Nombre</th>
+                <th>Equipo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="equipo, iter : ${listaEquipos}">
+                <td th:text="${iter.count}">1</td>
+                <td th:text="${equipo.nombreEquipo}">Nombre</td>
+                <td th:text="${equipo.puntosTotales} + ' pts'">0 pts</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+<nav class="navbar">
+    <ul class="navbar-menu">
+        <li class="navbar-item"><a th:href="@{/inicio}">Inicio</a></li>
+        <li class="navbar-item"><a th:href="@{/rankings}">Los mejores tops ▼</a>
+            <div class="dropdown-content">
+                    <a th:each="top : ${listaTops}" 
+                    th:href="@{/top/{id}(id=${@stringUtils.parsearRuta(top)})}" 
+                    th:text="${top}">
+                    Tops
+                    </a>
+                </div>
+        </li>
+        
+        <li class="navbar-item">
+            <a href="#">Clubes ▼</a>
+            <div class="dropdown-content">
+                <a th:each="equipo : ${listaEquipos}" 
+                   th:href="@{/club/{s}(s=${@stringUtils.parsearRuta(equipo.nombreEquipo)})}"
+                   th:text="${equipo.nombreEquipo}">
+                   Nombre Equipo
+                </a>
+            </div>
+        </li>
+    </ul>
+</nav>
+</html>

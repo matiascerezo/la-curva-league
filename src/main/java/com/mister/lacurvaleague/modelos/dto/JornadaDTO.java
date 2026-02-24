@@ -1,0 +1,19 @@
+package com.mister.lacurvaleague.modelos.dto;
+
+import java.util.Date;
+import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data // Esta anotación crea: Getters, Setters, toString, equals y hashCode
+@NoArgsConstructor // Crea el constructor vacío (necesario para Jackson)
+@AllArgsConstructor // Crea un constructor con todos los campos
+public class JornadaDTO {
+
+    private int numeroJornada;
+    private Date fechaInicio;
+    private Date fechaFin;
+    private List<EquipoDTO> equipos;
+}
