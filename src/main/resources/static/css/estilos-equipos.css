@@ -1,15 +1,9 @@
-/* Contenedor principal expandido */
 .main-container.full-width {
-    width: 95%;
+    width: 100%; /* Ocupamos todo el ancho teórico */
     max-width: 1600px;
     margin: 80px auto 40px;
-}
-
-/* Activación de las dos columnas */
-.split-container {
-    display: flex;
-    gap: 40px; /* Espacio entre tabla y gráfica */
-    align-items: flex-start; /* Alinea ambos al inicio superior */
+    padding: 0 15px; /* Esto crea el margen real a izquierda y derecha */
+    box-sizing: border-box; /* Fundamental para que el padding no ensanche la web */
 }
 
 /* Proporciones: la tabla ocupa 1 parte y la gráfica 2 partes */
@@ -19,17 +13,18 @@
 
 .chart-column {
     flex: 2;
+    width: 100%; /* Asegura que en móvil ocupe todo el ancho */
+    max-width: 100%;
 }
 
-/* Ajustes de la Gráfica para que se vea grande */
 .canvas-wrapper {
     background: white;
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    height: 500px; /* Altura aumentada para mejor visibilidad */
-    width: 100%;
-    max-width: 1000px;
+    height: 500px;
+    width: 100%; /* Fundamental */
+    box-sizing: border-box; /* Para que el padding no sume al ancho */
 }
 
 /* Estilo de la tabla para que coincida con el diseño general */
@@ -53,3 +48,31 @@
     text-align: center;
     border-bottom: 1px solid #eee;
 }
+
+/* Modificamos el contenedor principal */
+.split-container {
+    display: flex;
+    gap: 40px;
+    flex-direction: row; /* Por defecto en PC: uno al lado del otro */
+    width: 100%;
+}
+
+/* --- ESTO ES LO QUE ARREGLA EL MÓVIL --- */
+@media (max-width: 992px) {
+    .split-container {
+        flex-direction: column; /* En móvil: uno debajo de otro */
+        gap: 20px;
+    }
+
+    .main-container.full-width {
+        width: 100%; /* Aprovechamos más el espacio en móvil */
+        margin-top: 70px; /* Ajuste para la nueva barra superior */
+    }
+
+    .canvas-wrapper {
+        height: 350px; /* Reducimos la altura en móvil para que no sea infinita */
+        padding: 15px; /* Menos padding para ganar espacio */
+    }
+}
+
+

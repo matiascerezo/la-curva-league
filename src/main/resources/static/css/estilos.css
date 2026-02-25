@@ -77,42 +77,6 @@ h1 {
     content: "🥉";
 }
 
-/* Navbar Container */
-.navbar {
-    height: 50px; /* Altura fija para la barra superior */
-    flex-shrink: 0;
-    background-color: #1a237e;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 10px 0;
-    position: fixed; /* Se queda arriba al hacer scroll */
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
-
-.navbar-menu {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-}
-
-.navbar-item {
-    position: relative;
-    padding: 15px 25px;
-}
-
-.navbar-item a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-}
-
 /* Dropdown (Desplegable de Clubes) */
 .dropdown-content {
     display: none;
@@ -135,10 +99,6 @@ h1 {
 .dropdown-content a:hover {
     background-color: #f1f1f1;
     color: #1a237e;
-}
-
-.navbar-item:hover .dropdown-content {
-    display: block; /* Muestra el menú al pasar el ratón */
 }
 
 /* Ajuste para que el contenido no se meta debajo de la navbar fija */
@@ -199,7 +159,7 @@ body {
     width: 90%;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 0px;
 }
 
 /* FOOTER QUE OCUPA TODO EL ANCHO */
@@ -272,3 +232,85 @@ body {
         transform: translateY(0);
     }
 }
+
+/* Ajuste para móviles */
+@media (max-width: 768px) {
+    .navbar-logo {
+        height: 30px; /* Un poco más pequeño en el iPhone/Pixel */
+    }
+    .navbar{
+        height: 60px;
+    }
+
+    .tabla-clasificacion th, .tabla-clasificacion td {
+        padding: 12px 8px;
+        font-size: 1.2rem;
+        padding-left: 25px;
+    }
+    h1 {
+        font-size: 25px;
+        letter-spacing: 0px;
+    }
+}
+
+.navbar {
+    background-color: #1a237e;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Nivel superior: Logo */
+.nav-top {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    gap: 10px;
+}
+
+.nav-logo img { height: 30px; }
+
+/* Nivel inferior: Scroll de Equipos */
+.nav-scroll-container {
+    background-color: #1a237e;
+    overflow-x: auto; /* Habilita el scroll horizontal */
+    white-space: nowrap; /* Evita que los equipos bajen de fila */
+    scrollbar-width: none; /* Oculta scroll en Firefox */
+}
+
+.nav-scroll-container::-webkit-scrollbar {
+    display: none; /* Oculta scroll en Chrome/Safari */
+}
+
+.nav-list-equipos {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 10px 5px;
+}
+
+.nav-item a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 8px 15px;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.nav-item a:hover {
+    color: white;
+}
+
