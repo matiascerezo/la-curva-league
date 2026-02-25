@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.TarjetasDTO;
 import com.mister.lacurvaleague.repository.EquipoRepository;
 import com.mister.lacurvaleague.repository.MisterRepository;
 import com.mister.lacurvaleague.servicios.MisterService;
@@ -73,14 +74,19 @@ public class NavegacionControlador {
         return "equipos";
     }
 
+    @GetMapping("/top/tarjetas")
+    public String mostrarTarjetas() {
+        return "tarjetas";
+    }
+
+    @ModelAttribute("tarjetasTotales")
+    public List<TarjetasDTO> getTarjetasTotales(){
+        return misterRepository.getTarjetasTotales();
+    }
+
     @ModelAttribute("listaEquipos")
     public List<ClasificacionGeneralDTO> getListaEquipos() {
         return misterControlador.getClasificacionGeneral();
-    }
-
-    @ModelAttribute("listaTops")
-    public List<String> getListaTops() {
-        return Arrays.asList("Llorómetro", "Pichichis", "Tarjetas", "Partidos no jugados");
     }
 
     @ModelAttribute("jornadaActual")
@@ -88,15 +94,4 @@ public class NavegacionControlador {
         String jornada = misterControlador.getJornadaActual();
         return jornada != null ? jornada : "0";
     }
-
-    /*
-    public Model getModelBarraNav(Model model) {
-        List<ClasificacionGeneralDTO> clasificacion = mc.getClasificacionGeneral();
-        List<String> listaTops = Arrays.asList("Llorómetro","Pichichis", "Tarjetas", "Partidos no jugados");
-        String jornadaActual = mc.getJornadaActual();
-        model.addAttribute("listaEquipos", clasificacion);
-        model.addAttribute("listaTops", listaTops);
-        model.addAttribute("jornadaActual", jornadaActual != null ? jornadaActual:0);
-        return model;
-    } */
 }

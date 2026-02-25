@@ -9,12 +9,16 @@
             <span>La Curva League</span>
         </a>
     </div>
-
     <div class="nav-scroll-container">
         <ul class="nav-list-equipos">
-            <li class="nav-item dropdown">
-                <a href="#" class="dropdown-toggle">Tops ▼</a>
-                </li>
+            <li class="nav-item"><a th:href="@{/top/goleadores}" th:text="#{ranking.goleadores}">Goleadores</a></li>
+            <li class="nav-item"><a th:href="@{/top/llorometro}" th:text="#{ranking.llorometro}">Llorómetro</a></li>
+            <li class="nav-item"><a th:href="@{/top/records}" th:text="#{ranking.records}">Récords Jornada</a></li>
+            <li class="nav-item"><a th:href="@{/top/tarjetas}" th:text="#{ranking.tarjetas}">Tarjetas</a></li>
+        </ul>
+    </div>
+    <div class="nav-scroll-container">
+        <ul class="nav-list-equipos">
             <li class="nav-item"><a th:href="@{/club/fenix-del-mar}" th:text="#{equipo.fenix}">Fénix del mar</a></li>
             <li class="nav-item"><a th:href="@{/club/maylova-fc}" th:text="#{equipo.maylova}">Maylova FC</a></li>
             <li class="nav-item"><a th:href="@{/club/los-11-yonkos}" th:text="#{equipo.yonkos}">Los 11 Yonkos</a></li>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>La Curva League - Tarjetas</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos-tarjetas.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos-equipos.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
+</head>
+<body>
+    <nav th:replace="~{fragments/navbar :: nav}"></nav>
+
+    <div class="main-container full-width">
+
+        <div class="table-wrapper">
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th> </th>
+                        <th>Equipo</th>
+                        <th class="text-center">Amarillas</th>
+                        <th class="text-center">Rojas</th>
+                        <th class="text-center">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="t, iter : ${tarjetasTotales}">
+                        <td class="text-center" style="font-weight: bold;" th:text="${iter.count > 1 ? iter.count : '🐷'}">0</td>
+                        <td style="font-weight: 600; color: #1a237e;" th:text="${t.mister}"></td>
+                        
+                        <td class="text-center">
+                            <span class="badge-amarilla" th:text="${t.amarillas}">0</span>
+                        </td>
+                        
+                        <td class="text-center">
+                            <span class="badge-roja" th:text="${t.rojas}">0</span>
+                        </td>
+                        
+                        <td class="text-center" style="font-weight: bold;" th:text="${t.totalTarjetas}">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>
