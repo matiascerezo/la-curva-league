@@ -13,7 +13,7 @@
 <body>
     <nav class="navbar" th:replace="~{fragments/navbar :: nav}"></nav>
     <div class="main-container">
-        <h1 class=equipo-titulo th:text="${nombreEquipo}">Mister</h1>
+        <h1 class=h1-equipo th:text="${nombreEquipo}">Mister</h1>
 
         <div class="split-container">
             
@@ -55,12 +55,13 @@
     const ctx = document.getElementById('smoothChart').getContext('2d');
     
     // Extraemos datos del modelo
-    const rawData = /*[[${puntosEquipoJornadas}]]*/ [];
+    const rawData = /*[[${puntosEquipoJornadasGrafica}]]*/ [];
     const labels = rawData.map(d => 'J' + d.jornadaId);
     const points = rawData.map(d => d.puntosJornada);
 
     const colorEquipoHex = /*[[${colorEquipo}]]*/ '#6a1b9a';
     const colorConTransparencia = hexaToRGBA(colorEquipoHex, 0.4);
+    document.querySelector('.h1-equipo').style.color = colorEquipoHex;
 
     // Creamos un degradado para el fondo
     const gradient = ctx.createLinearGradient(0, 0, 0, 800);

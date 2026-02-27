@@ -1,0 +1,99 @@
+
+/* Ajuste de la tabla para que no esté apretada */
+.pichichi-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-start;
+}
+
+/* Badge genérico para números */
+.badge-goles {
+    background: #f0f2f5;
+    color: #1a237e;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 800;
+    display: inline-block;
+}
+
+/* Estilo para la media (Pastilla verde) */
+.media-text {
+    font-size: 0.75rem;
+    color: #000000;
+    background: #e8f5e9;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+    border: 1px solid #c8e6c9;
+}
+
+/* Estilo base de la etiqueta de posición */
+.badge-posicion {
+    font-size: 0.65rem;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: white !important;
+    text-transform: uppercase;
+}
+
+/* Colores por posición */
+.pos-DESC { background-color: #23120b97; color: #ffffff; } /* Naranja para Desconocidos */
+.pos-PT { background-color: #FFF242; color: #000; } /* Amarillo para Porteros */
+.pos-DF { background-color: #0FD3FF; }             /* Azul para Defensas */
+.pos-MC { background-color: #17d386; }             /* Verde para Medios */
+.pos-DL  { background-color: #ff6188; }             /* Rojo para Delanteros */
+
+/* Fuerza la tabla a no exceder el ancho de pantalla */
+.table-wrapper {
+    overflow-x: hidden; /* Elimina el scroll si es posible */
+    padding: 0 5px;
+}
+
+.styled-table {
+    width: 100%;
+    table-layout: fixed; /* Ayuda a que las celdas respeten el ancho asignado */
+    font-size: 1.1rem;  /* Reduce ligeramente la fuente en general */
+}
+
+.styled-table td:nth-child(4),
+.styled-table th:nth-child(4) {
+    border-left: 2px solid #ddd; /* Línea gris sutil */
+    padding-left: 15px;
+}
+
+.styled-table td:nth-child(4) {
+    padding-left: 80px;
+}
+
+
+@media (max-width: 600px) {
+    .col-media {
+        display: none;
+    }
+    .styled-table {
+        font-size: 0.85rem;  /* Reduce ligeramente la fuente en general */
+    }
+    .pichichi-cell {
+        gap: 3px;
+    }
+    .styled-table td:nth-child(4) {
+        padding-left: 15px;
+    }
+
+    .tituloPichichi { display: none; }
+    .tituloGolesTotales { display: none; }
+    /* Mostramos los cortos (CORREGIDO: uso de coma) */
+    .tituloCortoPichichi, 
+    .tituloGolesTotalesCorto { 
+        display: table-cell !important; /* table-cell es mejor que inline para <th> */
+        font-size: 1.1rem;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+}
+
+.tituloCortoPichichi { display: none; }
+.tituloGolesTotalesCorto { display: none; }

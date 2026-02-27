@@ -10,6 +10,7 @@ import com.mister.lacurvaleague.modelos.Equipo;
 import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.GoleadorDTO;
 import com.mister.lacurvaleague.repository.EquipoRepository;
 import com.mister.lacurvaleague.repository.JornadaRepository;
 import com.mister.lacurvaleague.repository.MisterRepository;
@@ -65,5 +66,9 @@ public class MisterService {
                                 .map(m -> m.getNombreEquipo())
                                 .findFirst()
                                 .orElse(null);
+    }
+
+    public List<GoleadorDTO> getGolesYGoleadoresXEquipo(){
+        return equipoRepository.getGolesYGoleadoresXEquipo();
     }
 }

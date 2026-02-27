@@ -19,3 +19,4 @@ public interface JornadaRepository extends JpaRepository<Jornada, Long> {
     String getJornadaActual();
 
 }
+

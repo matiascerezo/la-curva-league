@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>La Curva League - Goleadores</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos-tarjetas.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos-equipos.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos-tops.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav th:replace="~{fragments/navbar :: nav}"></nav>
+
+    <div class="main-container full-width">
+        <h1 class="equipo-titulo">Goleadores ⚽</h1>
+
+        <div class="table-wrapper">
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Equipo</th>
+                        <th class="text-center">Goles Totales</th>
+                        <th>Pichichi</th>
+                        <th>Goles pichichi </th>
+                        <th class="text-center col-media">Goles/Jornada</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="g, iter : ${listaGoleadores}">
+                        <td th:text="${iter.count == 1 ? '👑': iter.count}" class="posicion-col">1</td>
+                        
+                        <td>
+                            <span th:text="${g.equipo}" style="font-weight: 600;"></span>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge-goles" th:text="${g.golesTotalesEquipo}">0</span>
+                        </td>
+                        <td>
+                            <div class="pichichi-cell">
+                                <span th:text="${g.pichichi}">Jugador</span>
+                                <span th:text="${g.getPosicionAbreviada}" 
+                                    th:class="'badge-posicion pos-' + ${g.getPosicionAbreviada}">DC</span>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge-goles" th:text="${g.golesPichichi}">0</span>
+                        </td>
+                        <td class="text-center col-media">
+                            <span class="badge-goles" th:text="${#numbers.formatDecimal(g.mediaGolesXJornada, 1, 1)}">0,0</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

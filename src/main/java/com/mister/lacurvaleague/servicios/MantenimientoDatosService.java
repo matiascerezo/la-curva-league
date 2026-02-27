@@ -37,7 +37,6 @@ public class MantenimientoDatosService {
 
     @Value("${path.json_jornadas}")
     private String PATH_JSON_JORNADA;
-    private String JORNADA = "/jornada";
 
     @Value("${path.json_jugadores}")
     private String PATH_JSON_JUGADORES;
@@ -78,7 +77,6 @@ public class MantenimientoDatosService {
                         insertarJugador(jDto, equipo);
                     }
                 }
-                System.out.println("¡Jornada: " + recurso.getFilename() + " cargada!");
             }         
         } catch (IOException e) {
             throw new RuntimeException("Error al leer el JSON del recurso: " + recurso.getFilename(), e);
@@ -102,7 +100,7 @@ public class MantenimientoDatosService {
             }
 
         } catch (IOException e) {
-            System.err.println("Error fatal: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
             throw new RuntimeException("Error al localizar JSON en " + PATH_JSON_JORNADA, e);
         }
         return totalJornadas;
@@ -133,7 +131,6 @@ public class MantenimientoDatosService {
                     jugadoresCargados++;
                 } else {
                     jugadoresNoCargados++;
-                    System.out.println("El jugador " + jugadorRealDTO.getNombreJugador() + " ya existe en la BBDD.");
                 }
             }
         } catch (IOException e) {
@@ -294,9 +291,6 @@ public class MantenimientoDatosService {
     @Transactional
     public String cargarMisters() {
 
-        int misterCargados = 0;
-        int misterNoCargados = 0;
-
         try {
             String rutaPathFichero = PATH_JSON_MISTERS + "misters.json";
             
@@ -310,17 +304,12 @@ public class MantenimientoDatosService {
                     m.setNombreMister(misterDTO.getNombreMister());
                     m.setUrlEquipo(misterDTO.getUrlEquipo());
                     misterRepository.save(m);
-                    misterCargados++;
-                } else {
-                    misterNoCargados++;
-                    System.out.println("Misters " + misterDTO.getNombreEquipo() + " ya existe en la BBDD.");
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException("Error al leer el JSON de los jugadores", e);
+            return "Error al cargar los misters.";
         }
-
-        return "Misters cargados: " + misterCargados + " y no cargados: " + misterNoCargados;
+        return "Misters cargados.";
     }
 
 }

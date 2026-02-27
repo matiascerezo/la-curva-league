@@ -1,3 +1,11 @@
+.h1-equipo {
+    margin-top: 80px;
+    color: #000000;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+}
+
+
 .main-container.full-width {
     width: 100%; /* Ocupamos todo el ancho teórico */
     max-width: 1600px;
@@ -72,6 +80,14 @@
     .canvas-wrapper {
         height: 350px; /* Reducimos la altura en móvil para que no sea infinita */
         padding: 15px; /* Menos padding para ganar espacio */
+    }
+
+    .styled-table td {
+        padding: 5px;
+    }
+
+    .h1-equipo {
+        font-size: 1.5rem;
     }
 }
 

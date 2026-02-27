@@ -1,6 +1,5 @@
 package com.mister.lacurvaleague.controladores;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.GoleadorDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.TarjetasDTO;
 import com.mister.lacurvaleague.repository.EquipoRepository;
 import com.mister.lacurvaleague.repository.MisterRepository;
 import com.mister.lacurvaleague.servicios.MisterService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @ControllerAdvice
@@ -70,13 +72,9 @@ public class NavegacionControlador {
         List<ClasificacionEquipoDTO> cEquipoDTOs = misterService.obtenerPuntosEquipoXJornadaByURL(nombreMisterURL);
         model.addAttribute("nombreEquipo", nombreMister);
         model.addAttribute("puntosEquipoJornadas", cEquipoDTOs);
+        model.addAttribute("puntosEquipoJornadasGrafica", cEquipoDTOs.reversed());
         model.addAttribute("colorEquipo", env.getProperty("color."+nombreMisterURL));
         return "equipos";
-    }
-
-    @GetMapping("/top/tarjetas")
-    public String mostrarTarjetas() {
-        return "tarjetas";
     }
 
     @ModelAttribute("tarjetasTotales")
@@ -93,5 +91,21 @@ public class NavegacionControlador {
     public String getJornadaActual() {
         String jornada = misterControlador.getJornadaActual();
         return jornada != null ? jornada : "0";
+    }
+
+    @ModelAttribute("seccionActual")
+    public String getPantallaActual(HttpServletRequest request) {
+        return request.getRequestURI();
+    }
+
+    @GetMapping("/top/goleadores")
+    public String getGolesYGoleadoresXEquipo(Model model) {
+        model.addAttribute("listaGoleadores", misterService.getGolesYGoleadoresXEquipo());
+        return "goleadores";
+    }
+
+    @GetMapping("/top/tarjetas")
+    public String mostrarTarjetas() {
+        return "tarjetas";
     }
 }

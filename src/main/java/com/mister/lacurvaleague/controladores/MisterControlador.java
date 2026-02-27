@@ -10,6 +10,7 @@ import com.mister.lacurvaleague.modelos.Equipo;
 import com.mister.lacurvaleague.modelos.Jornada;
 import com.mister.lacurvaleague.modelos.Jugador;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.GoleadorDTO;
 import com.mister.lacurvaleague.repository.EquipoRepository;
 import com.mister.lacurvaleague.repository.JornadaRepository;
 import com.mister.lacurvaleague.repository.JugadorRepository;
