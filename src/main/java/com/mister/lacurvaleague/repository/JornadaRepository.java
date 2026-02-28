@@ -11,7 +11,7 @@ public interface JornadaRepository extends JpaRepository<Jornada, Long> {
 
     Jornada findByNumeroJornada(int numeroJornada);
 
-    @Query(value = "SELECT MAX(id) AS jornadaActual " +
+    @Query(value = "SELECT MAX(jornada_id) AS jornadaActual " +
                    "FROM JORNADA j", nativeQuery = true)
     String getJornadaActual();
 

@@ -16,14 +16,14 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
 
         @Query(value = "SELECT m.nombre_equipo as nombreEquipo, SUM(e.puntos_jornada) as puntosTotales " +
             "FROM mister m " +
-            "join equipo e on e.mister_id = m.id " +
+            "join equipo e on e.mister_id = m.MISTER_ID " +
             "GROUP BY m.nombre_equipo " +
             "ORDER BY puntosTotales DESC", nativeQuery = true)
         List<ClasificacionGeneralDTO> getClasificacionGeneral();
 
         @Query(value = "SELECT e.jornada_id as jornadaId, e.puntos_jornada as puntosJornada, e.posicion_jornada as posicionJornada, m.nombre_equipo as nombreEquipo "+
                        "FROM EQUIPO e "+
-                       "join mister m on m.id = e.mister_id " +
+                       "join mister m on m.MISTER_ID = e.mister_id " +
                        "where e.mister_id = ? " +
                        "ORDER BY jornada_id DESC", nativeQuery = true)
         List<ClasificacionEquipoDTO> getClasificacionEquipo(Long misterId);
@@ -38,8 +38,8 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
                                                         "ORDER BY j.goles DESC, j.nombre ASC "+
                                                         ") as ranking "+
 								"FROM jugador j "+
-								"JOIN equipo e ON j.equipo_id = e.id "+
-								"JOIN mister m ON e.mister_id = m.id "+
+								"JOIN equipo e ON j.equipo_id = e.equipo_id "+
+								"JOIN mister m ON e.mister_id = m.MISTER_ID "+
 							") AS subq "+
 							"WHERE ranking = 1 "+ 
 							"ORDER BY golesTotalesEquipo DESC", nativeQuery = true)
