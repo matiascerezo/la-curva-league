@@ -16,24 +16,20 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Jugador {
+public class Llorometro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long jugadorId;
-    private String nombre;
-    private String posicion;
-    private int puntos;
-    private int goles = 0;
-    private int asistencias = 0;
-    private int amarillas = 0;
-    private int rojas = 0;
-    private Boolean partidoJugado = true;
-    private boolean xiIdeal = false;
-    private int penaltisParados = 0;
+    private Long lloroId;
+    private String motivo;
 
     @ManyToOne
-    @JoinColumn(name = "equipo_id")
-    private Equipo equipo;
+    @JoinColumn(name = "mister_id")
+    private Mister mister;
 
+    @ManyToOne
+    @JoinColumn(name = "jornada_id")
+    private Jornada jornada;
+    
+    
 }

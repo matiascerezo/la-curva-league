@@ -51,10 +51,11 @@
     padding: 0 5px;
 }
 
-.styled-table {
+.styled-table- {
     width: 100%;
     table-layout: fixed; /* Ayuda a que las celdas respeten el ancho asignado */
     font-size: 1.1rem;  /* Reduce ligeramente la fuente en general */
+    border: 2px solid #eee;
 }
 
 .styled-table td:nth-child(4),

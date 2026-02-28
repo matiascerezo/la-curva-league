@@ -15,10 +15,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
-import com.mister.lacurvaleague.modelos.dto.dtoFronts.GoleadorDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.TarjetasDTO;
 import com.mister.lacurvaleague.repository.EquipoRepository;
 import com.mister.lacurvaleague.repository.MisterRepository;
+import com.mister.lacurvaleague.servicios.LlorometroService;
 import com.mister.lacurvaleague.servicios.MisterService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +27,9 @@ import jakarta.servlet.http.HttpServletRequest;
 @ControllerAdvice
 @PropertySource("classpath:messages.properties")
 public class NavegacionControlador {
+
+    @Autowired
+    LlorometroService llorometroService;
     
     @Autowired
     MisterControlador misterControlador;
@@ -63,7 +66,6 @@ public class NavegacionControlador {
         redirectAttrs.addFlashAttribute("warning", "¡Ups! La sección de " + top + " está en mantenimiento. Estará lista pronto.");
         return "redirect:/inicio";
     }
-
 
     @GetMapping("/club/{nombreMisterURL}")
     public String verEquipo(@PathVariable String nombreMisterURL, Model model) {
@@ -107,5 +109,11 @@ public class NavegacionControlador {
     @GetMapping("/top/tarjetas")
     public String mostrarTarjetas() {
         return "tarjetas";
+    }
+
+    @GetMapping("/top/llorometro")
+    public String mostrarLloros(Model model) { 
+        model.addAttribute("listaJornadasLloros", llorometroService.getAllLlorosParaVista());
+        return "llorometro";
     }
 }

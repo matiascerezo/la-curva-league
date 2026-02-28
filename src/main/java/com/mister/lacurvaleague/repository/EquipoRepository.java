@@ -28,7 +28,6 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
                        "ORDER BY jornada_id DESC", nativeQuery = true)
         List<ClasificacionEquipoDTO> getClasificacionEquipo(Long misterId);
 
-
         @Query(value =  "SELECT equipo, golesTotalesEquipo, nombrePichichi AS pichichi, posicionPichichi AS posicion, golesPichichi, "+
 						"(golesTotalesEquipo * 1.0 / (SELECT MAX(numero_jornada) FROM jornada)) AS mediaGolesXJornada "+
 						"FROM ( "+

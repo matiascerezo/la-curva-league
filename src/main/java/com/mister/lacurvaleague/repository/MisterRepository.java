@@ -13,12 +13,10 @@ import com.mister.lacurvaleague.modelos.dto.dtoFronts.TarjetasDTO;
 @Repository
 public interface MisterRepository extends JpaRepository<Mister, Long> {
 
-    @Query(value = "SELECT m.id " +
-                "FROM MISTER m " + 
-                "WHERE m.NOMBRE_EQUIPO = :nombreEquipo", nativeQuery = true)
-    Long getMisterIdByNombreMister(String misterNombre);
+    @Query(value = "SELECT * FROM MISTER m WHERE m.NOMBRE_EQUIPO = :nombreEquipo", nativeQuery = true)
+    Mister getMisterByNombreEquipo(String nombreEquipo);
 
-    @Query(value = "SELECT * FROM MISTER m WHERE m.NOMBRE_MISTER = ?", nativeQuery = true)
+    @Query(value = "SELECT * FROM MISTER m WHERE m.NOMBRE_MISTER = :misterNombre", nativeQuery = true)
     Mister getMisterByNombreMister(String misterNombre);
 
     @Query(value = "SELECT m.* FROM MISTER m WHERE m.url_equipo = ?", nativeQuery = true)

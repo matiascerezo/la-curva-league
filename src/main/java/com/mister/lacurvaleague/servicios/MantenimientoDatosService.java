@@ -69,7 +69,7 @@ public class MantenimientoDatosService {
             
             JornadaDTO jornadaDTO = objectMapper.readValue(is, JornadaDTO.class);
             
-            if (!jornadaRepository.findByNumeroJornada(jornadaDTO.getNumeroJornada()).isPresent()) {
+            if (jornadaRepository.findByNumeroJornada(jornadaDTO.getNumeroJornada()) == null) {
                 Jornada jornada = insertarJornada(jornadaDTO);
                 for (EquipoDTO equipoDTO : jornadaDTO.getEquipos()) {
                     Equipo equipo = insertarEquipo(equipoDTO, jornada);

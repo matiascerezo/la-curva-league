@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mister.lacurvaleague.servicios.LlorometroService;
 import com.mister.lacurvaleague.servicios.MantenimientoDatosService;
+
 
 
 @RestController
@@ -19,6 +21,9 @@ public class MantenimientoControlador {
 
     @Autowired
     private MantenimientoDatosService mantenimientoService;
+
+    @Autowired
+    private LlorometroService llorometroService;
 
     @GetMapping("/cargarJornada/{numeroJornada}")
     public String cargarDatosJornada(@PathVariable int numeroJornada) {
@@ -41,6 +46,12 @@ public class MantenimientoControlador {
     public String cargarMisters() {
         return mantenimientoService.cargarMisters();
     }
+
+    @GetMapping("/cargarLloros")
+    public String cargarLlorometro() {
+        return llorometroService.procesarTodosLosLloros();
+    }
+    
     
     @GetMapping(value = "/cargarTodo")
     public ResponseEntity<Void> cargarTodo(){
@@ -50,6 +61,7 @@ public class MantenimientoControlador {
         reporte.append(cargarMisters()).append("\n");
         reporte.append(cargarDatosTodosLosJugadores()).append("\n");
         reporte.append(cargarDatosTodasLasJornadas()).append("\n");
+        reporte.append(cargarLlorometro()).append("\n");
         reporte.append("------------------------\n");
         reporte.append("Estado: ¡Todo ha ido bien!");
 

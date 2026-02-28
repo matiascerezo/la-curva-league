@@ -18,7 +18,7 @@ public class Mister {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long misterId;
     private String nombreEquipo;
     private String nombreMister;  
     private String urlEquipo;  

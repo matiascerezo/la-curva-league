@@ -8,5 +8,10 @@
     "name": "path.json_jornadas",
     "type": "java.lang.String",
     "description": "A description for 'path.json_jornadas'"
+  },
+  {
+    "name": "path.json_misters",
+    "type": "java.lang.String",
+    "description": "A description for 'path.json_misters'"
   }
 ]}

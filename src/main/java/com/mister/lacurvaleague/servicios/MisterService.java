@@ -32,7 +32,7 @@ public class MisterService {
     }
 
     public List<ClasificacionEquipoDTO> obtenerPuntosEquipoXJornadaByURL(String nombreMisterURL){
-        Long idMister = getMisterByURL(nombreMisterURL).stream().map(Mister::getId).findFirst().orElseThrow();
+        Long idMister = getMisterByURL(nombreMisterURL).stream().map(Mister::getMisterId).findFirst().orElseThrow();
         return equipoRepository.getClasificacionEquipo(idMister);
     }
 
@@ -41,7 +41,7 @@ public class MisterService {
     }
 
     public Long getIdEquipo(String nombreMister) {
-        return misterRepository.getMisterIdByNombreMister(nombreMister);
+        return misterRepository.getMisterByNombreEquipo(nombreMister).getMisterId();
     }
 
     public List<ClasificacionGeneralDTO> getClasificacionGeneral(){

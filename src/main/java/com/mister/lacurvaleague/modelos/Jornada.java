@@ -23,7 +23,7 @@ public class Jornada {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id; //Deberia coincidir con el numero de Jornada.
+    private long jornadaId; //Deberia coincidir con el numero de Jornada.
     private int numeroJornada;
     private Date fechaInicio;
     private Date fechaFin;

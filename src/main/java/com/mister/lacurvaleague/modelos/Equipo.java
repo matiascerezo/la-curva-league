@@ -24,7 +24,7 @@ public class Equipo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long equipoId;
     
     @ManyToOne
     @JoinColumn(name = "mister_id")

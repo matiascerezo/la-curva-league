@@ -1,0 +1,25 @@
+[
+  {
+    "numeroJornada": 1,
+    "equiposLloros": [
+      {
+        "nombreMister": "Los Hokages de Merlès",
+        "lloros": [
+          { "motivo": "Me han sacado una roja Djené" }
+        ]
+      },
+      {
+        "nombreMister": "Rayo Vaticano",
+        "lloros": [
+          { "motivo": "Me han sacado una roja Djené" }
+        ]
+      },
+      {
+        "nombreMister": "Maylova FC",
+        "lloros": [
+          { "motivo": "Le han marcado los jugadores de Rayo y a mi no." }
+        ]
+      }
+    ]
+  }
+]

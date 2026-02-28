@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Llorómetro - La Curva League</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos-tops.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos-equipos.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos-tarjetas.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos-llorometro.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script th:src="@{/js/burbuja-tablas.js}" defer></script>
+</head>
+<body>
+    <nav th:replace="~{fragments/navbar :: nav}"></nav>
+    <div class="main-container full-width">
+        <h1 class="titulo-pagina-lloro">Llorómetro Fantasy😭</h1>
+
+        <div class="contenedor-burbujas">
+            <button th:each="j : ${listaJornadasLloros}" 
+                    class="burbuja-jornada" 
+                    th:text="'J' + ${j.numeroJornada}"
+                    th:onclick="'filtrarLloros(' + ${j.numeroJornada} + ')'">
+            </button>
+        </div>
+
+        <div class="table-wrapper">
+            
+            <div th:each="j : ${listaJornadasLloros}" 
+                 th:id="'jornada-bloque-' + ${j.numeroJornada}" 
+                 class="bloque-jornada">
+                
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th class="col-mister">Mister</th>
+                            <th class="col-motivos">Motivos del lloro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="equipo : ${j.equiposLloros}">
+                            <td class="mister-nombre">
+                                <span th:text="${equipo.nombreMister}">Nombre</span>
+                            </td>
+                            <td>
+                                <ul class="lista-lloros">
+                                    <li th:each="l : ${equipo.lloros}" th:text="${l.motivo}"></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<nav th:replace="~{fragments/footer :: footer}"></nav>
+</body>
+</html>
