@@ -1,23 +1,25 @@
 [
   {
-    "numeroJornada": 1,
+    "numeroJornada": 25,
     "equiposLloros": [
       {
         "nombreMister": "Los Hokages de Merlès",
         "lloros": [
-          { "motivo": "Me han sacado una roja Djené" }
+          { "motivo": "'Enfin, una vez que lo pongo y roja' (expulsan a Djené)" },
+		  { "motivo": "'Luego dirá que no tiene suerte' (De jong hace un 10 en Sofascore)" },
+		  { "motivo": "'He sentado al calvo y marca, enfin' (Gol de Isi Palazón)" }
         ]
       },
       {
         "nombreMister": "Rayo Vaticano",
         "lloros": [
-          { "motivo": "Me han sacado una roja Djené" }
+          { "motivo": "'Tiene mérito que le marque un centrocampista en el peor partido de la liga' (Fénix puso a Show)" }
         ]
       },
       {
-        "nombreMister": "Maylova FC",
+        "nombreMister": "Fénix del mar",
         "lloros": [
-          { "motivo": "Le han marcado los jugadores de Rayo y a mi no." }
+          { "motivo": "'Es flipante, mi suerte se acabó - Me voy a marcar un hokage, volveré'" }
         ]
       }
     ]

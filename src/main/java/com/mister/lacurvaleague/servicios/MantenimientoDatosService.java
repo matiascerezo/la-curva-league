@@ -288,7 +288,6 @@ public class MantenimientoDatosService {
      * Cargar todos los misters
      *
      */
-    @Transactional
     public String cargarMisters() {
 
         try {

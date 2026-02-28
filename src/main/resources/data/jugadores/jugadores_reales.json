@@ -69,6 +69,7 @@
   { "nombreCortoJugador": "U.López", "nombreJugador": "Unai López", "posicion": "Centrocampista" },
   { "nombreCortoJugador": "Y.Asprilla", "nombreJugador": "Yáser Asprilla", "posicion": "Centrocampista" },
   { "nombreCortoJugador": "Y.Herrera", "nombreJugador": "Yangel Herrera", "posicion": "Centrocampista" },
+  { "nombreCortoJugador": "D.Sow", "nombreJugador": "Djibril Sow", "posicion": "Centrocampista" },
 
   { "nombreCortoJugador": "V.Júnior", "nombreJugador": "Vinícius Júnior", "posicion": "Delantero" },
   { "nombreCortoJugador": "K.Mbappé", "nombreJugador": "Kylian Mbappé", "posicion": "Delantero" },
@@ -100,5 +101,8 @@
   { "nombreCortoJugador": "Á.Rodríguez", "nombreJugador": "Álvaro Rodríguez", "posicion": "Delantero" },
   { "nombreCortoJugador": "C.Vicente", "nombreJugador": "Carlos Vicente Robles", "posicion": "Delantero" },
   { "nombreCortoJugador": "Raphinha", "nombreJugador": "Raphinha", "posicion": "Delantero" },
+  { "nombreCortoJugador": "A.Budimir", "nombreJugador": "Ante Budimir", "posicion": "Delantero" },
+  { "nombreCortoJugador": "L.Boyé", "nombreJugador": "Lucas Boyé", "posicion": "Delantero" },
+  { "nombreCortoJugador": "A.Sørloth", "nombreJugador": "Alexander Sørloth", "posicion": "Delantero" },
   { "nombreCortoJugador": "I.Romero", "nombreJugador": "Iván Romero", "posicion": "Delantero" }
 ]

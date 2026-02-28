@@ -5,7 +5,7 @@
     margin: auto;
 }
 
-.titulo-pagina-lloro { text-align: center; color: #1a237e; }
+.titulo-pagina-lloro { text-align: center; color: #1a237e; letter-spacing: 0px; }
 
 .mister-nombre {font-weight: bold;}
 .styled-table tr{

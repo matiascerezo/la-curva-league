@@ -5,7 +5,7 @@ import lombok.Value;
 @Value
 public class ClasificacionEquipoDTO {
 
-    Long jornadaId;
+    int numeroJornada;
     int puntosJornada;
     int posicionJornada;
     String nombreEquipo;
