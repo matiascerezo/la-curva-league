@@ -27,7 +27,7 @@ public interface MisterRepository extends JpaRepository<Mister, Long> {
                     "JOIN EQUIPO E ON M.MISTER_ID = E.MISTER_ID "+
                     "JOIN JUGADOR J ON E.equipo_id = J.EQUIPO_ID "+
                     "GROUP BY M.NOMBRE_EQUIPO "+
-                    "ORDER BY NOMBRE_EQUIPO DESC", nativeQuery = true)
+                    "ORDER BY totalTarjetas DESC", nativeQuery = true)
     List<TarjetasDTO> getTarjetasTotales();
 
 }

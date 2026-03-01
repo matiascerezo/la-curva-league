@@ -11,6 +11,8 @@
     </div>
     <div class="nav-scroll-container">
         <ul class="nav-list-tops">
+            <li class="nav-item"><a th:href="@{/top/asistentes}" th:classappend="${seccionActual.contains('/top/asistentes')} ? 'activo' : ''"
+                                    th:text="#{ranking.asistentes}">Goleadores</a></li>
             <li class="nav-item"><a th:href="@{/top/goleadores}" th:classappend="${seccionActual.contains('/top/goleadores')} ? 'activo' : ''"
                                     th:text="#{ranking.goleadores}">Goleadores</a></li>
             <li class="nav-item"><a th:href="@{/top/llorometro}" th:classappend="${seccionActual.contains('/top/llorometro')} ? 'activo' : ''"

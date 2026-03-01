@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +21,21 @@ import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.Jornada;
 import com.mister.lacurvaleague.modelos.Jugador;
 import com.mister.lacurvaleague.modelos.JugadorReal;
+import com.mister.lacurvaleague.modelos.Llorometro;
 import com.mister.lacurvaleague.modelos.dto.EquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.JornadaDTO;
 import com.mister.lacurvaleague.modelos.dto.JugadorDTO;
 import com.mister.lacurvaleague.modelos.dto.JugadorRealDTO;
+import com.mister.lacurvaleague.modelos.dto.LlorometroDTO;
 import com.mister.lacurvaleague.modelos.dto.MisterDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.LloroDetalleDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.MisterLlorosDTO;
 import com.mister.lacurvaleague.repository.EquipoRepository;
 import com.mister.lacurvaleague.repository.JornadaRepository;
 import com.mister.lacurvaleague.repository.JugadorRealRepository;
 import com.mister.lacurvaleague.repository.JugadorRepository;
+import com.mister.lacurvaleague.repository.LlorometroRepository;
 import com.mister.lacurvaleague.repository.MisterRepository;
-
-import jakarta.transaction.Transactional;
 
 @Service
 public class MantenimientoDatosService {
@@ -56,9 +61,10 @@ public class MantenimientoDatosService {
     private EquipoRepository equipoRepository;
     @Autowired
     private JornadaRepository jornadaRepository;
-
     @Autowired
     private MisterRepository misterRepository;
+    @Autowired
+    private LlorometroRepository llorometroRepository;
 
     /**
      * Método que lee el fichero .json de la jornada recibida por parámetro.
@@ -296,19 +302,76 @@ public class MantenimientoDatosService {
             InputStream is = getClass().getClassLoader().getResourceAsStream(rutaPathFichero);
             List<MisterDTO> misterDTOs = objectMapper.readValue(is, new TypeReference<List<MisterDTO>>() {});
 
+            //Busco los misters ya en BBDD
+            Set<String> mistersBBDD = misterRepository.findAll()
+                .stream()
+                .map(Mister::getNombreMister)
+                .collect(Collectors.toSet());
+
+            List<Mister> listaMistersOK = new ArrayList<>();
             for (MisterDTO misterDTO : misterDTOs) {
-                if(misterRepository.getMisterByNombreMister(misterDTO.getNombreMister()) == null){
+                if(!mistersBBDD.contains(misterDTO.getNombreEquipo())){
                     Mister m = new Mister();
                     m.setNombreEquipo(misterDTO.getNombreEquipo());
                     m.setNombreMister(misterDTO.getNombreMister());
                     m.setUrlEquipo(misterDTO.getUrlEquipo());
-                    misterRepository.save(m);
+                    listaMistersOK.add(m);
                 }
             }
+            //Guardo de una vez todos los misters.
+            misterRepository.saveAll(listaMistersOK);
+                    return "Misters cargados: " + listaMistersOK.size();
         } catch (IOException e) {
             return "Error al cargar los misters.";
         }
-        return "Misters cargados.";
+    }
+
+    public String procesarTodosLosLloros() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            // Leemos el archivo y lo convertimos en una lista de nuestras jornadas
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/lloros/lloros.json");
+            List<LlorometroDTO> listLlorometroDTOs = mapper.readValue(inputStream, new TypeReference<List<LlorometroDTO>>(){});
+            //Busco todos los motivos en la BBDD para después evitar duplicados.
+            Set<String> motivosExistentes = llorometroRepository.findAllMotivos();
+            List<Llorometro> listaLloromentro = new ArrayList<>();
+
+            //Busco todas las jornadas para comprobar si existe la jornada leída del JSON (máximo habrá 38, debería ser rápido).
+            Map<Integer,Jornada> jornadas = jornadaRepository.findAll()
+                            .stream()
+                            .collect(Collectors.toMap(Jornada::getNumeroJornada, j -> j));
+            
+            //Recupero todos los misters.
+            Map<String, Mister> misters = misterRepository.findAll()
+            .stream().collect(Collectors.toMap(Mister::getNombreEquipo, m -> m));
+
+            for (LlorometroDTO lloroDTO : listLlorometroDTOs) {
+                Jornada jornada = jornadas.get(lloroDTO.getNumeroJornada());
+                if(jornada != null){
+                    for(MisterLlorosDTO equipoLloroDTO : lloroDTO.getEquiposLloros()){
+                        Mister mister = misters.get(equipoLloroDTO.getNombreMister());
+                        if(mister != null){
+                            for(LloroDetalleDTO lloroDetalleDTO : equipoLloroDTO.getLloros()) {
+                                if(!motivosExistentes.contains(lloroDetalleDTO.getMotivo())){
+                                    Llorometro lloro = new Llorometro();
+                                    lloro.setJornada(jornada);
+                                    lloro.setMister(mister);
+                                    lloro.setMotivo(lloroDetalleDTO.getMotivo());
+                                    listaLloromentro.add(lloro);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (!listaLloromentro.isEmpty()) {
+                llorometroRepository.saveAll(listaLloromentro);
+            } 
+            return "Lloros procesados: " + listaLloromentro.size();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error al insertar lloros.";
+        }     
     }
 
 }

@@ -1,5 +1,6 @@
 package com.mister.lacurvaleague.repository;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +20,8 @@ public interface LlorometroRepository extends JpaRepository<Llorometro, Long> {
 
     @Query(value = "SELECT l FROM LLOROMETRO l where l.mister_id = :misterId", nativeQuery = true)
     List<LlorometroDTO> getLlorosTotales();
+
+    @Query(value = "SELECT l.motivo FROM LLOROMETRO l", nativeQuery = true)
+    Set<String> findAllMotivos();
 
 }

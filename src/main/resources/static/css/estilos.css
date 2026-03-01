@@ -67,7 +67,7 @@ h1 {
 }
 
 .tabla-clasificacion tbody tr:first-child td:first-child::before {
-    content: "🥇";
+    content: "🏆";
 }
 
 /* EL SEGUNDO (PLATA) */

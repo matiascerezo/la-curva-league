@@ -93,7 +93,7 @@
 
 /* Contenedor con scroll vertical */
 .tabla-puntos-equipo-scroll {
-    max-height: 320px;    /* Altura para ver unas 5-6 filas aprox */
+    max-height: 500px;    /* Altura para ver unas 5-6 filas aprox */
     overflow-y: auto;
     border: 1px solid #eee;
     border-radius: 8px;

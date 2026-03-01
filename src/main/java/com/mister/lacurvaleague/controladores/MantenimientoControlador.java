@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mister.lacurvaleague.servicios.LlorometroService;
 import com.mister.lacurvaleague.servicios.MantenimientoDatosService;
 
 
@@ -21,9 +20,6 @@ public class MantenimientoControlador {
 
     @Autowired
     private MantenimientoDatosService mantenimientoService;
-
-    @Autowired
-    private LlorometroService llorometroService;
 
     @GetMapping("/cargarJornada/{numeroJornada}")
     public String cargarDatosJornada(@PathVariable int numeroJornada) {
@@ -49,7 +45,7 @@ public class MantenimientoControlador {
 
     @GetMapping("/cargarLloros")
     public String cargarLlorometro() {
-        return llorometroService.procesarTodosLosLloros();
+        return mantenimientoService.procesarTodosLosLloros();
     }
     
     
