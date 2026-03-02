@@ -33,10 +33,10 @@ public class LlorometroService {
     }
 
     public List<LlorometroDTO> getAllLlorosParaVista() {
-        List<Llorometro> entidades = llorometroRepository.findAll();
+        List<Llorometro> lloros = llorometroRepository.findAll();
 
         // 2. Agrupamos por número de jornada
-        Map<Integer, List<Llorometro>> porJornada = entidades.stream()
+        Map<Integer, List<Llorometro>> porJornada = lloros.stream()
             .collect(Collectors.groupingBy(l -> l.getJornada().getNumeroJornada()));
 
         List<LlorometroDTO> listaFinal = new ArrayList<>();

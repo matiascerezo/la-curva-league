@@ -9,7 +9,7 @@
     <link rel="stylesheet" th:href="@{/css/estilos-tarjetas.css}">
     <link rel="stylesheet" th:href="@{/css/estilos-llorometro.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script th:src="@{/js/burbuja-tablas.js}" defer></script>
+    <script th:src="@{/js/burbuja-lloros.js}" defer></script>
 </head>
 <body>
     <nav th:replace="~{fragments/navbar :: nav}"></nav>
@@ -20,7 +20,7 @@
             <button th:each="j : ${listaJornadasLloros}" 
                     class="burbuja-jornada" 
                     th:text="'J' + ${j.numeroJornada}"
-                    th:onclick="'filtrarLloros(' + ${j.numeroJornada} + ')'">
+                    th:onclick="|filtrarLloros(${j.numeroJornada}, this)|">
             </button>
         </div>
 

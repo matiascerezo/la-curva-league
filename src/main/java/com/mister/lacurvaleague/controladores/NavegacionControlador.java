@@ -90,14 +90,20 @@ public class NavegacionControlador {
     }
 
     @ModelAttribute("jornadaActual")
-    public String getJornadaActual() {
-        String jornada = misterControlador.getJornadaActual();
-        return jornada != null ? jornada : "0";
+    public int getJornadaActual() {
+        String jornada = misterService.getJornadaActual();
+        return jornada != null ? Integer.valueOf(jornada) : 0;
     }
 
     @ModelAttribute("seccionActual")
     public String getPantallaActual(HttpServletRequest request) {
         return request.getRequestURI();
+    }
+
+    @GetMapping("/top/asistentes")
+    public String getAsistenciasYAsistentesXEquipo(Model model) {
+        model.addAttribute("listaAsistentes", misterService.getAsistenciasYAsistentesXEquipo());
+        return "asistentes";
     }
 
     @GetMapping("/top/goleadores")

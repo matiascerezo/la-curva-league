@@ -8,16 +8,28 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script th:src="@{/js/colorutils.js}"></script>
+    <script th:src="@{/js/burbuja-equipos.js}" defer></script>
     <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
 </head>
 <body>
     <nav class="navbar" th:replace="~{fragments/navbar :: nav}"></nav>
+    
     <div class="main-container">
-        <h1 class=h1-equipo th:text="${nombreEquipo}">Mister</h1>
+        <h1 class="h1-equipo" th:text="${nombreEquipo}">Mister</h1>
+        <div class="contenedor-filtros-jornada">
+            <button class="burbuja-jornada" onclick="filtrarPorRango(1, 38, this)">Todo</button>
+            
+            <th:block th:each="i : ${#numbers.sequence(1, 38, 9)}">
+                <button class="burbuja-jornada"
+                        th:with="fin=${(i + 8 > 38) ? 38 : i + 8}"
+                        th:classappend="${jornadaActual >= i && jornadaActual <= fin} ? 'active' : ''"
+                        th:onclick="|filtrarPorRango(${i}, ${fin}, this)|"
+                        th:text="|J${i}-J${fin}|">
+                </button>
+            </th:block>
+        </div>
 
         <div class="split-container">
-            
-            <!-- <div class="table-column"> -->
             <div class="tabla-puntos-equipo-scroll">
                 <div class="table-wrapper">
                     <table class="styled-table">
@@ -29,14 +41,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="e : ${puntosEquipoJornadas}">
+                            <tr th:each="e : ${puntosEquipoJornadas}" 
+                                th:id="|jornada-bloque-${e.numeroJornada}|" 
+                                class="bloque-jornada">
                                 <td th:text="|J${e.numeroJornada}|" style="font-weight: bold; color: #1a237e;"></td> 
                                 <td th:text="${e.puntosJornada} + ' pts'"></td>
                                 <td th:text="${e.posicionJornada == 1 ? '🏆' : 
                                                e.posicionJornada == 2 ? '🥈' : 
                                                e.posicionJornada == 3 ? '🥉' : 
                                                e.posicionJornada}">
-                                    </td>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -48,14 +62,12 @@
                     <canvas id="smoothChart"></canvas>
                 </div>
             </div>
-
         </div>
     </div>
 
 <script th:inline="javascript">
+    // --- LÓGICA DEL GRÁFICO ---
     const ctx = document.getElementById('smoothChart').getContext('2d');
-    
-    // Extraemos datos del modelo
     const rawData = /*[[${puntosEquipoJornadasGrafica}]]*/ [];
     const labels = rawData.map(d => 'J' + d.numeroJornada);
     const points = rawData.map(d => d.puntosJornada);
@@ -64,12 +76,11 @@
     const colorConTransparencia = hexaToRGBA(colorEquipoHex, 0.4);
     document.querySelector('.h1-equipo').style.color = colorEquipoHex;
 
-    // Creamos un degradado para el fondo
     const gradient = ctx.createLinearGradient(0, 0, 0, 800);
     gradient.addColorStop(0, colorConTransparencia);
     gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
-    new Chart(ctx, {
+    const myChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
@@ -92,16 +103,15 @@
             plugins: {
                 tooltip: {
                     enabled: true,
-                    displayColors: false, // Quita el cuadradito de color
-                    backgroundColor: 'white', // Hace el cuadrado invisible
-                    titleColor: colorEquipoHex, // Color lila para el título (Jornada X)
-                    bodyColor: '#1a237e',  // Color azul oscuro para el valor (Puntos: X)
+                    displayColors: false,
+                    backgroundColor: 'white',
+                    titleColor: colorEquipoHex,
+                    bodyColor: '#1a237e',
                     titleFont: { size: 14, weight: 'bold' },
                     bodyFont: { size: 12, weight: 'bold' },
-                    caretSize: 0,          // Quita la flechita del cuadro
-                    caretPadding: 10,      // Separación del punto
+                    caretSize: 0,
+                    caretPadding: 10,
                     callbacks: {
-                        // Personalizamos el texto para que quede limpio
                         label: function(context) {
                             return 'Puntos: ' + context.parsed.y;
                         }
@@ -121,6 +131,7 @@
         }
     });
 </script>
-</body>
+
 <nav th:replace="~{fragments/footer :: footer}"></nav>
+</body>
 </html>

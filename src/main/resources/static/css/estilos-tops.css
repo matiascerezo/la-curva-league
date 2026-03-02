@@ -68,11 +68,22 @@
     padding-left: 80px;
 }
 
+.columnaCorta {
+    display: none;
+}
+
 
 @media (max-width: 600px) {
     .col-media {
         display: none;
     }
+    .col-media-asis, .columnaLarga{
+        display: none;
+    }
+    .columnaCorta {
+        display: table-cell !important;
+    }
+
     .styled-table {
         font-size: 0.85rem;  /* Reduce ligeramente la fuente en general */
     }
@@ -82,19 +93,4 @@
     .styled-table td:nth-child(4) {
         padding-left: 15px;
     }
-
-    .tituloPichichi { display: none; }
-    .tituloGolesTotales { display: none; }
-    /* Mostramos los cortos (CORREGIDO: uso de coma) */
-    .tituloCortoPichichi, 
-    .tituloGolesTotalesCorto { 
-        display: table-cell !important; /* table-cell es mejor que inline para <th> */
-        font-size: 1.1rem;
-        vertical-align: middle;
-        text-align: center;
-    }
-
 }
-
-.tituloCortoPichichi { display: none; }
-.tituloGolesTotalesCorto { display: none; }

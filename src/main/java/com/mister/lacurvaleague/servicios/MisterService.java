@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.mister.lacurvaleague.modelos.Equipo;
 import com.mister.lacurvaleague.modelos.Mister;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.AsistenciaDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.GoleadorDTO;
@@ -70,5 +71,9 @@ public class MisterService {
 
     public List<GoleadorDTO> getGolesYGoleadoresXEquipo(){
         return equipoRepository.getGolesYGoleadoresXEquipo();
+    }
+
+    public List<AsistenciaDTO> getAsistenciasYAsistentesXEquipo(){
+        return equipoRepository.getAsistenciasYAsistentesXEquipo();
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.mister.lacurvaleague.modelos.Equipo;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.AsistenciaDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.GoleadorDTO;
@@ -45,4 +46,21 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
 							"WHERE ranking = 1 "+ 
 							"ORDER BY golesTotalesEquipo DESC", nativeQuery = true)
         List<GoleadorDTO> getGolesYGoleadoresXEquipo();
+
+        @Query(value =  "SELECT equipo, asistenciasTotalesEquipo, maxAsistente, posicion, asistencias, "+
+						"(asistenciasTotalesEquipo * 1.0 / (SELECT MAX(jornada_id) FROM jornada)) AS mediaAsistenciasXJornada  "+
+						"FROM (  "+
+								"SELECT m.nombre_equipo AS equipo, j.nombre AS maxAsistente, "+
+									"j.posicion, j.asistencias, "+
+								"SUM(j.asistencias) OVER (PARTITION BY m.nombre_equipo) AS asistenciasTotalesEquipo, "+
+								"ROW_NUMBER() OVER (PARTITION BY m.nombre_equipo "+
+                                                        "ORDER BY j.asistencias DESC, j.nombre ASC "+
+                                                        ") as ranking "+
+								"FROM jugador j "+
+								"JOIN equipo e ON j.equipo_id = e.equipo_id "+
+								"JOIN mister m ON e.mister_id = m.MISTER_ID "+
+							") AS subq "+
+							"WHERE ranking = 1 "+
+							"ORDER BY asistenciasTotalesEquipo DESC", nativeQuery = true)
+        List<AsistenciaDTO> getAsistenciasYAsistentesXEquipo();
 }

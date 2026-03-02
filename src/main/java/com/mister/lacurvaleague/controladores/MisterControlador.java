@@ -28,10 +28,6 @@ public class MisterControlador {
     private JornadaRepository jornadaRepository;
     @Autowired
     private EquipoRepository equipoRepository;
-
-    public String getJornadaActual() {
-        return misterService.getJornadaActual();
-    }
     
 
     @GetMapping("/tablaPuntos")

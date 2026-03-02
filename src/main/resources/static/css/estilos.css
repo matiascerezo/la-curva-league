@@ -28,7 +28,7 @@ h1 {
 /* Estilo de la Tabla */
 .tabla-clasificacion {
     width: 95%; /* Ocupa casi todo el ancho */
-    max-width: 1400px; /* Pero con un límite para que no se deforme en monitores 4K */
+    max-width: 1200px; /* Pero con un límite para que no se deforme en monitores 4K */
     background-color: #fff;
     border-collapse: collapse;
     border-radius: 12px;

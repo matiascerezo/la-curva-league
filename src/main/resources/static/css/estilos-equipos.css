@@ -8,7 +8,7 @@
 
 .main-container.full-width {
     width: 100%; /* Ocupamos todo el ancho teórico */
-    max-width: 1600px;
+    max-width: 1200px;
     margin: 80px auto 40px;
     padding: 0 15px; /* Esto crea el margen real a izquierda y derecha */
     box-sizing: border-box; /* Fundamental para que el padding no ensanche la web */
@@ -122,6 +122,40 @@
 
 .tabla-puntos-equipo-scroll::-webkit-scrollbar-track {
     background: #f9f9f9;
+}
+
+/* Estilos para las burbujas de filtrado */
+.contenedor-filtros-jornada {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 20px 0;
+    justify-content: center;
+    scrollbar-width: none; /* Oculta scroll en Firefox */
+}
+.contenedor-filtros-jornada::-webkit-scrollbar {
+    display: none; /* Oculta scroll en Chrome/Safari */
+}
+.burbuja-jornada {
+    background-color: #f8f9fa;
+    border: 2px solid #1a237e;
+    color: #1a237e;
+    border-radius: 25px;
+    padding: 8px 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    font-size: 0.9rem;
+}
+.burbuja-jornada:hover {
+    background-color: #e8eaf6;
+    transform: translateY(-2px);
+}
+.burbuja-jornada.active {
+    background-color: #1a237e;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 
