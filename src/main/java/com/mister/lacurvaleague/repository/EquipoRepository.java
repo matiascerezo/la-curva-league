@@ -25,7 +25,7 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
                        "FROM EQUIPO e "+
                        "join mister m on m.MISTER_ID = e.mister_id " +
                        "join jornada j on j.jornada_id = e.jornada_id " +
-                       "where e.mister_id = ? " +
+                       "where e.mister_id = :misterId " +
                        "ORDER BY j.numero_jornada DESC", nativeQuery = true)
         List<ClasificacionEquipoDTO> getClasificacionEquipo(Long misterId);
 
