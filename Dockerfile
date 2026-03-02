@@ -1,14 +1,7 @@
-
-FROM maven:3.9.6-eclipse-temurin-21 AS build
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY pom.xml .
-RUN mvn dependency:go-offline -B
-
-COPY src ./src
-RUN mvn clean package -DskipTests -B
-
-FROM eclipse-temurin:21-jdk-alpine
-WORKDIR /app
+# El wildcard *.jar puede ser lento si hay varios archivos, mejor sé específico
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Usa esta sintaxis para que el shell expanda las variables de entorno
+ENTRYPOINT java -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE} -jar app.jar
