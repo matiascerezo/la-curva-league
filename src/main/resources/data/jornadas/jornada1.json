@@ -12,14 +12,14 @@
 			{"nombre": "H.Duro", "puntos": 3},
 			{"nombre": "J.Guridi", "puntos": 3},
 			{"nombre": "Y.Asprilla", "puntos": 2},
-			{"nombre": "A.Guler", "puntos": 4},
+			{"nombre": "A.Güler", "puntos": 4},
 			{"nombre": "L.Sucic", "puntos": 0, "partidoJugado":false},
 			{"nombre": "Y.Herrera", "puntos": 3},
 			{"nombre": "J.Areso", "puntos": 4},
 			{"nombre": "R.Martin", "puntos": 4},
 			{"nombre": "C.Tárrega", "puntos": 4},
 			{"nombre": "J.Martin", "puntos": 0, "partidoJugado":false},
-			{"nombre": "J.Aguirrezabala", "puntos": 4}
+			{"nombre": "J.Agirrezabala", "puntos": 4}
 		]
     },
 	{
@@ -55,7 +55,7 @@
 			{"nombre": "J.Moncayola", "puntos": 3},
 			{"nombre": "B.Zaragoza", "puntos": 2},
 			{"nombre": "Á.Carreras", "puntos": 4},
-			{"nombre": "É.Militao", "puntos": 5},
+			{"nombre": "É.Militão", "puntos": 5},
 			{"nombre": "D.Rico", "puntos": 6},
 			{"nombre": "L.Júnior", "puntos": 6, "amarillas": 1}
 		]

@@ -12,7 +12,7 @@
 			{"nombre": "H.Duro", "puntos": 1},
 			{"nombre": "F.Torres", "puntos": 10, "goles": 1},
 			{"nombre": "E.Expósito", "puntos": 4},
-			{"nombre": "A.Guler", "puntos": 5,"asistencias":1},
+			{"nombre": "A.Güler", "puntos": 5,"asistencias":1},
 			{"nombre": "P.Ciss", "puntos": 6},
 			{"nombre": "L.Agoumé", "puntos": 3},
 			{"nombre": "T.Lemar", "puntos": 1},
@@ -55,7 +55,7 @@
 			{ "nombre": "J.Moncayola", "puntos": 6 },
 			{ "nombre": "S.Altimira", "puntos": 7 },
 			{ "nombre": "A.Paredes", "puntos": 4 },
-			{ "nombre": "É.Militao", "puntos": 0, "partidoJugado": false },
+			{ "nombre": "É.Militão", "puntos": 0, "partidoJugado": false },
 			{ "nombre": "D.Rico", "puntos": 5 },
 			{ "nombre": "L.Júnior", "puntos": 3 }
 		]

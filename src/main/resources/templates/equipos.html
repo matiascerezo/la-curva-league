@@ -19,9 +19,9 @@
         <div class="contenedor-filtros-jornada">
             <button class="burbuja-jornada" onclick="filtrarPorRango(1, 38, this)">Todo</button>
             
-            <th:block th:each="i : ${#numbers.sequence(1, 38, 9)}">
+            <th:block th:each="i : ${#numbers.sequence(1, 38, 8)}">
                 <button class="burbuja-jornada"
-                        th:with="fin=${(i + 8 > 38) ? 38 : i + 8}"
+                        th:with="fin=${(i + 7 > 38) ? 38 : i + 7}"
                         th:classappend="${jornadaActual >= i && jornadaActual <= fin} ? 'active' : ''"
                         th:onclick="|filtrarPorRango(${i}, ${fin}, this)|"
                         th:text="|J${i}-J${fin}|">
@@ -67,8 +67,9 @@
 
 <script th:inline="javascript">
     // --- LÓGICA DEL GRÁFICO ---
+    window.myChart = null;
     const ctx = document.getElementById('smoothChart').getContext('2d');
-    const rawData = /*[[${puntosEquipoJornadasGrafica}]]*/ [];
+    window.rawData = /*[[${puntosEquipoJornadasGrafica}]]*/ [];
     const labels = rawData.map(d => 'J' + d.numeroJornada);
     const points = rawData.map(d => d.puntosJornada);
 
@@ -80,7 +81,7 @@
     gradient.addColorStop(0, colorConTransparencia);
     gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
-    const myChart = new Chart(ctx, {
+    window.myChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
@@ -122,6 +123,7 @@
             scales: {
                 y: {
                     beginAtZero: true,
+                    suggestedMax: 60,
                     grid: { drawBorder: false, color: '#f0f0f0' }
                 },
                 x: {
