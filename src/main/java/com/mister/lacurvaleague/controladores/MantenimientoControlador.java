@@ -50,7 +50,7 @@ public class MantenimientoControlador {
     
     
     @GetMapping(value = "/cargarTodo")
-    public String cargarTodo(){
+    public ResponseEntity<Void> cargarTodo(){
         long inicio = System.currentTimeMillis();
         StringBuilder reporte = new StringBuilder();
         reporte.append("--- INFORME DE CARGA ---\n");
@@ -64,9 +64,9 @@ public class MantenimientoControlador {
         reporte.append("Estado: ¡Todo ha ido bien!");
 
        System.out.println(reporte.toString());
-       return reporte.toString();
-       /* return ResponseEntity.status(HttpStatus.FOUND)
+
+       return ResponseEntity.status(HttpStatus.FOUND)
             .location(URI.create("/inicio"))
-            .build(); */
+            .build();
     }
 }

@@ -1,7 +1,7 @@
 {
   "numeroJornada": 4,
   "fechaInicio": "2025-09-12",
-  "fechaFin": "2025-09-14",
+  "fechaFin": "2025-09-15",
   "equipos": [
     {
       "nombreEquipo": "Los Hokages de Merlès",
@@ -57,7 +57,7 @@
         { "nombre": "A.Paredes", "puntos": 3,"amarillas":1 },
         { "nombre": "D.Affengruber", "puntos": 5 },
         { "nombre": "É.Militão", "puntos": 7 },
-        { "nombre": "J.García", "puntos": 6 }
+        { "nombre": "J.Garcia", "puntos": 6 }
       ]
     },
     {

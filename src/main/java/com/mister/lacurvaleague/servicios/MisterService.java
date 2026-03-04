@@ -33,11 +33,11 @@ public class MisterService {
     }
 
     public List<ClasificacionEquipoDTO> obtenerPuntosEquipoXJornadaByURL(String nombreMisterURL){
-        Long idMister = getMisterByURL(nombreMisterURL).stream().map(Mister::getMisterId).findFirst().orElseThrow();
+        Long idMister = getMisterByURL(nombreMisterURL).getMisterId();
         return equipoRepository.getClasificacionEquipo(idMister);
     }
 
-    public Optional<Mister> getMisterByURL(String nombreMisterURL){
+    public Mister getMisterByURL(String nombreMisterURL){
         return misterRepository.findByNombreEquipo(nombreMisterURL);
     }
 
@@ -62,11 +62,7 @@ public class MisterService {
     }
 
     public String getNombreEquipoByURL(String nombreEquipoURL) {
-        return misterRepository.findByNombreEquipo(nombreEquipoURL)
-                                .stream()
-                                .map(m -> m.getNombreEquipo())
-                                .findFirst()
-                                .orElse(null);
+        return misterRepository.findByNombreEquipo(nombreEquipoURL).getNombreEquipo();
     }
 
     public List<GoleadorDTO> getGolesYGoleadoresXEquipo(){
@@ -75,5 +71,9 @@ public class MisterService {
 
     public List<AsistenciaDTO> getAsistenciasYAsistentesXEquipo(){
         return equipoRepository.getAsistenciasYAsistentesXEquipo();
+    }
+
+    public String getImgEquipo(String nombreMisterURL){
+        return getMisterByURL(nombreMisterURL).getImgEquipo();
     }
 }

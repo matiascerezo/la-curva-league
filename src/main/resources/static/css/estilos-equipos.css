@@ -1,17 +1,32 @@
 .h1-equipo {
-    margin-top: 80px;
+    margin-top: 90px;
     color: #000000;
-    margin-bottom: 25px;
-    text-transform: uppercase;
+    margin-bottom: 10px;
 }
 
+.header-equipo-container {
+    display: flex;
+    align-items: center; /* Centra verticalmente el logo con el texto */
+    gap: 15px;           /* Espacio entre el logo y el nombre */
+    margin-bottom: 20px;
+}
 
-.main-container.full-width {
+.main-container-equipos.full-width {
     width: 100%; /* Ocupamos todo el ancho teórico */
     max-width: 1200px;
     margin: 80px auto 40px;
     padding: 0 15px; /* Esto crea el margen real a izquierda y derecha */
     box-sizing: border-box; /* Fundamental para que el padding no ensanche la web */
+}
+
+
+    /* El contenido principal sí lleva márgenes laterales */
+.main-container-equipos , .split-container {
+    flex: 1; /* Empuja el footer al final */
+    width: 90%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0px;
 }
 
 /* Proporciones: la tabla ocupa 1 parte y la gráfica 2 partes */
@@ -42,7 +57,7 @@
     border-collapse: collapse;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); 
 }
 
 .styled-table th {
@@ -65,6 +80,34 @@
     width: 100%;
 }
 
+.bloque-escudo-nombre {
+    display: flex;
+    align-items: center;    /* Centrado vertical perfecto entre imagen y texto */
+    gap: 20px;   
+    margin-top: 100px;           /* Espacio de separación entre escudo y nombre */
+    margin-bottom: 5px;    /* Espacio con los botones de jornadas de abajo */
+    padding-left: 10px;     /* Pequeño margen desde el borde de la pantalla */
+}
+
+/* Estilos para el escudo del equipo */
+.bloque-escudo-nombre img {
+    width: 80px;
+    height: 80px;
+    border-radius: 46%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.bloque-escudo-nombre .h1-equipo {
+    margin: 0;
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+}
+
 /* --- ESTO ES LO QUE ARREGLA EL MÓVIL --- */
 @media (max-width: 992px) {
     .split-container {
@@ -72,9 +115,9 @@
         gap: 20px;
     }
 
-    .main-container.full-width {
+    .main-container-equipos.full-width {
         width: 100%; /* Aprovechamos más el espacio en móvil */
-        margin-top: 70px; /* Ajuste para la nueva barra superior */
+        margin-top: 80px; /* Ajuste para la nueva barra superior */
     }
 
     .canvas-wrapper {
@@ -84,10 +127,12 @@
 
     .styled-table td {
         padding: 5px;
+        padding-bottom: 12px;
+        padding-top: 15px;
     }
 
-    .h1-equipo {
-        font-size: 1.5rem;
+    .bloque-escudo-nombre .h1-equipo {
+        font-size: 2.3rem;
     }
     .contenedor-filtros-jornada {
         justify-content: flex-start !important;

@@ -19,7 +19,7 @@
         { "nombre": "E.García", "puntos": 10, "xiIdeal": true },
         { "nombre": "Ó.Mingueza", "puntos": 2 },
         { "nombre": "R.Marín", "puntos": 3 },
-        { "nombre": "J.Aguirrezabala", "puntos": 6}
+        { "nombre": "J.Agirrezabala", "puntos": 6}
       ]
     },
     {
@@ -57,7 +57,7 @@
         { "nombre": "A.Paredes", "puntos": 6 },
         { "nombre": "D.Affengruber", "puntos": 5,"amarillas":1 },
         { "nombre": "É.Militão", "puntos": 15,"goles": 1 },
-        { "nombre": "J.García", "puntos": 8 }
+        { "nombre": "J.Garcia", "puntos": 8 }
       ]
     },
     {

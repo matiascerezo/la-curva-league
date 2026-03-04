@@ -22,4 +22,5 @@ public class Mister {
     private String nombreEquipo;
     private String nombreMister;  
     private String urlEquipo;  
+    private String imgEquipo;
 }

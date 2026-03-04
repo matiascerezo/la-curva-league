@@ -63,4 +63,8 @@ public class MisterControlador {
     public Long obtenerMisterId(String nombreMister) {
         return misterService.getIdEquipo(nombreMister);
     }
+
+    public String getImagenEquipo(String nombreMister) {
+        return misterService.getImgEquipo(nombreMister);
+    }
 }

@@ -13,7 +13,6 @@ body {
     margin-top: 80px;
     color: #1a237e;
     margin-bottom: 30px;
-    text-transform: uppercase;
     letter-spacing: 2px; 
 }
 
@@ -21,7 +20,6 @@ h1 {
     margin-top: 30px;
     color: #1a237e;
     margin-bottom: 30px;
-    text-transform: uppercase;
     letter-spacing: 2px;
 }
 
@@ -105,23 +103,15 @@ body {
     font-weight: 700;
     color: #2d3436;
     margin-bottom: 30px;
-    margin-top: 20px;
+    margin-top: 90px;
     font-size: 2.2rem;
 }
 
 .styled-table {
     border-radius: 15px;
     overflow: hidden; /* Para que las esquinas de la tabla sean redondeadas */
-}
-
-/* El link de volver con el morado corporativo */
-.back-link {
-    color: #6a1b9a;
-    text-decoration: none;
-    font-size: 0.9rem;
-    display: block;
-    margin-top: 40px;
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); 
+    margin-bottom: 20px; /* Margen para separar del footer */
 }
 
 .back-link:hover {
@@ -244,8 +234,8 @@ body {
     }
     .equipo-titulo {
         color: #2d3436;
-        margin-top: 30px;
-        margin-bottom: 30px;
+        margin-top: 80px;
+        margin-bottom: 20px;
         font-size: 1.5rem;
     }
 }

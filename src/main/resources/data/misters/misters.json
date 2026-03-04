@@ -1,9 +1,9 @@
 [
-  { "nombreEquipo": "Los Hokages de Merlès","nombreMister": "Matias", "urlEquipo": "los-hokages-de-merles"},
-  { "nombreEquipo": "Maylova FC", "nombreMister": "Jon", "urlEquipo": "maylova-fc"},
-  { "nombreEquipo": "Rayo Vaticano","nombreMister": "Sergi", "urlEquipo": "rayo-vaticano"},
-  { "nombreEquipo": "Los 11 Yonkos","nombreMister": "Carlos", "urlEquipo": "los-11-yonkos"},
-  { "nombreEquipo": "Los Pollos Hermanos","nombreMister": "Dani", "urlEquipo": "los-pollos-hermanos"},
-  { "nombreEquipo": "Fénix del mar","nombreMister": "Mario", "urlEquipo": "fenix-del-mar"},
-  { "nombreEquipo": "Shalke Megiño","nombreMister": "Alcaide", "urlEquipo": "shalke-megino"}
+  { "nombreEquipo": "Los Hokages de Merlès","nombreMister": "Matias", "urlEquipo": "los-hokages-de-merles","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/689da426afb7e.png"},
+  { "nombreEquipo": "Maylova FC", "nombreMister": "Jon", "urlEquipo": "maylova-fc","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/68ab4b4b9825b.png"},
+  { "nombreEquipo": "Rayo Vaticano","nombreMister": "Sergi", "urlEquipo": "rayo-vaticano","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/68acee9be8ef7.png"},
+  { "nombreEquipo": "Los 11 Yonkos","nombreMister": "Carlos", "urlEquipo": "los-11-yonkos","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/68af2b1d35220.png"},
+  { "nombreEquipo": "Los Pollos Hermanos","nombreMister": "Dani", "urlEquipo": "los-pollos-hermanos","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/5ce18908c57ce.png"},
+  { "nombreEquipo": "Fénix del mar","nombreMister": "Mario", "urlEquipo": "fenix-del-mar","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/68b6ba747dcee.png"},
+  { "nombreEquipo": "Shalke Megiño","nombreMister": "Alcaide", "urlEquipo": "shalke-megino","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/68ab3605524a5.png"}
 ]

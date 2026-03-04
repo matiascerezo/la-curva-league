@@ -3,6 +3,7 @@ package com.mister.lacurvaleague.controladores;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -48,6 +49,9 @@ public class NavegacionControlador {
     @Autowired
     private Environment env;
 
+    @Value("${app.ultimaActualizacion}")
+    private String fechaActualizacion;
+
     @GetMapping("/top/{top}")
     public String verTop(@PathVariable String top, RedirectAttributes redirectAttrs) {
         
@@ -71,8 +75,10 @@ public class NavegacionControlador {
     public String verEquipo(@PathVariable String nombreMisterURL, Model model) {
         
         String nombreMister = misterService.getNombreEquipoByURL(nombreMisterURL);
+        String imgEquipo = misterService.getImgEquipo(nombreMisterURL);
         List<ClasificacionEquipoDTO> cEquipoDTOs = misterService.obtenerPuntosEquipoXJornadaByURL(nombreMisterURL);
         model.addAttribute("nombreEquipo", nombreMister);
+        model.addAttribute("imgEquipo", imgEquipo);
         model.addAttribute("puntosEquipoJornadas", cEquipoDTOs);
         model.addAttribute("puntosEquipoJornadasGrafica", cEquipoDTOs.reversed());
         model.addAttribute("colorEquipo", env.getProperty("color."+nombreMisterURL));
@@ -121,5 +127,10 @@ public class NavegacionControlador {
     public String mostrarLloros(Model model) { 
         model.addAttribute("listaJornadasLloros", llorometroService.getAllLlorosParaVista());
         return "llorometro";
+    }
+
+    @ModelAttribute("ultimaActualizacion")
+    public String getUltimaActualizacion(){
+        return fechaActualizacion;
     }
 }

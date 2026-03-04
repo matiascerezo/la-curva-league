@@ -14,8 +14,11 @@
 <body>
     <nav class="navbar" th:replace="~{fragments/navbar :: nav}"></nav>
     
-    <div class="main-container">
-        <h1 class="h1-equipo" th:text="${nombreEquipo}">Mister</h1>
+    <div class="main-container-equipos">
+        <div class="bloque-escudo-nombre">
+            <img th:src="${imgEquipo}" alt="Escudo">
+            <h1 class="h1-equipo" th:text="${nombreEquipo}">Mister</h1>
+        </div>
         <div class="contenedor-filtros-jornada">
             <button class="burbuja-jornada" onclick="filtrarPorRango(1, 38, this)">Todo</button>
             
