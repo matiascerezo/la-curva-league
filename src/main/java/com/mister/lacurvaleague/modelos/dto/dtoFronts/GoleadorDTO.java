@@ -2,6 +2,8 @@ package com.mister.lacurvaleague.modelos.dto.dtoFronts;
 
 import java.math.BigDecimal;
 
+import com.mister.lacurvaleague.modelos.dto.util.FormatPosicion;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GoleadorDTO {
+public class GoleadorDTO implements FormatPosicion {
 
     private String equipo;
     private Long golesTotalesEquipo;
@@ -18,14 +20,5 @@ public class GoleadorDTO {
     private Integer golesPichichi;
     private BigDecimal mediaGolesXJornada;
 
-    public String getPosicionAbreviada() {
-        if (this.posicion == null) return "DESC";
-        return switch (this.posicion.toLowerCase()) {
-            case "delantero" -> "DL";
-            case "centrocampista" -> "MC";
-            case "defensa" -> "DF";
-            case "portero" -> "PT";
-            default -> "DESC";
-        };
-    }
+    
 }

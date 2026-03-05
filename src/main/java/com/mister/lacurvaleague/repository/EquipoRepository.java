@@ -11,6 +11,7 @@ import com.mister.lacurvaleague.modelos.dto.dtoFronts.AsistenciaDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.GoleadorDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingAsistenciasDTO;
 
 @Repository
 public interface EquipoRepository extends JpaRepository<Equipo, Long> {
@@ -63,4 +64,14 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
 							"WHERE ranking = 1 "+
 							"ORDER BY asistenciasTotalesEquipo DESC", nativeQuery = true)
         List<AsistenciaDTO> getAsistenciasYAsistentesXEquipo();
+
+		@Query("SELECT new com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingAsistenciasDTO(" +
+				"m.imgEquipo, m.nombreEquipo, j.asistencias, j.nombre, j.posicion, jor.numeroJornada) " +
+				"FROM Jugador j " + // Asumiendo que la Entidad se llama Jugador
+				"JOIN j.equipo e " + // Relación en la clase Jugador
+				"JOIN e.mister m " + // Relación en la clase Equipo
+				"JOIN e.jornada jor " + // Relación en la clase Equipo
+				"WHERE j.asistencias > 0 " +
+				"ORDER BY numeroJornada DESC, asistencias DESC, nombreEquipo ASC")
+		List<RankingAsistenciasDTO> getAsistenciasEquipos();
 }

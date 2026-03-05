@@ -1,6 +1,8 @@
 package com.mister.lacurvaleague.controladores;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,10 +14,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingAsistenciasDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.TarjetasDTO;
 import com.mister.lacurvaleague.repository.EquipoRepository;
 import com.mister.lacurvaleague.repository.MisterRepository;
@@ -52,25 +53,6 @@ public class NavegacionControlador {
     @Value("${app.ultimaActualizacion}")
     private String fechaActualizacion;
 
-    @GetMapping("/top/{top}")
-    public String verTop(@PathVariable String top, RedirectAttributes redirectAttrs) {
-        
-        //Según lo que venga, tira por un camino u otro.
-
-        /* switch (top) {
-            case "pichichis":
-                model.addAttribute("goleadores", misterControlador.obtenerGoleadores());
-                break;
-            case "llorometro":
-                //model.addAttribute("goleadores", mc.obtenerGoleadores());
-                break;    
-            default:
-                break;
-        } */
-        redirectAttrs.addFlashAttribute("warning", "¡Ups! La sección de " + top + " está en mantenimiento. Estará lista pronto.");
-        return "redirect:/inicio";
-    }
-
     @GetMapping("/club/{nombreMisterURL}")
     public String verEquipo(@PathVariable String nombreMisterURL, Model model) {
         
@@ -106,8 +88,25 @@ public class NavegacionControlador {
         return request.getRequestURI();
     }
 
+    @ModelAttribute("listaAsistencias")
+    public List<RankingAsistenciasDTO> getAsistenciasJornadas() {
+        return misterService.getAsistenciasEquipos();
+    }
+
+
     @GetMapping("/top/asistentes")
     public String getAsistenciasYAsistentesXEquipo(Model model) {
+        List<RankingAsistenciasDTO> listaCompleta = misterService.getAsistenciasEquipos();
+
+        // 1. Agrupamos por número de jornada
+        Map<Integer, List<RankingAsistenciasDTO>> asistenciasMap = listaCompleta.stream()
+                        .collect(Collectors.groupingBy(RankingAsistenciasDTO::getNumeroJornada));
+
+        // 2. Extraemos solo los números de jornada para los botones superiores
+        List<Integer> listaJornadas = asistenciasMap.keySet().stream().collect(Collectors.toList());
+
+        model.addAttribute("mapaAsistenciasJornadas", asistenciasMap);
+        model.addAttribute("listaJornadasAsistencias", listaJornadas);
         model.addAttribute("listaAsistentes", misterService.getAsistenciasYAsistentesXEquipo());
         return "asistentes";
     }

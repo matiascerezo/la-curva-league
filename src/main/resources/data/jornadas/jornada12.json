@@ -93,7 +93,7 @@
         { "nombre": "J.Virgili", "puntos": 2 },
         { "nombre": "F.De Jong", "puntos": 4, "amarillas": 2  },
         { "nombre": "J.Giménez", "puntos": 4, "amarillas": 1  },
-        { "nombre": "M.Llorente", "puntos": 8,"asistencias":1 , "amarillas": 1 "xiIdeal":true },
+        { "nombre": "M.Llorente", "puntos": 8,"asistencias":1 , "amarillas": 1, "xiIdeal":true },
         { "nombre": "D.Affengruber", "puntos": 1, "amarillas": 1  },
         { "nombre": "A.Escandell", "puntos": 6, "amarillas": 1  }
       ]

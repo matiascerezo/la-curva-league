@@ -12,6 +12,7 @@ import com.mister.lacurvaleague.modelos.dto.dtoFronts.AsistenciaDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.GoleadorDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingAsistenciasDTO;
 import com.mister.lacurvaleague.repository.EquipoRepository;
 import com.mister.lacurvaleague.repository.JornadaRepository;
 import com.mister.lacurvaleague.repository.MisterRepository;
@@ -71,6 +72,10 @@ public class MisterService {
 
     public List<AsistenciaDTO> getAsistenciasYAsistentesXEquipo(){
         return equipoRepository.getAsistenciasYAsistentesXEquipo();
+    }
+
+    public List<RankingAsistenciasDTO> getAsistenciasEquipos(){
+        return equipoRepository.getAsistenciasEquipos();
     }
 
     public String getImgEquipo(String nombreMisterURL){

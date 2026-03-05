@@ -1,362 +1,227 @@
-/* Configuración General */
+/* =========================================
+   1. VARIABLES Y RESET (Panel de Control)
+   ========================================= */
+:root {
+    --primary-blue: #1a237e;
+    --bg-gray: #f0f2f5;
+    --white: #ffffff;
+    --safe-top: env(safe-area-inset-top, 0px);
+}
+
+* {
+    box-sizing: border-box; /* Fundamental para que el padding no rompa el ancho */
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background-color: var(--bg-gray);
+    overflow-x: hidden; /* Evita que la web baile de lado a lado */
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     color: #333;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 40px;
-}
-
-.h1-class-gen {
-    margin-top: 80px;
-    color: #1a237e;
-    margin-bottom: 30px;
-    letter-spacing: 2px; 
-}
-
-h1 {
-    margin-top: 30px;
-    color: #1a237e;
-    margin-bottom: 30px;
-    letter-spacing: 2px;
-}
-
-/* Estilo de la Tabla */
-.tabla-clasificacion {
-    width: 95%; /* Ocupa casi todo el ancho */
-    max-width: 1200px; /* Pero con un límite para que no se deforme en monitores 4K */
-    background-color: #fff;
-    border-collapse: collapse;
-    border-radius: 12px;
-    overflow: hidden; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    margin: 0 auto; /* La centra si sobra espacio */
-    font-size: 1.4rem; /* Efecto zoom en el texto */
-}
-
-.tabla-clasificacion th, .tabla-clasificacion td {
-    padding: 20px 25px; /* Más aire dentro de las celdas */
-    text-align: center;
-    border-bottom: 1px solid #eee;
-}
-
-.tabla-clasificacion thead {
-    background-color: #1a237e;
-    color: #ffffff;
-}
-
-/* Zebra Striping (Filas alternas) */
-.tabla-clasificacion tbody tr:nth-child(even) {
-    background-color: #f8f9fa;
-}
-
-/* Efecto Hover al pasar el ratón */
-.tabla-clasificacion tbody tr:hover {
-    background-color: #e8eaf6;
-    transition: 0.3s;
-}
-
-/* Estilo para el LÍDER (Primera fila) */
-.tabla-clasificacion tbody tr:first-child {
-    background-color: #fff9c4;
-    font-weight: bold;
-}
-
-.tabla-clasificacion tbody tr:first-child td:first-child::before {
-    content: "🏆";
-}
-
-/* EL SEGUNDO (PLATA) */
-.tabla-clasificacion tbody tr:nth-child(2) {
-    background-color: #b0bec5;
-}
-.tabla-clasificacion tbody tr:nth-child(2) td:first-child::before {
-    content: "🥈";
-}
-
-/* EL TERCERO (BRONCE)*/
-.tabla-clasificacion tbody tr:nth-child(3) {
-    background-color: #f9dfd3;
-}
-.tabla-clasificacion tbody tr:nth-child(3) td:first-child::before {
-    content: "🥉";
-}
-
-
-/* Ajuste para que el contenido no se meta debajo de la navbar fija */
-body {
-    padding-top: 80px; 
-}
-
-.canvas-wrapper {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    height: 350px;
-    margin-bottom: 40px;
-}
-
-.equipo-titulo {
-    font-weight: 700;
-    color: #2d3436;
-    margin-bottom: 30px;
-    margin-top: 90px;
-    font-size: 2.2rem;
-}
-
-.styled-table {
-    border-radius: 15px;
-    overflow: hidden; /* Para que las esquinas de la tabla sean redondeadas */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); 
-    margin-bottom: 20px; /* Margen para separar del footer */
-}
-
-.back-link:hover {
-    text-decoration: underline;
-    transform: translateX(-5px);
-}
-
-/*  FOOTER DE PAGINAS */
-/* Estilos del Footer */
-/* Ajuste en el BODY para permitir que el footer toque los bordes */
-body {
-    margin: 0;
-    padding: 80px 0 0 0; /* Quitamos el padding lateral del body */
-    display: flex;
-    flex-direction: column;
     min-height: 100vh;
+    /* Espacio inteligente para la navbar: más en móvil, menos en PC */
+    padding-top: clamp(130px, 18vh, 170px); 
 }
 
-/* El contenido principal sí lleva márgenes laterales */
-.main-container, .split-container {
-    flex: 1; /* Empuja el footer al final */
-    width: 90%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0px;
-}
-
-/* FOOTER QUE OCUPA TODO EL ANCHO */
-.main-footer {
-    background-color: #1a237e; /* Azul marino como tu navbar */
-    color: white;
-    width: 100%; /* Ancho total */
-    padding: 50px 0 20px 0;
-    margin-top: auto; /* Se pega abajo si hay poco contenido */
-}
-
-.footer-container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto; /* Centra el texto dentro del bloque azul */
-}
-
-.footer-grid {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding-bottom: 30px;
-}
-
-.footer-bottom {
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 20px;
-    font-size: 0.9rem;
-}
-
-
-/* BLOQUE TEMPORAL PARA EL AVISO*/
-.alert-container {
-    width: 90%;
-    max-width: 800px;
-    margin: 20px auto;
-    background-color: #fff3cd; /* Amarillo suave de aviso */
-    border-left: 5px solid #ffc107; /* Borde intenso a la izquierda */
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    animation: fadeInDown 0.5s ease; /* Pequeña animación de entrada */
-}
-
-.alert-content {
-    display: flex;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-.alert-icon {
-    font-size: 1.5rem;
-    margin-right: 15px;
-}
-
-.alert-content p {
-    margin: 0;
-    color: #856404;
-    font-weight: 500;
-}
-
-/* Animación para que no aparezca de golpe */
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Ajuste para móviles */
-@media (max-width: 768px) {
-    .navbar-logo {
-        height: 30px; /* Un poco más pequeño en el iPhone/Pixel */
-    }
-    .navbar{
-        height: 60px;
-    }
-
-    .tabla-clasificacion th, .tabla-clasificacion td {
-        padding: 12px 8px;
-        font-size: 1.2rem;
-        padding-left: 25px;
-    }
-    .tabla-clasificacion{
-        margin-bottom: 30px;
-    }
-    .h1-class-gen {
-        margin-top: 70px;
-        font-size: 25px;
-        letter-spacing: 0px;
-    }
-    .equipo-titulo {
-        color: #2d3436;
-        margin-top: 80px;
-        margin-bottom: 20px;
-        font-size: 1.5rem;
-    }
-}
-
+/* =========================================
+   2. NAVBAR BLINDADA (Fix Logo y Scroll)
+   ========================================= */
 .navbar {
-    background-color: #1a237e;
+    background-color: var(--primary-blue);
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    padding-top: var(--safe-top);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-/* Nivel superior: Logo */
 .nav-top {
-    height: 50px;
+    height: clamp(50px, 8vh, 70px);
     display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 0 15px;
+    align-items: center;
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 .nav-logo {
     display: flex;
     align-items: center;
+    gap: 12px;
     text-decoration: none;
-    color: white;
-    font-weight: bold;
-    gap: 10px;
+    color: var(--white);
 }
 
-.nav-logo img { height: 30px; }
+.nav-logo img {
+    height: clamp(30px, 5vh, 45px); /* EL FRENO: Impide el logo gigante */
+    width: auto;
+    object-fit: contain;
+}
 
-/* Nivel inferior: Scroll de Equipos */
+.nav-logo span {
+    font-weight: 800;
+    font-size: clamp(1rem, 4vw, 1.4rem);
+    white-space: nowrap;
+}
+
 .nav-scroll-container {
-    background-color: #1a237e;
-    overflow-x: auto; /* Habilita el scroll horizontal */
-    white-space: nowrap; /* Evita que los equipos bajen de fila */
-    scrollbar-width: none; /* Oculta scroll en Firefox */
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none; /* Oculta scroll Firefox */
 }
 
 .nav-scroll-container::-webkit-scrollbar {
-    display: none; /* Oculta scroll en Chrome/Safari */
+    display: none; /* Oculta scroll Chrome/Safari */
 }
 
-.nav-list-equipos {
-    display: flex;
-    list-style: none;
+.nav-list-equipos, .nav-list-tops {
+    display: inline-flex;
+    padding: 10px 15px;
     margin: 0;
-    padding: 10px 5px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    list-style: none;
+    gap: 5px;
 }
 
-.nav-list-tops {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 10px 5px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-}
+.nav-list-equipos{    border-top: 1px solid rgba(255, 255, 255, 0.15);}
 
 .nav-item a {
-    color: #ffffff;
+    color: rgba(255,255,255,0.8);
     text-decoration: none;
-    padding: 8px 15px;
-    font-size: 14px;
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+    padding: 6px 15px;
+    border-radius: 20px;
     text-transform: uppercase;
-    font-weight: 500;
-}
-
-.nav-item a:hover {
-    color: white;
-}
-
-/* Estilo para el enlace seleccionado */
-.nav-item a.activo {
-    background-color: rgba(255, 255, 255, 0.2); /* Fondo blanco traslúcido */
-    color: #ffffff !important;
-    border-radius: 12px;
-    font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    /* Añadimos una transición suave */
-    transition: all 0.3s ease-in-out;
-}
-
-/* Badge para goles totales del equipo */
-.badge-equipo-goles {
-    background-color: #f0f2f5;
-    color: #1a237e;
-    padding: 5px 12px;
-    border-radius: 6px;
-    font-weight: 800;
-    border: 1px solid #e0e4e8;
-}
-
-/* Badge circular para los goles del Pichichi */
-.badge-goles-pichichi {
-    background-color: #1a237e;
-    color: white;
-    padding: 2px 10px;
-    border-radius: 50%;
-    font-weight: bold;
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-}
-
-/* Estilo para la media (Pill) */
-.media-pill {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.85rem;
     font-weight: 600;
-    border: 1px solid #c8e6c9;
+    transition: 0.3s;
 }
 
-/* Ajuste de la columna posición */
-.posicion-col {
-    color: #000000;
-    font-weight: bold;
-    width: 40px;
+.nav-item a.activo, .nav-item a:hover {
+    background: rgba(255,255,255,0.2);
+    color: var(--white);
 }
 
+/* =========================================
+   3. TABLA Y CONTENIDO (Estilo Podio)
+   ========================================= */
+.h1-class-gen {
+    font-size: clamp(1.4rem, 5vw, 2.2rem);
+    color: var(--primary-blue);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.main-container-equipos {
+    width: 92%; /* El "aire" lateral que querías */
+    max-width: 1100px;
+    margin: 0 auto 40px;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto; /* Scroll si la tabla es muy ancha en móvil */
+    border-radius: 12px;
+    box-shadow: 0 20px 25px rgba(0,0,0,0.1);
+}
+
+.tabla-clasificacion {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--white);
+    font-size: clamp(0.85rem, 2.2vw, 1.1rem);
+}
+
+.tabla-clasificacion thead {
+    background-color: var(--primary-blue);
+    color: var(--white);
+}
+
+.tabla-clasificacion th, .tabla-clasificacion td {
+    padding: clamp(12px, 2.5vh, 20px) 10px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+/* ESTILOS PODIO RECUPERADOS */
+.tabla-clasificacion tbody tr:nth-child(1) { background-color: #fff9c4; font-weight: bold; }
+.tabla-clasificacion tbody tr:nth-child(1) td:first-child::before { content: "🏆 "; }
+
+.tabla-clasificacion tbody tr:nth-child(2) { background-color: #cfd8dc; }
+.tabla-clasificacion tbody tr:nth-child(2) td:first-child::before { content: "🥈 "; }
+
+.tabla-clasificacion tbody tr:nth-child(3) { background-color: #fbe9e7; }
+.tabla-clasificacion tbody tr:nth-child(3) td:first-child::before { content: "🥉 "; }
+
+/* =========================================
+   4. FOOTER (Blindado y Proporcional)
+   ========================================= */
+.main-footer {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    width: 100%;
+    margin-top: auto; /* Empuja el footer al final si hay poco contenido */
+    padding: clamp(30px, 5vh, 50px) 0 20px 0;
+    box-sizing: border-box;
+}
+
+.footer-container {
+    width: 92%; /* Mismo 'aire' lateral que la tabla */
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.footer-grid {
+    display: flex;
+    flex-wrap: wrap; /* En móviles los bloques se apilan */
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
+    padding-bottom: 20px;
+}
+
+.footer-info h3, .footer-copy h4 {
+    margin: 0 0 10px 0;
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    letter-spacing: 1px;
+}
+
+.footer-info p, .footer-copy p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Línea inferior y créditos */
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+    font-size: 0.85rem;
+}
+
+.footer-bottom p {
+    margin: 5px 0;
+}
+
+/* Estilo para la fecha de actualización */
+.txt-actualizado {
+    font-weight: 600;
+    color: #ffc400; /* Un tono dorado suave para resaltar la fecha */
+}
+
+/* Ajuste específico para pantallas muy pequeñas (Pixel) */
+@media (max-width: 600px) {
+    .footer-grid {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+}

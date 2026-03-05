@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
 </head>
-<body> <h1 class= "h1-class-gen" style="text-align: center;" th:text="|Clasificación General (J${jornadaActual}/J38)|"> Clasificación General (0/38)</h1>
-
+<body>
+<div class="main-container-equipos">
+    <h1 class= "h1-class-gen" style="text-align: center;" th:text="|Clasificación (J${jornadaActual}/J38)|"> Clasificación (0/38)</h1>
+    <div class="table-wrapper">
     <table class="tabla-clasificacion">
         <thead>
             <tr>
@@ -24,13 +26,9 @@
             </tr>
         </tbody>
     </table>
-</body>
-<div th:if="${warning}" class="alert-container">
-    <div class="alert-content">
-        <span class="alert-icon">⚠️</span>
-        <p th:text="${warning}"></p>
     </div>
 </div>
+</body>
 <nav th:replace="~{fragments/navbar :: nav}"></nav>
 <nav th:replace="~{fragments/footer :: footer}"></nav>
 </html>

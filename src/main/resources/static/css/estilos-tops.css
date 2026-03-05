@@ -1,35 +1,96 @@
-
-/* Ajuste de la tabla para que no esté apretada */
-.pichichi-cell {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    justify-content: center;
-    width: 100px;
+/* =========================================
+   1. BASE Y VARIABLES
+   ========================================= */
+.equipo-titulo, h1, .h1-class-gen {
+    width: 92%; /* Mismo ancho que la tabla para alineación perfecta */
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-top: clamp(20px, 5vh, 40px);
+    text-transform: uppercase;
 }
 
-/* Badge genérico para números */
+:root {
+    --primary-blue: #1a237e;
+    --bg-gray: #f0f2f5;
+    --white: #ffffff;
+    --text-dark: #2d3436;
+    --red-accent: #ff4b5c;
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.05);
+    --safe-top: env(safe-area-inset-top, 0px);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-gray);
+    margin: 0;
+    padding-top: clamp(120px, 15vh, 160px);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* =========================================
+   2. COMPONENTES COMPARTIDOS (Tablas y UI)
+   ========================================= */
+
+/* Contenedor de ancho inteligente */
+.main-container-equipos, .split-container, .seccion-lloros {
+    width: 92%;           /* El secreto del espacio a los lados */
+    max-width: 1200px;    /* Límite para pantallas de PC */
+    margin: 20px auto;    /* Centra la tabla y da aire arriba/abajo */
+    overflow-x: auto;     /* Scroll horizontal si la tabla es muy grande */
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    scrollbar-width: none;
+}
+
+.pichichi-cell {
+    align-items: center;
+    /* Espacio entre posición, nombre y badge */
+    gap: clamp(5px, 1.5vw, 10px); 
+    justify-content: flex-start;
+    padding: 8px 12px;
+    min-width: 140px; /* Evita que el nombre se corte en móvil */
+}
+
+.table-wrapper::-webkit-scrollbar { display: none; }
+
+/* Estilo Base de Tabla (Unificado) */
+.styled-table {
+    width: 100%;          /* Ocupa todo el interior del contenedor */
+    border-collapse: collapse;
+    background-color: #ffffff;
+    font-size: clamp(0.85rem, 2.2vw, 1rem); /* Fuente dinámica */
+    text-align: center;
+}
+
+.styled-table th {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    padding: clamp(10px, 2vh, 15px);
+    font-size: clamp(0.8rem, 2vw, 1rem);
+}
+
+.styled-table td {
+    padding: clamp(10px, 2vh, 15px);
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    font-size: clamp(0.85rem, 2vw, 1.1rem);
+}
+
+/* Badges Dinámicos */
 .badge-goles {
-    background: #f0f2f5;
-    color: #1a237e;
+    background: var(--bg-gray);
+    color: var(--primary-blue);
     padding: 4px 10px;
     border-radius: 6px;
     font-weight: 800;
-    display: inline-block;
 }
 
-/* Estilo para la media (Pastilla verde) */
-.media-text {
-    font-size: 0.75rem;
-    color: #000000;
-    background: #e8f5e9;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-weight: 600;
-    border: 1px solid #c8e6c9;
-}
-
-/* Estilo base de la etiqueta de posición */
 .badge-posicion {
     font-size: 0.65rem;
     font-weight: bold;
@@ -39,60 +100,365 @@
     text-transform: uppercase;
 }
 
-/* Colores por posición */
-.pos-DESC { background-color: #23120b97; color: #ffffff; } /* Naranja para Desconocidos */
-.pos-PT { background-color: #FFF242; color: #000; } /* Amarillo para Porteros */
-.pos-DF { background-color: #0FD3FF; }             /* Azul para Defensas */
-.pos-MC { background-color: #17d386; }             /* Verde para Medios */
-.pos-DL  { background-color: #ff6188; }             /* Rojo para Delanteros */
+/* Colores de Posición */
+.pos-PT { background-color: #FFF242; color: #000; }
+.pos-DF { background-color: #0FD3FF; color: #000; }
+.pos-MC { background-color: #17d386; }
+.pos-DL { background-color: #ff6188; }
 
-/* Fuerza la tabla a no exceder el ancho de pantalla */
-.table-wrapper {
-    overflow-x: hidden; /* Elimina el scroll si es posible */
-    padding: 0 0px;
+/* Burbujas de Jornada (Comunes) */
+.contenedor-burbujas, .contenedor-filtros-jornada {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    scrollbar-width: none;
 }
 
-.styled-table- {
+.burbuja-jornada {
+    background: #f8f9fa;
+    border: 2px solid var(--primary-blue);
+    color: var(--primary-blue);
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    margin-bottom: 1rem;
+}
+
+.burbuja-jornada.active {
+    background: var(--primary-blue);
+    color: var(--white);
+}
+
+/* =========================================
+   3. SECCIÓN: EQUIPOS Y GRÁFICAS
+   ========================================= */
+.split-container {
+    display: flex;
+    gap: 40px;
+}
+
+.canvas-wrapper {
+    background: var(--white);
+    padding: clamp(15px, 3vw, 30px);
+    border-radius: 20px;
+    box-shadow: var(--shadow-soft);
     width: 100%;
-    table-layout: fixed; /* Ayuda a que las celdas respeten el ancho asignado */
-    font-size: 1.1rem;  /* Reduce ligeramente la fuente en general */
-    border: 2px solid #eee;
+    height: clamp(350px, 55vh, 550px);
 }
 
-.styled-table td:nth-child(4),
-.styled-table th:nth-child(4) {
-    border-left: 2px solid #ddd; /* Línea gris sutil */
-    padding-left: 15px;
+.bloque-escudo-nombre {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: clamp(20px, 5vh, 40px);
+    margin-bottom: 20px;
 }
 
-.styled-table td:nth-child(4) {
-    padding-left: 80px;
+.bloque-escudo-nombre img {
+    width: clamp(65px, 10vw, 80px);
+    height: clamp(65px, 10vw, 80px);
+    border-radius: 40%;
+    object-fit: contain;
+    background: white;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
 }
 
-.columnaCorta {
+/* =========================================
+   4. SECCIÓN: LLORÓMETRO (TARJETAS MÓVIL)
+   ========================================= */
+/* --- CONTENEDOR DE TARJETA (Wrapper) --- */
+.table-wrapper {
+    width: 92%;
+    max-width: 1100px;
+    margin: 10px auto;
+    margin-bottom: 1rem;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden; /* Corta el thead para que respete el redondeo */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* --- ESTILO ESPECÍFICO LLORÓMETRO --- */
+.styled-table-llorometro {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+/* Cabecera Azul Unificada (Igual que en tu imagen objetivo) */
+.styled-table-llorometro thead tr {
+    background-color: #1a237e !important;
+    color: #ffffff;
+}
+
+.styled-table-llorometro th {
+    padding: 18px 15px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border: none;
+}
+
+/* Celdas del Cuerpo */
+.styled-table-llorometro td {
+    padding: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+
+.lista-lloros {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lista-lloros li {
+    background: #fff8f8; /* Fondo rosado tenue */
+    border-left: 5px solid #ff4b5c; /* Barra roja lateral característica */
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.styled-table-llorometro .mister-nombre {
+    font-weight: 600;
+    font-size: 1.1rem;
+    width: 25%;
+    text-align: center;
+}
+
+.icon-lloro {
+    font-style: normal;
+    font-size: 1.2rem;
+}
+
+.col-motivos {
+    background-color: #fdfdfd; /* Un blanco casi puro para contrastar */
+}
+
+/* =========================================
+   5. RESPONSIVE MASTER
+   ========================================= */
+
+@media (max-width: 992px) {
+    .split-container { flex-direction: column; }
+    
+    /* Transformación de Tabla a Tarjetas (Llorómetro y otros) */
+    .seccion-lloros .styled-table, 
+    .seccion-lloros .styled-table thead, 
+    .seccion-lloros .styled-table tbody, 
+    .seccion-lloros .styled-table tr, 
+    .seccion-lloros .styled-table td {
+        display: block;
+        width: 100% !important;
+    }
+
+    .seccion-lloros .styled-table thead { display: none; }
+
+    .seccion-lloros .styled-table tr {
+        margin-bottom: 15px;
+        border: 1px solid #eee;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    .mister-nombre {
+        background-color: var(--primary-blue);
+        color: white !important;
+        padding: 12px !important;
+    }
+}
+
+/* Ocultar elementos según clase */
+.columnaCorta { display: none; }
+@media (max-width: 600px) {
+    .columnaLarga, .col-media { display: none; }
+    .columnaCorta { display: table-cell !important; }
+}
+
+/* Ocultar Scrollbars */
+::-webkit-scrollbar { display: none; }
+
+/* =========================================
+   6. SECCIÓN TARJETAS
+   ========================================= */
+
+.text-center {
+    text-align: center;
+}
+
+/* Estilo de Tarjeta Amarilla */
+.badge-amarilla {
+    background-color: #ffeb3b;
+    color: #000;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    display: inline-block;
+    border: 1px solid #fbc02d;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Estilo de Tarjeta Roja */
+.badge-roja {
+    background-color: #f44336;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    display: inline-block;
+    border: 1px solid #d32f2f;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+/* LLOROMETRO */
+@media (max-width: 768px) {
+    /* Quitamos el comportamiento de tabla */
+    .styled-table-llorometro, 
+    .styled-table-llorometro thead, 
+    .styled-table-llorometro tbody, 
+    .styled-table-llorometro tr, 
+    .styled-table-llorometro td {
+        display: block;
+        width: 100% !important;
+    }
+
+    .styled-table-llorometro thead tr {
+    background-color: #1a237e !important; /* Azul marino de la imagen */
+    color: #ffffff;
     display: none;
 }
 
-
-@media (max-width: 600px) {
-    .col-media {
-        display: none;
-    }
-    .col-media-asis, .columnaLarga{
-        display: none;
-    }
-    .columnaCorta {
-        display: table-cell !important;
+    /* Cada fila es ahora una tarjeta separada */
+    .styled-table-llorometro tr {
+        background: #ffffff;
+        margin-bottom: 15px;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        overflow: hidden;
     }
 
-    .styled-table {
-        font-size: 0.85rem;
+    /* El nombre del Mister/Equipo (Cabecera de la tarjeta) */
+    .styled-table-llorometro td:first-child {
+        color: #ffffff !important;
+        font-weight: 800;
+        font-size: 1.1rem;
+        padding: 12px 15px !important;
+        text-align: center;
+    }
 
+    /* El contenido (Motivos o datos) */
+    .styled-table-llorometro td:last-child {
+        padding: 15px !important;
+        background: #fdfdfd;
     }
-    .pichichi-cell {
-        gap: 5px;
+
+    /* Estilo para los bocadillos de texto (Lloros) */
+    .lista-lloros li {
+        font-size: 0.95rem;
+        background: #fffafa;
+        border-left: 4px solid #ff4b5c;
+        padding: 12px;
+        margin-bottom: 8px;
+        border-radius: 4px;
+        line-height: 1.4;
     }
-    .styled-table td:nth-child(4) {
-        padding-left: 15px;
+}
+
+/* =========================================
+   PANTALLA DE EQUIPO
+   ========================================= */
+
+/* Contenedor del Escudo y Nombre */
+.bloque-escudo-nombre {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: clamp(20px, 5vh, 40px);
+    margin-bottom: 25px;
+    width: 92%;
+    max-width: 1200px;
+    margin-left: auto;
+}
+
+.bloque-escudo-nombre img {
+    width: clamp(70px, 12vw, 100px);
+    height: clamp(70px, 12vw, 100px);
+    object-fit: contain;
+    background: white;
+    padding: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.h1-equipo {
+    margin: 0;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+/* Contenedor de Gráfica + Tabla */
+.split-container {
+    display: flex;
+    gap: 30px;
+    width: 92%;
+    max-width: 1200px;
+    margin: 0 auto 50px;
+    align-items: flex-start;
+}
+
+/* Columna de la Tabla */
+.tabla-puntos-equipo-scroll {
+    flex: 1; /* Ocupa 1 parte */
+    min-width: 300px;
+    max-height: 550px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    overflow: hidden;
+    overflow-y: auto; 
+}
+
+.tabla-puntos-equipo-scroll table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10; /* Asegura que pase por encima de las filas */
+    background-color: #1a237e; /* Azul de la liga */
+    color: white;
+    padding: 15px 10px;
+}
+
+/* Columna de la Gráfica */
+.chart-column {
+    flex: 2.5; /* Ocupa 2.5 partes (más ancha como en tu foto) */
+    width: 100%;
+}
+
+
+/* --- RESPONSIVE MASTER --- */
+@media (max-width: 1024px) {
+    .split-container {
+        gap: 20px;
+    }
+    
+    .bloque-escudo-nombre {
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .tabla-puntos-equipo-scroll, .chart-column {
+        width: 100%;
     }
 }

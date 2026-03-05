@@ -4,60 +4,105 @@
     <meta charset="UTF-8">
     <title>La Curva League - Asistentes</title>
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
-    <link rel="stylesheet" th:href="@{/css/estilos-tarjetas.css}">
-    <link rel="stylesheet" th:href="@{/css/estilos-equipos.css}">
     <link rel="stylesheet" th:href="@{/css/estilos-tops.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script th:src="@{/js/burbuja-lloros.js}" defer></script>
+    <script th:src="@{/js/burbuja-goleadores.js}" defer></script>
     <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
 </head>
 <body>
     <nav th:replace="~{fragments/navbar :: nav}"></nav>
-
     <div class="main-container full-width">
-        <h1 class="equipo-titulo">Asistentes👟</h1>
+        <h1 class="equipo-titulo">👟Asistentes👟</h1>
 
+        <div class="contenedor-burbujas">
+            <button class="burbuja-jornada active" onclick="filtrarGoles('todos', this)">Todo</button>
+            
+            <th:block th:each="j : ${listaJornadasAsistencias}">
+                <button class="burbuja-jornada" 
+                        th:text="'J' + ${j}"
+                        th:onclick="|filtrarGoles(${j}, this)|">
+                </button>
+            </th:block>
+        </div>
+
+        <div class="table-wrapper">   
+            <div id="jornada-goles-todos" class="bloque-jornada-goles">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Equipo</th>
+                            <th class="text-center">Asistencias Totales</th>
+                            <th>Máx. Asistente</th>
+                            <th class="text-center">Asistencias</th>
+                            <th class="text-center col-media-asis">Asist./Jornada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="g, iter : ${listaAsistentes}">
+                            <td th:text="${iter.count == 1 ? '👑': iter.count}" class="posicion-col">1</td>
+                            <td><span th:text="${g.equipo}" style="font-weight: 600;"></span></td>
+                            <td class="text-center"><span class="badge-goles" th:text="${g.asistenciasTotalesEquipo}">0</span></td>
+                            <td>
+                                <div class="pichichi-cell">
+                                    <span th:text="${g.maxAsistente}">Jugador</span>
+                                    <span th:text="${g.getPosicionAbreviada(g.posicion)}" 
+                                        th:class="'badge-posicion pos-' + ${g.getPosicionAbreviada(g.posicion)}">DC</span>
+                                </div>
+                            </td>
+                            <td class="text-center"><span class="badge-goles" th:text="${g.asistencias}">0</span></td>
+                            <td class="text-center">
+                                <span class="badge-goles" th:text="${#numbers.formatDecimal(g.mediaAsistenciasXJornada, 1, 1)}">0,0</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div class="table-wrapper">
-            <table class="styled-table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Equipo</th>
-                        <th class="text-center">Asistencias Totales</th>
-                        <th>Máx. Asistente</th>
-                        <th class="columnaLarga">Asistencias</th>
-                        <th class="columnaCorta">Asis.</th>
-                        <th class="text-center col-media-asis">Asist./Jornada</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="g, iter : ${listaAsistentes}">
-                        <td th:text="${iter.count == 1 ? '👑': iter.count}" class="posicion-col">1</td>
-                        
-                        <td>
-                            <span th:text="${g.equipo}" style="font-weight: 600;"></span>
-                        </td>
-                        <td class="text-center">
-                            <span class="badge-goles" th:text="${g.asistenciasTotalesEquipo}">0</span>
-                        </td>
-                        <td>
-                            <div class="pichichi-cell">
-                                <span th:text="${g.maxAsistente}">Jugador</span>
-                                <span th:text="${g.getPosicionAbreviada}" 
-                                    th:class="'badge-posicion pos-' + ${g.getPosicionAbreviada}">DC</span>
-                            </div>
-                        </td>
-                        <td class="text-center">
-                            <span class="badge-goles" th:text="${g.asistencias}">0</span>
-                        </td>
-                        <td class="text-center col-media">
-                            <span class="badge-goles" th:text="${#numbers.formatDecimal(g.mediaAsistenciasXJornada, 1, 1)}">0,0</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div th:each="entry : ${mapaAsistenciasJornadas}" 
+                th:id="'jornada-goles-' + ${entry.key}" 
+                class="bloque-jornada-goles" 
+                style="display: none;">
+                
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Equipo</th>
+                            <th>Jugador</th>
+                            <th class="text-center">Asistencias</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="asist, iter : ${entry.value}">
+                            <td th:text="${iter.count}"></td>
+                            <td style="font-weight: 600;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <img th:src="${asist.imgEquipo}" 
+                                        alt="Escudo" 
+                                        style="width: 30px; height: 30px; object-fit: contain; border-radius: 50%;">
+                                    
+                                    <span th:text="${asist.nombreEquipo}"></span>
+                                </div>
+                            </td>
+                             <td>
+                                <div class="pichichi-cell">
+                                    <span th:text="${asist.nombreJugador}">Jugador</span>
+                                    <span th:text="${asist.getPosicionAbreviada(asist.posicion)}" 
+                                        th:class="'badge-posicion pos-' + ${asist.getPosicionAbreviada(asist.posicion)}">DC</span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge-goles" th:text="${asist.asistencias}"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
     <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

@@ -1,7 +1,5 @@
 package com.mister.lacurvaleague.modelos.dto.dtoFronts;
 
-import java.math.BigDecimal;
-
 import com.mister.lacurvaleague.modelos.dto.util.FormatPosicion;
 
 import lombok.AllArgsConstructor;
@@ -11,13 +9,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AsistenciaDTO implements FormatPosicion {
+public class RankingAsistenciasDTO implements FormatPosicion {
 
-    private String equipo;
-    private Long asistenciasTotalesEquipo;
-    private String maxAsistente; 
-    private String posicion; 
+    private String imgEquipo;
+    private String nombreEquipo;
     private Integer asistencias;
-    private BigDecimal mediaAsistenciasXJornada;
-
+    private String nombreJugador;
+    private String posicion;
+    private Integer numeroJornada;
 }
+

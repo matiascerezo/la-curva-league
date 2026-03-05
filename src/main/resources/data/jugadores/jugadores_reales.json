@@ -20,7 +20,13 @@
   { "nombreCortoJugador": "I.Peña", "nombreJugador": "Iñaki Peña", "posicion": "Portero" },
   { "nombreCortoJugador": "D.Soria", "nombreJugador": "David Soria", "posicion": "Portero" },
   { "nombreCortoJugador": "A.Batalla", "nombreJugador": "Augusto Batalla", "posicion": "Portero" },
-
+  { "nombreCortoJugador": "L.Bergström", "nombreJugador": "Lucas Bergström", "posicion": "Portero" },
+  
+  { "nombreCortoJugador": "J.Copete", "nombreJugador": "José Copete", "posicion": "Defensa" },
+  { "nombreCortoJugador": "H.Fort", "nombreJugador": "Héctor Fort", "posicion": "Defensa" },
+  { "nombreCortoJugador": "N.Souza", "nombreJugador": "Nathan Souza", "posicion": "Defensa" },
+  { "nombreCortoJugador": "A.Raíllo", "nombreJugador": "Antonio Raíllo", "posicion": "Defensa" },
+  { "nombreCortoJugador": "C.Azpilicueta", "nombreJugador": "César Azpilicueta", "posicion": "Defensa" },
   { "nombreCortoJugador": "D.Carvajal", "nombreJugador": "Dani Carvajal", "posicion": "Defensa" },
   { "nombreCortoJugador": "A.Rüdiger", "nombreJugador": "Antonio Rüdiger", "posicion": "Defensa" },
   { "nombreCortoJugador": "A.González", "nombreJugador": "Álvaro González", "posicion": "Defensa" },
@@ -121,6 +127,9 @@
   { "nombreCortoJugador": "C.Romero", "nombreJugador": "Cristian Romero", "posicion": "Defensa" },
   { "nombreCortoJugador": "A.Laporte", "nombreJugador": "Aymeric Laporte", "posicion": "Defensa" },
 
+  { "nombreCortoJugador": "F.Mastantuono", "nombreJugador": "Franco Mastantuono", "posicion": "Centrocampista" },
+  { "nombreCortoJugador": "F.de Jong", "nombreJugador": "Frenkie de Jong", "posicion": "Centrocampista" },
+  { "nombreCortoJugador": "S.Comesaña", "nombreJugador": "Santi Comesaña", "posicion": "Centrocampista" },
   { "nombreCortoJugador": "J.Bellingham", "nombreJugador": "Jude Bellingham", "posicion": "Centrocampista" },
   { "nombreCortoJugador": "Isco", "nombreJugador": "Isco Alarcón", "posicion": "Centrocampista" },
   { "nombreCortoJugador": "A.Almeida", "nombreJugador": "André Almeida", "posicion": "Centrocampista" },
