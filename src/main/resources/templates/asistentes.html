@@ -6,24 +6,22 @@
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <link rel="stylesheet" th:href="@{/css/estilos-tops.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script th:src="@{/js/burbuja-lloros.js}" defer></script>
     <script th:src="@{/js/burbuja-goleadores.js}" defer></script>
     <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
 </head>
 <body>
     <nav th:replace="~{fragments/navbar :: nav}"></nav>
-    <div class="main-container full-width">
-        <h1 class="equipo-titulo">👟Asistentes👟</h1>
+        <div class="main-container full-width">
+            <h1 class="equipo-titulo">👟Asistentes👟</h1>
 
-        <div class="contenedor-burbujas">
-            <button class="burbuja-jornada active" onclick="filtrarGoles('todos', this)">Todo</button>
-            
-            <th:block th:each="j : ${listaJornadasAsistencias}">
-                <button class="burbuja-jornada" 
-                        th:text="'J' + ${j}"
-                        th:onclick="|filtrarGoles(${j}, this)|">
-                </button>
-            </th:block>
+            <div class="app-navigator">
+                <button id="btnPrev" class="nav-btn" onclick="cambiarJornada(-1)">❮</button>
+                <div class="jornada-display" onclick="abrirSelector()">
+                    <span class="j-small" id="labelTipoVista">RESUMEN</span>
+                    <span class="j-big" id="numJornadaActual">Todo</span>
+                </div>
+                <button id="btnSigui" class="nav-btn" onclick="cambiarJornada(1)">❯</button>
+            </div>
         </div>
 
         <div class="table-wrapper">   
@@ -72,7 +70,7 @@
                             <th>#</th>
                             <th>Equipo</th>
                             <th>Jugador</th>
-                            <th class="text-center">Asistencias</th>
+                            <th class="text-center">Asist.</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -103,6 +101,22 @@
             </div>
         </div>
     </div>
-    <footer th:replace="~{fragments/footer :: footer}"></footer>
+    <div id="selectorJornadaModal" class="modal-selector">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Seleccionar Jornada</h3>
+            <button class="close-btn" onclick="cerrarSelector()">✕</button>
+        </div>
+        <div class="grid-jornadas">
+            <button class="btn-grid" onclick="irAJornadaDirecta(-1)">Todo</button>
+            <th:block th:each="j : ${listaJornadasAsistencias}">
+                <button class="btn-grid" 
+                        th:text="${j}" 
+                        th:onclick="|irAJornadaDirecta(${j})|"></button>
+            </th:block>
+        </div>
+    </div>
+</div>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

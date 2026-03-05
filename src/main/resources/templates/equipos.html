@@ -19,17 +19,32 @@
             <img th:src="${imgEquipo}" alt="Escudo">
             <h1 class="h1-equipo" th:text="${nombreEquipo}">Mister</h1>
         </div>
-        <div class="contenedor-filtros-jornada">
-            <button class="burbuja-jornada" onclick="filtrarPorRango(1, 38, this)">Todo</button>
-            
-            <th:block th:each="i : ${#numbers.sequence(1, 38, 8)}">
-                <button class="burbuja-jornada"
-                        th:with="fin=${(i + 7 > 38) ? 38 : i + 7}"
-                        th:classappend="${jornadaActual >= i && jornadaActual <= fin} ? 'active' : ''"
-                        th:onclick="|filtrarPorRango(${i}, ${fin}, this)|"
-                        th:text="|J${i}-J${fin}|">
-                </button>
-            </th:block>
+        <div class="app-navigator">
+            <button id="btnPrev" class="nav-btn" onclick="cambiarRango(-1)" style="visibility: hidden;">❮</button>
+            <div class="jornada-display" onclick="abrirSelectorRangos()">
+                <span class="j-small" id="labelRango">FILTRAR</span>
+                <span class="j-big" id="textoRangoActual">Todo</span>
+            </div>
+            <button id="btnSigui" class="nav-btn" onclick="cambiarRango(1)">❯</button>
+        </div>
+
+        <div id="modalRangos" class="modal-selector">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Seleccionar Rango</h3>
+                    <button class="close-btn" onclick="cerrarSelector()">✕</button>
+                </div>
+                <div class="grid-jornadas">
+                    <button class="btn-grid" onclick="irARangoDirecto(0)">Todo</button>
+                    <th:block th:each="i, iter : ${#numbers.sequence(1, 38, 8)}">
+                        <button class="btn-grid" 
+                                th:with="fin=${(i + 7 > 38) ? 38 : i + 7}"
+                                th:text="|J${i}-J${fin}|"
+                                th:onclick="|irARangoDirecto(${iter.index + 1})|">
+                        </button>
+                    </th:block>
+                </div>
+            </div>
         </div>
 
         <div class="split-container">

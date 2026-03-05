@@ -54,7 +54,7 @@ body {
     gap: clamp(5px, 1.5vw, 10px); 
     justify-content: flex-start;
     padding: 8px 12px;
-    min-width: 140px; /* Evita que el nombre se corte en móvil */
+    min-width: 9rem; /* Evita que el nombre se corte en móvil */
 }
 
 .table-wrapper::-webkit-scrollbar { display: none; }
@@ -66,6 +66,7 @@ body {
     background-color: #ffffff;
     font-size: clamp(0.85rem, 2.2vw, 1rem); /* Fuente dinámica */
     text-align: center;
+    overflow-y: auto;
 }
 
 .styled-table th {
@@ -106,33 +107,122 @@ body {
 .pos-MC { background-color: #17d386; }
 .pos-DL { background-color: #ff6188; }
 
-/* Burbujas de Jornada (Comunes) */
-.contenedor-burbujas, .contenedor-filtros-jornada {
+/* --- NAVEGADOR ESTILO APP --- */
+.app-navigator {
     display: flex;
-    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
+    padding: 12px 25px;
+    border-radius: 50px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 500px;
+    color: white;
+    box-shadow: 0 8px 20px rgba(26, 35, 126, 0.3);
+}
+
+.jornada-display { text-align: center; cursor: pointer; }
+.j-small { font-size: 0.7rem; display: block; opacity: 0.8; letter-spacing: 1px; }
+.j-big { font-size: 1.5rem; font-weight: 800; }
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: white;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
-    overflow-x: auto;
-    scrollbar-width: none;
+    transition: 0.3s;
 }
 
-.burbuja-jornada {
+.nav-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.3); }
+
+.tarjeta-jugador {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    margin-bottom: 12px;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-left: 5px solid #1a237e;
+    animation: fadeIn 0.4s ease-out; /* Animación de entrada */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.lado-izquierdo { display: flex; align-items: center; }
+.escudo-app { width: 35px; height: 35px; object-fit: contain; margin-right: 15px; }
+
+.nombre-jugador { display: block; font-weight: 700; color: #2d3748; font-size: 1rem; }
+.nombre-equipo { font-size: 0.85rem; color: #718096; }
+
+.lado-derecho { display: flex; align-items: center; gap: 12px; }
+
+.asist-box {
+    background: #e8eaf6;
+    padding: 6px 12px;
+    border-radius: 10px;
+    text-align: center;
+    min-width: 50px;
+}
+.asist-box span { display: block; font-weight: 800; color: #1a237e; font-size: 1.1rem; }
+.asist-box small { font-size: 0.6rem; text-transform: uppercase}
+
+/* Fondo oscuro del modal */
+.modal-selector {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+}
+
+/* Caja blanca con los números */
+.modal-content {
+    background-color: white;
+    margin: 20% auto;
+    padding: 20px;
+    border-radius: 20px;
+    width: 85%;
+    max-width: 400px;
+    animation: scaleUp 0.3s ease-out;
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.grid-jornadas {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columnas de números */
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-grid {
+    padding: 12px;
+    border: 1px solid #eee;
     background: #f8f9fa;
-    border: 2px solid var(--primary-blue);
-    color: var(--primary-blue);
-    padding: 8px 18px;
-    border-radius: 25px;
+    border-radius: 10px;
     font-weight: bold;
+    color: #1a237e;
     cursor: pointer;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    margin-bottom: 1rem;
 }
 
-.burbuja-jornada.active {
-    background: var(--primary-blue);
-    color: var(--white);
-}
+.btn-grid:active { background: #1a237e; color: white; }
 
 /* =========================================
    3. SECCIÓN: EQUIPOS Y GRÁFICAS

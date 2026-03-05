@@ -6,22 +6,23 @@
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <link rel="stylesheet" th:href="@{/css/estilos-tops.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script th:src="@{/js/burbuja-lloros.js}" defer></script>
+    <script th:src="@{/js/burbuja-goleadores.js}" defer></script>
     <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
 </head>
 <body>
     <nav th:replace="~{fragments/navbar :: nav}"></nav>
     <div class="main-container full-width">
-        <h1 class="titulo-pagina-lloro">😭Llorómetro Fantasy😭</h1>
+         <h1 class="titulo-pagina-lloro">😭Llorómetro Fantasy😭</h1>
 
-        <div class="contenedor-burbujas">
-            <button th:each="j : ${listaJornadasLloros}" 
-                    class="burbuja-jornada" 
-                    th:text="'J' + ${j.numeroJornada}"
-                    th:onclick="|filtrarLloros(${j.numeroJornada}, this)|">
-            </button>
+        <div class="app-navigator">
+                <button class="nav-btn" onclick="cambiarJornada(-1)">❮</button>
+                <div class="jornada-display" onclick="abrirSelector()">
+                    <span class="j-small" id="labelTipoVista">RESUMEN</span>
+                    <span class="j-big" id="numJornadaActual">Todo</span>
+                </div>
+                <button class="nav-btn" onclick="cambiarJornada(1)">❯</button>
+            </div>
         </div>
-    </div>
 
         <div class="table-wrapper">
             <div th:each="j : ${listaJornadasLloros}" th:id="'jornada-bloque-' + ${j.numeroJornada}">
