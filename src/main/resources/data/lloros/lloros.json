@@ -23,5 +23,31 @@
         ]
       }
     ]
+  },
+  {
+    "numeroJornada": 26,
+    "equiposLloros": [
+      {
+        "nombreMister": "Rayo Vaticano",
+        "lloros": [
+          { "motivo": "'Vendo a Satriano y marca' (Lo vendió hace 2 meses" },
+		  { "motivo": "'Un 9.7 Soria y el otro día me hizo un 1' (Jódete VayaNabo." },
+		  { "motivo": "'Ah que Camavinga es baja por la caries. - Este juego solo me trae desgracias.'" },
+		  { "motivo": "'Hoy Soria es Casillas y el otro dia el imbecil no.'" }
+        ]
+      },
+      {
+        "nombreMister": "Los Hokages de Merlès",
+        "lloros": [
+          { "motivo": "'Qué asco de Celta. Marcos Alonso desconvocado y encima tenia otros 4 defensas más para poner😭" }
+        ]
+      },
+      {
+        "nombreMister": "Fénix del mar",
+        "lloros": [
+          { "motivo": "'Ahí te deje de mover la fruta' (Le han clausulado a De Frutos.)" }
+        ]
+      }
+    ]
   }
 ]

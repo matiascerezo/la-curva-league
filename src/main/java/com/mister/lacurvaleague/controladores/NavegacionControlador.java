@@ -1,5 +1,6 @@
 package com.mister.lacurvaleague.controladores;
 
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -142,6 +143,7 @@ public class NavegacionControlador {
                         .collect(Collectors.groupingBy(RankingLlorosDTO::getNumeroJornada)); */       
 
         Map<Integer, Map<String, List<RankingLlorosDTO>>> llorosMap = listaLlorosCompleta.stream()
+            .sorted(Comparator.comparing(RankingLlorosDTO::getNumeroJornada))
             .collect(Collectors.groupingBy(
                 RankingLlorosDTO::getNumeroJornada,
                 LinkedHashMap::new, // Mantiene el orden de las jornadas

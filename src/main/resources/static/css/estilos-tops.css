@@ -238,7 +238,7 @@ body {
     overflow-y: auto;
 }
 
-.btn-grid {
+.btn-grid, .btn-gridLloro {
     aspect-ratio: 1 / 1; /* Botones cuadrados perfectos */
     background: #f8faff;
     border: 1px solid #e2e8f0;

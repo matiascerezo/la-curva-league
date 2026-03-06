@@ -4,18 +4,17 @@ let indiceActual = -1;
 
 window.onload = function() {
     // 1. Comprobamos si estamos en la pantalla de Lloros
-    const esPantallaLloros = document.getElementById('jornada-goles-lloros');
-    const bloques = document.querySelectorAll('.bloque-jornada-goles');
+    const bloquesLloros = document.querySelectorAll('.bloque-jornada-lloros');
+    const bloquesGoles = document.querySelectorAll('.bloque-jornada-goles');
 
-    if (esPantallaLloros) {
-        // LÓGICA LLOROS: Iniciamos en la ÚLTIMA jornada (total - 1)
-        if (bloques.length > 0) {
-            indiceActual = bloques.length - 1; 
-            actualizarVistaLlorometro();
-        }
+    if (bloquesLloros.length > 0) {
+        // PANTALLA LLOROS: Iniciamos en la ÚLTIMA jornada
+        indiceActual = bloquesLloros.length - 1; 
+        actualizarVistaLlorometro();
     } else {
-        // LÓGICA GOLEADORES/ASISTENTES: Iniciamos en -1 (Vista "Todo")
+        // PANTALLA GOLEADORES: Iniciamos en -1 (Todo)
         indiceActual = -1;
+        if (typeof actualizarVista === "function") actualizarVista();
     }
 };
 
@@ -61,21 +60,27 @@ function actualizarVista() {
 }
 
 function actualizarVistaLlorometro() {
-    const bloques = document.querySelectorAll('.bloque-jornada-goles');
+    const bloques = document.querySelectorAll('.bloque-jornada-lloros');
+    const total = bloques.length;
     
     // Ocultar todos
     bloques.forEach(b => b.style.display = 'none');
 
-    // Mostrar el del índice actual
     const bloqueActivo = bloques[indiceActual];
     if (bloqueActivo) {
         bloqueActivo.style.display = 'block';
 
-        // Actualizar el número en el navegador (J-BIG)
-        // Extraemos el número del ID 'jornada-goles-25' -> '25'
+        // Extraer número del ID: 'bloque-jornada-lloros-25' -> '25'
         const numJornada = bloqueActivo.id.split('-').pop();
         const display = document.getElementById('numJornadaActual');
         if (display) display.innerText = numJornada;
+
+        // Control de flechas
+        const btnPrev = document.getElementById('btnPrev');
+        const btnSigui = document.getElementById('btnSigui');
+        
+        if (btnPrev) btnPrev.style.visibility = (indiceActual === 0) ? 'hidden' : 'visible';
+        if (btnSigui) btnSigui.style.visibility = (indiceActual >= total - 1) ? 'hidden' : 'visible';
     }
 }
 
@@ -95,7 +100,7 @@ function cambiarJornada(direccion) {
 }
 
 function cambiarJornadaLloros(direccion) {
-    const bloques = document.querySelectorAll('.bloque-jornada-goles');
+    const bloques = document.querySelectorAll('.bloque-jornada-lloros');
     const total = bloques.length;
 
     if (total === 0) return;
@@ -121,24 +126,33 @@ function cerrarSelector() {
 
 // Función para salto directo
 function irAJornadaDirecta(jornada) {
-
-    const esLloros = document.getElementById('jornada-goles-lloros');
-    if (jornada === -1) {
-        indiceActual = -1;
-    } else {
-        // Buscamos la posición de esa jornada en el array de jornadas disponibles
-        const bloquesJornada = document.querySelectorAll('.bloque-jornada-goles:not(#jornada-goles-todos)');
-        for(let i = 0; i < bloquesJornada.length; i++) {
-            if(bloquesJornada[i].id === 'jornada-goles-' + jornada) {
+    const bloquesLloros = document.querySelectorAll('.bloque-jornada-lloros');
+    
+    if (bloquesLloros.length > 0) {
+        // LÓGICA PARA LLOROS
+        for(let i = 0; i < bloquesLloros.length; i++) {
+            // Buscamos con tu nuevo prefijo de ID: 'bloque-jornada-lloros-'
+            if(bloquesLloros[i].id === 'bloque-jornada-lloros-' + jornada) {
                 indiceActual = i;
                 break;
             }
         }
-    }
-    cerrarSelector();
-    if(esLloros){
+        cerrarSelector();
         actualizarVistaLlorometro();
     } else {
+        // LÓGICA PARA GOLEADORES
+        if (jornada === -1) {
+            indiceActual = -1;
+        } else {
+            const bloquesGoles = document.querySelectorAll('.bloque-jornada-goles:not(#jornada-goles-todos)');
+            for(let i = 0; i < bloquesGoles.length; i++) {
+                if(bloquesGoles[i].id === 'jornada-goles-' + jornada) {
+                    indiceActual = i;
+                    break;
+                }
+            }
+        }
+        cerrarSelector();
         actualizarVista();
     }
 }

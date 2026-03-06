@@ -16,10 +16,10 @@
         <h1 class="titulo-pagina-lloro">😭Llorómetro Fantasy😭</h1>
 
         <div class="app-navigator">
-            <button id="btnPrev" class="nav-btn" onclick="cambiarJornadaLloros(-1)">❮</button>
+            <button id="btnPrev" class="nav-btn" onclick="cambiarJornadaLloros(-1)" style="visibility: hidden;">❮</button>
             <div class="jornada-display" onclick="abrirSelector()">
                 <span class="j-small" id="labelTipoVista">JORNADA</span>
-                <span class="j-big" id="numJornadaActual" th:text="${numJornadaActual}">J0</span>
+                <span class="j-big" id="numJornadaActual" th:text="${jornadaActual}">J0</span>
             </div>
             <button id="btnSigui" class="nav-btn" onclick="cambiarJornadaLloros(1)">❯</button>
         </div>
@@ -27,9 +27,8 @@
 
     <div class="table-wrapper">
         <div th:each="jornadaEntry : ${mapaLlorosJornadas}" 
-            th:id="'jornada-goles-' + ${jornadaEntry.key}" 
-            class="bloque-jornada-goles" 
-            th:style="${jornadaEntry.key == numJornadaActual} ? 'display: block;' : 'display: none;'">
+            th:id="'bloque-jornada-lloros-' + ${jornadaEntry.key}" 
+            class="bloque-jornada-lloros">
             
             <table class="styled-table-llorometro">
                 <thead>
@@ -67,7 +66,7 @@
                 </div>
                 <div class="grid-jornadas">
                     <th:block th:each="j : ${listaJornadas}">
-                        <button class="btn-grid" 
+                        <button class="btn-gridLloro" 
                                 th:text="${j}" 
                                 th:onclick="|irAJornadaDirecta(${j})|"></button>
                     </th:block>
