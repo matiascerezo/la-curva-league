@@ -12,14 +12,15 @@ import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.GoleadorDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingAsistenciasDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingGolesDTO;
 
 @Repository
 public interface EquipoRepository extends JpaRepository<Equipo, Long> {
 
-        @Query(value = "SELECT m.nombre_equipo as nombreEquipo, SUM(e.puntos_jornada) as puntosTotales " +
+        @Query(value = "SELECT m.img_equipo, m.nombre_equipo as nombreEquipo, SUM(e.puntos_jornada) as puntosTotales " +
             "FROM mister m " +
             "join equipo e on e.mister_id = m.MISTER_ID " +
-            "GROUP BY m.nombre_equipo " +
+            "GROUP BY m.nombre_equipo, m.img_equipo " +
             "ORDER BY puntosTotales DESC", nativeQuery = true)
         List<ClasificacionGeneralDTO> getClasificacionGeneral();
 
@@ -31,10 +32,10 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
                        "ORDER BY j.numero_jornada DESC", nativeQuery = true)
         List<ClasificacionEquipoDTO> getClasificacionEquipo(Long misterId);
 
-        @Query(value =  "SELECT equipo, golesTotalesEquipo, nombrePichichi AS pichichi, posicionPichichi AS posicion, golesPichichi, "+
+        @Query(value =  "SELECT imgEquipo, equipo, golesTotalesEquipo, nombrePichichi AS pichichi, posicionPichichi AS posicion, golesPichichi, "+
 						"(golesTotalesEquipo * 1.0 / (SELECT MAX(jornada_id) FROM jornada)) AS mediaGolesXJornada "+
 						"FROM ( "+
-								"SELECT m.nombre_equipo AS equipo, j.nombre AS nombrePichichi,"+
+								"SELECT m.img_equipo as imgEquipo, m.nombre_equipo AS equipo, j.nombre AS nombrePichichi,"+
 									"j.posicion AS posicionPichichi, j.goles AS golesPichichi,"+
 									"SUM(j.goles) OVER (PARTITION BY m.nombre_equipo) AS golesTotalesEquipo, "+
 									"ROW_NUMBER() OVER (PARTITION BY m.nombre_equipo "+ 
@@ -48,10 +49,10 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
 							"ORDER BY golesTotalesEquipo DESC", nativeQuery = true)
         List<GoleadorDTO> getGolesYGoleadoresXEquipo();
 
-        @Query(value =  "SELECT equipo, asistenciasTotalesEquipo, maxAsistente, posicion, asistencias, "+
+        @Query(value =  "SELECT imgEquipo, equipo, asistenciasTotalesEquipo, maxAsistente, posicion, asistencias, "+
 						"(asistenciasTotalesEquipo * 1.0 / (SELECT MAX(jornada_id) FROM jornada)) AS mediaAsistenciasXJornada  "+
 						"FROM (  "+
-								"SELECT m.nombre_equipo AS equipo, j.nombre AS maxAsistente, "+
+								"SELECT m.img_equipo as imgEquipo, m.nombre_equipo AS equipo, j.nombre AS maxAsistente, "+
 									"j.posicion, j.asistencias, "+
 								"SUM(j.asistencias) OVER (PARTITION BY m.nombre_equipo) AS asistenciasTotalesEquipo, "+
 								"ROW_NUMBER() OVER (PARTITION BY m.nombre_equipo "+
@@ -72,6 +73,16 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
 				"JOIN e.mister m " + // Relación en la clase Equipo
 				"JOIN e.jornada jor " + // Relación en la clase Equipo
 				"WHERE j.asistencias > 0 " +
-				"ORDER BY numeroJornada DESC, asistencias DESC, nombreEquipo ASC")
+				"ORDER BY nombreEquipo ASC, asistencias DESC")
 		List<RankingAsistenciasDTO> getAsistenciasEquipos();
+
+		@Query("SELECT new com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingGolesDTO(" +
+				"m.imgEquipo, m.nombreEquipo, j.goles, j.nombre, j.posicion, jor.numeroJornada) " +
+				"FROM Jugador j " +
+				"JOIN j.equipo e " +
+				"JOIN e.mister m " + 
+				"JOIN e.jornada jor " + 
+				"WHERE j.goles > 0 " +
+				"ORDER BY nombreEquipo ASC, goles DESC")
+		List<RankingGolesDTO> getGolesEquipos();
 }

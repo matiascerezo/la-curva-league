@@ -1,5 +1,6 @@
 package com.mister.lacurvaleague.controladores;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingAsistenciasDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingGolesDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingLlorosDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.TarjetasDTO;
 import com.mister.lacurvaleague.repository.EquipoRepository;
 import com.mister.lacurvaleague.repository.MisterRepository;
@@ -96,10 +99,10 @@ public class NavegacionControlador {
 
     @GetMapping("/top/asistentes")
     public String getAsistenciasYAsistentesXEquipo(Model model) {
-        List<RankingAsistenciasDTO> listaCompleta = misterService.getAsistenciasEquipos();
+        List<RankingAsistenciasDTO> listaAsistenciasCompleta = misterService.getAsistenciasEquipos();
 
         // 1. Agrupamos por número de jornada
-        Map<Integer, List<RankingAsistenciasDTO>> asistenciasMap = listaCompleta.stream()
+        Map<Integer, List<RankingAsistenciasDTO>> asistenciasMap = listaAsistenciasCompleta.stream()
                         .collect(Collectors.groupingBy(RankingAsistenciasDTO::getNumeroJornada));
 
         // 2. Extraemos solo los números de jornada para los botones superiores
@@ -113,6 +116,15 @@ public class NavegacionControlador {
 
     @GetMapping("/top/goleadores")
     public String getGolesYGoleadoresXEquipo(Model model) {
+        List<RankingGolesDTO> listaGolesCompleta = misterService.getGolesEquipos();
+
+        Map<Integer, List<RankingGolesDTO>> golesMap = listaGolesCompleta.stream()
+                        .collect(Collectors.groupingBy(RankingGolesDTO::getNumeroJornada));
+
+        List<Integer> listaJornadas = golesMap.keySet().stream().collect(Collectors.toList());
+
+        model.addAttribute("mapaGolesJornadas", golesMap);
+        model.addAttribute("listaJornadasGoles", listaJornadas);
         model.addAttribute("listaGoleadores", misterService.getGolesYGoleadoresXEquipo());
         return "goleadores";
     }
@@ -123,8 +135,32 @@ public class NavegacionControlador {
     }
 
     @GetMapping("/top/llorometro")
-    public String mostrarLloros(Model model) { 
-        model.addAttribute("listaJornadasLloros", llorometroService.getAllLlorosParaVista());
+    public String mostrarLloros(Model model) {
+
+        List<RankingLlorosDTO> listaLlorosCompleta = llorometroService.getLlorosEquipos();
+/*         Map<Integer, List<RankingLlorosDTO>> llorosMap = listaLlorosCompleta.stream()
+                        .collect(Collectors.groupingBy(RankingLlorosDTO::getNumeroJornada)); */       
+
+        Map<Integer, Map<String, List<RankingLlorosDTO>>> llorosMap = listaLlorosCompleta.stream()
+            .collect(Collectors.groupingBy(
+                RankingLlorosDTO::getNumeroJornada,
+                LinkedHashMap::new, // Mantiene el orden de las jornadas
+                Collectors.groupingBy(
+                    RankingLlorosDTO::getNombreEquipo,
+                    LinkedHashMap::new, // Mantiene vuestro orden A-Z de equipos [cite: 2026-03-04]
+                    Collectors.toList()
+                )
+            ));
+
+        List<Integer> listaJornadas = listaLlorosCompleta.stream()
+                                    .map(RankingLlorosDTO::getNumeroJornada)
+                                    .distinct()
+                                    .sorted()
+                                    .collect(Collectors.toList());
+
+        model.addAttribute("mapaLlorosJornadas", llorosMap);
+        model.addAttribute("listaJornadas", listaJornadas);
+        model.addAttribute("numJornadaActual", listaJornadas.getFirst());
         return "llorometro";
     }
 

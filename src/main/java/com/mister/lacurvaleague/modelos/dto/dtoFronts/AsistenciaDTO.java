@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AsistenciaDTO implements FormatPosicion {
 
+    private String imgEquipo;
     private String equipo;
     private Long asistenciasTotalesEquipo;
     private String maxAsistente; 

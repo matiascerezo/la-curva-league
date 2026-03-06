@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GoleadorDTO implements FormatPosicion {
 
+    private String imgEquipo;
     private String equipo;
     private Long golesTotalesEquipo;
     private String pichichi; 

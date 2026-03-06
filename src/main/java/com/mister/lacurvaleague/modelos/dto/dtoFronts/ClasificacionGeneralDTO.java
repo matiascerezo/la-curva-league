@@ -5,6 +5,7 @@ import lombok.Value;
 @Value
 public class ClasificacionGeneralDTO {
 
+    String imgEquipo;
     String nombreEquipo;
     Long puntosTotales;
  

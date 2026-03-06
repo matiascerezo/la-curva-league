@@ -21,7 +21,16 @@
         <tbody>
             <tr th:each="equipo, iter : ${listaEquipos}">
                 <td th:text="${iter.count > 3 ? iter.count : ''}">1</td>
-                <td th:text="${equipo.nombreEquipo}">Nombre</td>
+                <td>
+                    <div class="equipo-info-cell">
+                        <img th:src="${equipo.imgEquipo}" 
+                            alt="Escudo" 
+                            class="escudo-tabla">
+                        
+                        <span th:text="${equipo.nombreEquipo}" 
+                            class="nombre-equipo-tabla"></span>
+                    </div>
+                </td>
                 <td th:text="${equipo.puntosTotales} + ' pts'">0 pts</td>
             </tr>
         </tbody>

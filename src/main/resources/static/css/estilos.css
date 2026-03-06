@@ -129,7 +129,7 @@ body {
 .table-wrapper {
     width: 100%;
     overflow-x: auto; /* Scroll si la tabla es muy ancha en móvil */
-    border-radius: 12px;
+    border-radius: 1rem;
     box-shadow: 0 20px 25px rgba(0,0,0,0.1);
 }
 
@@ -149,6 +149,33 @@ body {
     padding: clamp(12px, 2.5vh, 20px) 10px;
     text-align: center;
     border-bottom: 1px solid #eee;
+}
+
+/* Contenedor flexible para el escudo y nombre */
+.equipo-info-cell {
+    display: flex;
+    align-items: center;      /* Mantiene el escudo centrado verticalmente con las 2 líneas */
+    justify-content: center; /* IMPORTANTE: Alinea al inicio, no al centro */
+    gap: 0.8rem;               /* Espacio fijo y elegante entre escudo y nombre */
+    width: 100%;
+    padding-left: 10%;         /* Ajusta este % para centrar el bloque visualmente en la celda */
+    flex-wrap: nowrap;
+}
+
+/* Estilo para el escudo dentro de la celda */
+.escudo-tabla {
+    width: 1.8rem;
+    height: 1.8rem;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+/* Opcional: Estilo para el nombre del equipo */
+.nombre-equipo-tabla {
+    line-height: 1.1;          /* Junta las líneas del nombre para que no se vea desparramado */
+    text-align: left;          /* Alineación natural de lectura */
+    font-weight: 700;
+    word-break: break-word;
 }
 
 /* ESTILOS PODIO RECUPERADOS */

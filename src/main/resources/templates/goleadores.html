@@ -6,6 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <link rel="stylesheet" th:href="@{/css/estilos-tops.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script th:src="@{/js/burbuja-goleadores.js}" defer></script>
     <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
 </head>
 <body>
@@ -13,8 +14,18 @@
 
     <div class="main-container full-width">
         <h1 class="equipo-titulo">⚽Goleadores ⚽</h1>
+        <div class="app-navigator">
+                <button id="btnPrev" class="nav-btn" onclick="cambiarJornada(-1)" style="visibility: hidden;">❮</button>
+                <div class="jornada-display" onclick="abrirSelector()">
+                    <span class="j-small" id="labelTipoVista">RESUMEN</span>
+                    <span class="j-big" id="numJornadaActual">Todo</span>
+                </div>
+                <button id="btnSigui" class="nav-btn" onclick="cambiarJornada(1)">❯</button>
+        </div>
+    </div>
 
-        <div class="table-wrapper">
+    <div class="table-wrapper">
+        <div id="jornada-goles-todos" class="bloque-jornada-goles">
             <table class="styled-table">
                 <thead>
                     <tr>
@@ -29,9 +40,11 @@
                 <tbody>
                     <tr th:each="g, iter : ${listaGoleadores}">
                         <td th:text="${iter.count == 1 ? '👑': iter.count}" class="posicion-col">1</td>
-                        
-                        <td>
-                            <span th:text="${g.equipo}" style="font-weight: 600;"></span>
+                        <td style="font-weight: 600;">
+                            <div class="equipo-info-cell">
+                                <img th:src="${g.imgEquipo}" alt="Escudo" class="escudo-tabla">                                   
+                                <span th:text="${g.equipo}"></span>
+                            </div>
                         </td>
                         <td class="text-center">
                             <span class="badge-goles" th:text="${g.golesTotalesEquipo}">0</span>
@@ -52,6 +65,59 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+        <div class="table-wrapper">
+            <div th:each="entry : ${mapaGolesJornadas}" 
+                th:id="'jornada-goles-' + ${entry.key}" 
+                class="bloque-jornada-goles" 
+                style="display: none;">
+                
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Equipo</th>
+                            <th>Jugador</th>
+                            <th class="text-center">Goles</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="goles, iter : ${entry.value}">
+                            <td style="font-weight: 600;">
+                                <div class="equipo-info-cell">
+                                    <img th:src="${goles.imgEquipo}" alt="Escudo" class="escudo-tabla">                                  
+                                    <span th:text="${goles.nombreEquipo}"></span>
+                                </div>
+                            </td>
+                             <td>
+                                <div class="pichichi-cell">
+                                    <span th:text="${goles.nombreJugador}">Jugador</span>
+                                    <span th:text="${goles.getPosicionAbreviada(goles.posicion)}" 
+                                        th:class="'badge-posicion pos-' + ${goles.getPosicionAbreviada(goles.posicion)}">DC</span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge-goles" th:text="${goles.goles}"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <div id="selectorJornadaModal" class="modal-selector">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Seleccionar Jornada</h3>
+                <button class="close-btn" onclick="cerrarSelector()">✕</button>
+            </div>
+            <div class="grid-jornadas">
+                <button class="btn-grid" onclick="irAJornadaDirecta(-1)">Todo</button>
+                <th:block th:each="j : ${listaJornadasGoles}">
+                    <button class="btn-grid" 
+                            th:text="${j}" 
+                            th:onclick="|irAJornadaDirecta(${j})|"></button>
+                </th:block>
+            </div>
         </div>
     </div>
 

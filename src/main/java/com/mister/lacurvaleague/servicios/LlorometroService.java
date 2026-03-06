@@ -4,6 +4,7 @@ import com.mister.lacurvaleague.modelos.Llorometro;
 import com.mister.lacurvaleague.modelos.dto.LlorometroDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.LloroDetalleDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.MisterLlorosDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingLlorosDTO;
 import com.mister.lacurvaleague.repository.JornadaRepository;
 import com.mister.lacurvaleague.repository.LlorometroRepository;
 import com.mister.lacurvaleague.repository.MisterRepository;
@@ -68,5 +69,9 @@ public class LlorometroService {
             listaFinal.add(jornadaDto);
         });
         return listaFinal;
+    }
+
+    public List<RankingLlorosDTO> getLlorosEquipos(){
+        return llorometroRepository.getLlorosEquipos();
     }
 }

@@ -11,46 +11,69 @@
 </head>
 <body>
     <nav th:replace="~{fragments/navbar :: nav}"></nav>
+
     <div class="main-container full-width">
-         <h1 class="titulo-pagina-lloro">😭Llorómetro Fantasy😭</h1>
+        <h1 class="titulo-pagina-lloro">😭Llorómetro Fantasy😭</h1>
 
         <div class="app-navigator">
-                <button class="nav-btn" onclick="cambiarJornada(-1)">❮</button>
-                <div class="jornada-display" onclick="abrirSelector()">
-                    <span class="j-small" id="labelTipoVista">RESUMEN</span>
-                    <span class="j-big" id="numJornadaActual">Todo</span>
-                </div>
-                <button class="nav-btn" onclick="cambiarJornada(1)">❯</button>
+            <button id="btnPrev" class="nav-btn" onclick="cambiarJornadaLloros(-1)">❮</button>
+            <div class="jornada-display" onclick="abrirSelector()">
+                <span class="j-small" id="labelTipoVista">JORNADA</span>
+                <span class="j-big" id="numJornadaActual" th:text="${numJornadaActual}">J0</span>
             </div>
+            <button id="btnSigui" class="nav-btn" onclick="cambiarJornadaLloros(1)">❯</button>
         </div>
+    </div>
 
-        <div class="table-wrapper">
-            <div th:each="j : ${listaJornadasLloros}" th:id="'jornada-bloque-' + ${j.numeroJornada}">
-                <table class="styled-table-llorometro">
-                    <thead>
-                        <tr>
-                            <th class="col-mister">Mister</th>
-                            <th>Motivos del lloro</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="equipo : ${j.equiposLloros}">
-                            <td class="mister-nombre">
-                                <span th:text="${equipo.nombreMister}">Nombre</span>
-                            </td>
-                            <td class="col-motivos">
-                                <ul class="lista-lloros">
-                                    <li th:each="l : ${equipo.lloros}">
-                                        <span class="icon-lloro">📢</span>
-                                        <span th:text="${l.motivo}"></span>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+    <div class="table-wrapper">
+        <div th:each="jornadaEntry : ${mapaLlorosJornadas}" 
+            th:id="'jornada-goles-' + ${jornadaEntry.key}" 
+            class="bloque-jornada-goles" 
+            th:style="${jornadaEntry.key == numJornadaActual} ? 'display: block;' : 'display: none;'">
+            
+            <table class="styled-table-llorometro">
+                <thead>
+                    <tr>
+                        <th class="col-mister">Mister</th>
+                        <th>Motivos del lloro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="misterEntry : ${jornadaEntry.value}">
+                        <td class="mister-nombre">
+                            <div class="equipo-info-cell">
+                                <img th:src="${misterEntry.value[0].imgEquipo}" class="escudo-tabla">
+                                <span th:text="${misterEntry.key}"></span>
+                            </div>
+                        </td>
+                        <td class="col-motivos">
+                            <ul class="lista-lloros">
+                                <li th:each="l : ${misterEntry.value}">
+                                    <span class="icon-lloro">📢</span>
+                                    <span th:text="${l.motivo}"></span>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="selectorJornadaModal" class="modal-selector">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Seleccionar Jornada</h3>
+                    <button class="close-btn" onclick="cerrarSelector()">✕</button>
+                </div>
+                <div class="grid-jornadas">
+                    <th:block th:each="j : ${listaJornadas}">
+                        <button class="btn-grid" 
+                                th:text="${j}" 
+                                th:onclick="|irAJornadaDirecta(${j})|"></button>
+                    </th:block>
+                </div>
             </div>
         </div>
-<nav th:replace="~{fragments/footer :: footer}"></nav>
+    <nav th:replace="~{fragments/footer :: footer}"></nav>
 </body>
 </html>

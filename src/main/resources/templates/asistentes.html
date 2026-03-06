@@ -15,7 +15,7 @@
             <h1 class="equipo-titulo">👟Asistentes👟</h1>
 
             <div class="app-navigator">
-                <button id="btnPrev" class="nav-btn" onclick="cambiarJornada(-1)">❮</button>
+                <button id="btnPrev" class="nav-btn" onclick="cambiarJornada(-1)" style="visibility: hidden;">❮</button>
                 <div class="jornada-display" onclick="abrirSelector()">
                     <span class="j-small" id="labelTipoVista">RESUMEN</span>
                     <span class="j-big" id="numJornadaActual">Todo</span>
@@ -30,9 +30,9 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Equipo</th>
+                            <th class="text-center">Equipo</th>
                             <th class="text-center">Asistencias Totales</th>
-                            <th>Máx. Asistente</th>
+                            <th class="text-center">Máx. Asistente</th>
                             <th class="text-center">Asistencias</th>
                             <th class="text-center col-media-asis">Asist./Jornada</th>
                         </tr>
@@ -40,7 +40,12 @@
                     <tbody>
                         <tr th:each="g, iter : ${listaAsistentes}">
                             <td th:text="${iter.count == 1 ? '👑': iter.count}" class="posicion-col">1</td>
-                            <td><span th:text="${g.equipo}" style="font-weight: 600;"></span></td>
+                            <td style="font-weight: 600;">
+                                <div class="equipo-info-cell">
+                                    <img th:src="${g.imgEquipo}" alt="Escudo" class="escudo-tabla">                                   
+                                    <span th:text="${g.equipo}"></span>
+                                </div>
+                            </td>
                             <td class="text-center"><span class="badge-goles" th:text="${g.asistenciasTotalesEquipo}">0</span></td>
                             <td>
                                 <div class="pichichi-cell">
@@ -67,7 +72,6 @@
                 <table class="styled-table">
                     <thead>
                         <tr>
-                            <th>#</th>
                             <th>Equipo</th>
                             <th>Jugador</th>
                             <th class="text-center">Asist.</th>
@@ -75,13 +79,9 @@
                     </thead>
                     <tbody>
                         <tr th:each="asist, iter : ${entry.value}">
-                            <td th:text="${iter.count}"></td>
                             <td style="font-weight: 600;">
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <img th:src="${asist.imgEquipo}" 
-                                        alt="Escudo" 
-                                        style="width: 30px; height: 30px; object-fit: contain; border-radius: 50%;">
-                                    
+                                <div class="equipo-info-cell">
+                                    <img th:src="${asist.imgEquipo}" alt="Escudo" class="escudo-tabla">   
                                     <span th:text="${asist.nombreEquipo}"></span>
                                 </div>
                             </td>
@@ -102,21 +102,21 @@
         </div>
     </div>
     <div id="selectorJornadaModal" class="modal-selector">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>Seleccionar Jornada</h3>
-            <button class="close-btn" onclick="cerrarSelector()">✕</button>
-        </div>
-        <div class="grid-jornadas">
-            <button class="btn-grid" onclick="irAJornadaDirecta(-1)">Todo</button>
-            <th:block th:each="j : ${listaJornadasAsistencias}">
-                <button class="btn-grid" 
-                        th:text="${j}" 
-                        th:onclick="|irAJornadaDirecta(${j})|"></button>
-            </th:block>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Seleccionar Jornada</h3>
+                <button class="close-btn" onclick="cerrarSelector()">✕</button>
+            </div>
+            <div class="grid-jornadas">
+                <button class="btn-grid" onclick="irAJornadaDirecta(-1)">Todo</button>
+                <th:block th:each="j : ${listaJornadasAsistencias}">
+                    <button class="btn-grid" 
+                            th:text="${j}" 
+                            th:onclick="|irAJornadaDirecta(${j})|"></button>
+                </th:block>
+            </div>
         </div>
     </div>
-</div>
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>
