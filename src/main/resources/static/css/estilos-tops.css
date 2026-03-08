@@ -51,12 +51,14 @@ body {
 }
 
 .pichichi-cell {
+    display: flex;
     align-items: center;
-    /* Espacio entre posición, nombre y badge */
-    gap: clamp(5px, 1.5vw, 10px); 
+    padding: 0.5rem 0.2rem 0.5rem 0.5rem;   
+    gap: clamp(0.3rem, 1vw, 0.6rem);  
     justify-content: flex-start;
-    padding: 8px 12px;
-    min-width: 9rem; /* Evita que el nombre se corte en móvil */
+    width: auto;
+    max-width: 100%;
+    white-space: nowrap;
 }
 
 .table-wrapper::-webkit-scrollbar { display: none; }

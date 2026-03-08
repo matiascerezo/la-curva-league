@@ -30,6 +30,7 @@ import com.mister.lacurvaleague.modelos.dto.LlorometroDTO;
 import com.mister.lacurvaleague.modelos.dto.MisterDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.LloroDetalleDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.MisterLlorosDTO;
+import com.mister.lacurvaleague.modelos.dto.util.FormatPosicion;
 import com.mister.lacurvaleague.repository.EquipoRepository;
 import com.mister.lacurvaleague.repository.JornadaRepository;
 import com.mister.lacurvaleague.repository.JugadorRealRepository;
@@ -40,7 +41,7 @@ import com.mister.lacurvaleague.repository.MisterRepository;
 import jakarta.transaction.Transactional;
 
 @Service
-public class MantenimientoDatosService {
+public class MantenimientoDatosService implements FormatPosicion {
 
     @Value("${path.json_jornadas}")
     private String PATH_JSON_JORNADA;
@@ -71,7 +72,7 @@ public class MantenimientoDatosService {
      * @return Jornada con los datos del fichero .json
      */
     @Transactional
-    public void procesarJornada(Resource recurso) {
+    public int procesarJornada(Resource recurso) {
         List<Jornada> listaJornadas = new ArrayList<>();
         List<Equipo> listaEquipos = new ArrayList<>();
         List<Jugador> listaJugadores = new ArrayList<>();
@@ -107,29 +108,35 @@ public class MantenimientoDatosService {
             equipoRepository.saveAll(listaEquipos);
             jugadorRepository.saveAll(listaJugadores);
         }
+        return listaJugadores.size();
     }
 
     /**
      * Método que lee la carpeta 'data/jornadas/' y procesa todo lo que hay en formato .json.
      * @return
      */
-   public int procesarTodasLasJornadas() {
+   public String procesarTodasLasJornadas(Integer jornada) {
         int totalJornadas = 0;
+        int jornadasProcesadas = 0;
+        String path = "*";
         try {
             PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
-            Resource[] resources = resolver.getResources("classpath*:" + PATH_JSON_JORNADA + "*.json");
+            if(jornada != null) {
+                path = String.valueOf(jornada);
+            }
+            Resource[] resources = resolver.getResources("classpath*:" + PATH_JSON_JORNADA + path +".json");
             totalJornadas = resources.length;
 
             for (Resource resource : resources) {
-                procesarJornada(resource);
+                jornadasProcesadas = procesarJornada(resource);
             }
 
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
             throw new RuntimeException("Error al localizar JSON en " + PATH_JSON_JORNADA, e);
         }
-        return totalJornadas;
+        return "Jornadas existentes: " + totalJornadas + " - PROCESADOS: " + jornadasProcesadas;
     }
 
     /**
@@ -139,40 +146,34 @@ public class MantenimientoDatosService {
     public String cargarJugadoresReales() {
 
         int jugadoresCargados = 0;
-        int jugadoresNoCargados = 0;
-        List<JugadorReal> jugadoresRealesACargar = new ArrayList<>();
+        int totales = 0;
 
         try {
             String rutaPathFichero = PATH_JSON_JUGADORES + "jugadores_reales.json";
             
             InputStream is = getClass().getClassLoader().getResourceAsStream(rutaPathFichero);
             List<JugadorRealDTO> listaJugadoresDTO = objectMapper.readValue(is, new TypeReference<List<JugadorRealDTO>>() {});
-            Set<String> listaJugadoresBBDD = jugadorRealRepository.findAll()
-                                                                    .stream()
-                                                                    .map(JugadorReal::getNombreJugador)
-                                                                    .collect(Collectors.toSet());
+            totales = listaJugadoresDTO.size();
+            
+            //Obtenemos los que ya existen.
+            Set<String> listaJugadoresBBDD = jugadorRealRepository.findAllNombres();
+            //Quitamos jugadores que ya existan.
+            List<JugadorReal> jugadoresACargar = listaJugadoresDTO.stream()
+                                    .filter(j -> !listaJugadoresBBDD.contains(j.getNombreJugador()))
+                                    .map(this::jugadorDTOaJugador)
+                                    .toList();
 
-            for (JugadorRealDTO jugadorRealDTO : listaJugadoresDTO) {
-                if(!listaJugadoresBBDD.contains(jugadorRealDTO.getNombreJugador())){
-                    JugadorReal jr = new JugadorReal();
-                    jr.setNombreCortoJugador(jugadorRealDTO.getNombreCortoJugador());
-                    jr.setNombreJugador(jugadorRealDTO.getNombreJugador());
-                    jr.setPosicion(jugadorRealDTO.getPosicion());
-                    jugadoresRealesACargar.add(jr);
-                    jugadoresCargados++;
-                } else {
-                    jugadoresNoCargados++;
-                }
-            }
+        //Si tenemos jugadores, los guardamos en BBDD.
+        if (!jugadoresACargar.isEmpty()) {
+            jugadorRealRepository.saveAll(jugadoresACargar);
+            jugadoresCargados = jugadoresACargar.size();
+        }
+
         } catch (IOException e) {
             throw new RuntimeException("Error al leer el JSON de los jugadores", e);
         }
-
-        //Si tenemos jugadores, los guardamos en BBDD.
-        if (!jugadoresRealesACargar.isEmpty()) {
-            jugadorRealRepository.saveAll(jugadoresRealesACargar);
-        }
-        return "Jugadores cargados: " + jugadoresCargados + " y no cargados: " + jugadoresNoCargados;
+        
+        return String.format("Jugadores nuevos: %d | Ya existian: %d", jugadoresCargados, (totales - jugadoresCargados));
     }
 
     public Mister insertarMister(MisterDTO misterDto){
@@ -354,4 +355,17 @@ public class MantenimientoDatosService {
         }     
     }
 
+    /**
+     * Hacemos conversión del JugadorRealDTO al Jugador
+     * @param jugadorRealDTO
+     * @return
+     */
+    private JugadorReal jugadorDTOaJugador(JugadorRealDTO jugadorRealDTO) {
+        JugadorReal jr = new JugadorReal();
+        jr.setNombreCortoJugador(jugadorRealDTO.getNombreCortoJugador());
+        jr.setNombreJugador(jugadorRealDTO.getNombreJugador());
+        jr.setPosicion(jugadorRealDTO.getPosicion());
+        jr.setPosicionCorta(this.getPosicionAbreviada(jugadorRealDTO.getPosicion()));
+        return jr;
+    }
 }

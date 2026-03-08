@@ -21,7 +21,7 @@ public class JugadorReal implements Persistable<String>{
     private String nombreCortoJugador;
     private String nombreJugador;
     private String posicion;
-    @Override
+    private String posicionCorta;
 
     @Nullable
     public String getId() {

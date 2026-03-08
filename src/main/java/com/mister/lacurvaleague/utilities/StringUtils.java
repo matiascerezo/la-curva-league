@@ -27,4 +27,8 @@ public class StringUtils {
         // 4. A minúsculas y quitar posibles guiones dobles
         return slug.toLowerCase(Locale.ENGLISH).replaceAll("-{2,}", "-");
     }
+
+    public boolean niNuloNiVacio(String text){
+        return text != null && !text.isBlank();
+    }
 }
