@@ -30,10 +30,10 @@
       {
         "nombreMister": "Rayo Vaticano",
         "lloros": [
-          { "motivo": "'Vendo a Satriano y marca' (Lo vendió hace 2 meses" },
-		  { "motivo": "'Un 9.7 Soria y el otro día me hizo un 1' (Jódete VayaNabo." },
+          { "motivo": "'Vendo a Satriano y marca' (Lo vendió hace 2 meses)" },
+		  { "motivo": "'Un 9.7 Soria y el otro día me hizo un 1' (Jódete VayaNabo.)" },
 		  { "motivo": "'Ah que Camavinga es baja por la caries. - Este juego solo me trae desgracias.'" },
-		  { "motivo": "'Hoy Soria es Casillas y el otro dia el imbecil no.'" }
+		  { "motivo": "'Hoy Soria es Casillas y el otro dia el imbécil no.'" }
         ]
       },
       {
@@ -46,6 +46,29 @@
         "nombreMister": "Fénix del mar",
         "lloros": [
           { "motivo": "'Ahí te deje de mover la fruta' (Le han clausulado a De Frutos.)" }
+        ]
+      }
+    ]
+  },
+  {
+    "numeroJornada": 27,
+    "equiposLloros": [
+      {
+        "nombreMister": "Los Hokages de Merlés",
+        "lloros": [
+          { "motivo": "'De coña lo de este tio, cuando consigo recortar puntos, llora un poco y le marcan 3 jugadores' (Gallo Paticano ha marcado 3 goles.)" }
+        ]
+      },
+      {
+        "nombreMister": "Maylova FC",
+        "lloros": [
+          { "motivo": "'Está claro aquí quién tiene la suerte siempre a mano, no es nada nuevo. (Payo Vatiano ha metido un gol'" }
+        ]
+      },
+      {
+        "nombreMister": "Fénix del mar",
+        "lloros": [
+          { "motivo": "'Se acabó🫶. - Solo lucho por no quedar último en esta jornada' (Le han sacado roja y Herrera le ha hecho un -2)" }
         ]
       }
     ]

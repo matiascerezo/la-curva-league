@@ -23,7 +23,6 @@
     --safe-top: env(safe-area-inset-top, 0px);
 }
 
-* { box-sizing: border-box; }
 
 body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -297,12 +296,19 @@ body {
     width: 92%;
     max-width: 1100px;
     margin: 10px auto;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     background: white;
     border-radius: 1rem;
     box-shadow: 0 10px 30px rgba(26, 35, 126, 0.15); /* Sombra profunda y suave */
     overflow: hidden;
+    overflow-x: auto
 }
+
+
+.table-wrapper.goleadores th {
+    min-width: 2.57rem; /* Ajusta este valor según necesites */
+}
+
 
 /* --- ESTILO ESPECÍFICO LLORÓMETRO --- */
 .styled-table-llorometro {

@@ -23,6 +23,7 @@ public class Jugador {
     private Long jugadorId;
     private String nombre;
     private String posicion;
+    private String posicionCorta;
     private int puntos;
     private int goles = 0;
     private int asistencias = 0;

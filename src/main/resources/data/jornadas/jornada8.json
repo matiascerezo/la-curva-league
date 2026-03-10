@@ -44,7 +44,7 @@
     {
       "nombreEquipo": "Los Hokages de Merlès",
       "nombreMister": "Matias",
-      "puntosJornada": 48,
+      "puntosJornada": 37,
       "posicionJornada": 6,
       "jugadores": [
         { "nombre": "F.Torres", "puntos": -1,"amarillas":1 },

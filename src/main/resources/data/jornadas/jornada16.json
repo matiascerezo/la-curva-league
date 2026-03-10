@@ -48,7 +48,7 @@
       "posicionJornada": 6,
       "jugadores": [
         { "nombre": "A.Adams", "puntos": 12, "goles": 1,"asistencias":1, "xiIdeal": true },
-        { "nombre": "J.deFrutos", "puntos": 2 },
+        { "nombre": "J.de Frutos", "puntos": 2 },
         { "nombre": "G.Simeone", "puntos": 3 },
         { "nombre": "P.Barrios", "puntos": 4 },
         { "nombre": "A.Güler", "puntos": 3 },

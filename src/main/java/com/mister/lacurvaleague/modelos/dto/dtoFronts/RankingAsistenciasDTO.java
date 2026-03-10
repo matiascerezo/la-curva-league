@@ -16,6 +16,7 @@ public class RankingAsistenciasDTO implements FormatPosicion {
     private Integer asistencias;
     private String nombreJugador;
     private String posicion;
+    private String posicionCorta;
     private Integer numeroJornada;
 }
 

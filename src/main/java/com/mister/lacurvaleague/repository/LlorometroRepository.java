@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.mister.lacurvaleague.modelos.Llorometro;
-import com.mister.lacurvaleague.modelos.dto.LlorometroDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.LlorometroDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingLlorosDTO;
 
 @Repository

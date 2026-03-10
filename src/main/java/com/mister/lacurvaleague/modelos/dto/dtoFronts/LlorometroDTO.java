@@ -1,8 +1,6 @@
-package com.mister.lacurvaleague.modelos.dto;
+package com.mister.lacurvaleague.modelos.dto.dtoFronts;
 
 import java.util.List;
-
-import com.mister.lacurvaleague.modelos.dto.dtoFronts.MisterLlorosDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

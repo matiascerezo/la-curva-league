@@ -17,11 +17,12 @@ import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingGolesDTO;
 @Repository
 public interface EquipoRepository extends JpaRepository<Equipo, Long> {
 
-        @Query(value = "SELECT m.img_equipo, m.nombre_equipo as nombreEquipo, SUM(e.puntos_jornada) as puntosTotales " +
-            "FROM mister m " +
-            "join equipo e on e.mister_id = m.MISTER_ID " +
-            "GROUP BY m.nombre_equipo, m.img_equipo " +
-            "ORDER BY puntosTotales DESC", nativeQuery = true)
+        @Query(value = "SELECT m.img_equipo, m.nombre_equipo as nombreEquipo, SUM(e.puntos_jornada) as puntosTotales, "+
+								"SUM(e.puntos_jornada) - LAG(SUM(e.puntos_jornada)) OVER (ORDER BY SUM(e.puntos_jornada) DESC) AS difPuntos " +
+						"FROM mister m " +
+						"join equipo e on e.mister_id = m.MISTER_ID " +
+						"GROUP BY m.nombre_equipo, m.img_equipo " +
+						"ORDER BY puntosTotales DESC", nativeQuery = true)
         List<ClasificacionGeneralDTO> getClasificacionGeneral();
 
         @Query(value = "SELECT j.numero_jornada as jornadaId, e.puntos_jornada as puntosJornada, e.posicion_jornada as posicionJornada, m.nombre_equipo as nombreEquipo "+
@@ -32,42 +33,83 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
                        "ORDER BY j.numero_jornada DESC", nativeQuery = true)
         List<ClasificacionEquipoDTO> getClasificacionEquipo(Long misterId);
 
-        @Query(value =  "SELECT imgEquipo, equipo, golesTotalesEquipo, nombrePichichi AS pichichi, posicionPichichi AS posicion, golesPichichi, "+
-						"(golesTotalesEquipo * 1.0 / (SELECT MAX(jornada_id) FROM jornada)) AS mediaGolesXJornada "+
-						"FROM ( "+
-								"SELECT m.img_equipo as imgEquipo, m.nombre_equipo AS equipo, j.nombre AS nombrePichichi,"+
-									"j.posicion AS posicionPichichi, j.goles AS golesPichichi,"+
-									"SUM(j.goles) OVER (PARTITION BY m.nombre_equipo) AS golesTotalesEquipo, "+
-									"ROW_NUMBER() OVER (PARTITION BY m.nombre_equipo "+ 
-                                                        "ORDER BY j.goles DESC, j.nombre ASC "+
-                                                        ") as ranking "+
-								"FROM jugador j "+
-								"JOIN equipo e ON j.equipo_id = e.equipo_id "+
-								"JOIN mister m ON e.mister_id = m.MISTER_ID "+
-							") AS subq "+
-							"WHERE ranking = 1 "+ 
-							"ORDER BY golesTotalesEquipo DESC", nativeQuery = true)
-        List<GoleadorDTO> getGolesYGoleadoresXEquipo();
+        @Query(value = """
+				WITH GolesPorJugador AS (
+						SELECT 
+							m.img_equipo AS imgEquipo, 
+							m.nombre_equipo AS equipo, 
+							j.nombre AS nombrePichichi, 
+							j.posicion AS posicionPichichi, 
+							j.posicion_corta AS posicionCorta, 
+							SUM(j.goles) AS golesTotalesJugador, 
+							SUM(SUM(j.goles)) OVER (PARTITION BY m.nombre_equipo) AS golesTotalesEquipo 
+						FROM jugador j 
+						JOIN equipo e ON j.equipo_id = e.equipo_id 
+						JOIN mister m ON e.mister_id = m.mister_id 
+						GROUP BY m.img_equipo, m.nombre_equipo, j.nombre, j.posicion, j.posicion_corta 
+					), 
+					RankingPichichis AS ( 
+						SELECT *, 
+							ROW_NUMBER() OVER ( 
+								PARTITION BY equipo 
+								ORDER BY golesTotalesJugador DESC, nombrePichichi ASC 
+							) AS ranking 
+						FROM GolesPorJugador 
+					) 
+					SELECT 
+						imgEquipo, 
+						equipo, 
+						golesTotalesEquipo, 
+						nombrePichichi AS pichichi, 
+						posicionPichichi AS posicion, 
+						posicionCorta, 
+						golesTotalesJugador AS golesPichichi, 
+						(golesTotalesEquipo * 1.0 / NULLIF((SELECT MAX(jornada_id) FROM jornada), 0)) AS mediaGolesXJornada 
+					FROM RankingPichichis 
+					WHERE ranking = 1 
+					ORDER BY golesTotalesEquipo DESC""", nativeQuery = true)
+				List<GoleadorDTO> getGolesYGoleadoresXEquipo();
 
-        @Query(value =  "SELECT imgEquipo, equipo, asistenciasTotalesEquipo, maxAsistente, posicion, asistencias, "+
-						"(asistenciasTotalesEquipo * 1.0 / (SELECT MAX(jornada_id) FROM jornada)) AS mediaAsistenciasXJornada  "+
-						"FROM (  "+
-								"SELECT m.img_equipo as imgEquipo, m.nombre_equipo AS equipo, j.nombre AS maxAsistente, "+
-									"j.posicion, j.asistencias, "+
-								"SUM(j.asistencias) OVER (PARTITION BY m.nombre_equipo) AS asistenciasTotalesEquipo, "+
-								"ROW_NUMBER() OVER (PARTITION BY m.nombre_equipo "+
-                                                        "ORDER BY j.asistencias DESC, j.nombre ASC "+
-                                                        ") as ranking "+
-								"FROM jugador j "+
-								"JOIN equipo e ON j.equipo_id = e.equipo_id "+
-								"JOIN mister m ON e.mister_id = m.MISTER_ID "+
-							") AS subq "+
-							"WHERE ranking = 1 "+
-							"ORDER BY asistenciasTotalesEquipo DESC", nativeQuery = true)
-        List<AsistenciaDTO> getAsistenciasYAsistentesXEquipo();
+        @Query(value = """
+				WITH AsistenciasPorJugador AS (
+					SELECT 
+						m.img_equipo AS imgEquipo, 
+						m.nombre_equipo AS equipo, 
+						j.nombre AS maxAsistente, 
+						j.posicion AS posicion, 
+						j.posicion_corta AS posicionCorta, 
+						SUM(j.asistencias) AS asistencias, 
+						SUM(SUM(j.asistencias)) OVER (PARTITION BY m.nombre_equipo) AS asistenciasTotalesEquipo 
+					FROM jugador j 
+					JOIN equipo e ON j.equipo_id = e.equipo_id 
+					JOIN mister m ON e.mister_id = m.mister_id 
+					GROUP BY m.img_equipo, m.nombre_equipo, j.nombre, j.posicion, j.posicion_corta 
+				), 
+				RankingAsistentes AS ( 
+					SELECT *, 
+						ROW_NUMBER() OVER ( 
+							PARTITION BY equipo 
+							ORDER BY asistencias DESC, maxAsistente ASC 
+						) AS ranking 
+					FROM AsistenciasPorJugador 
+				) 
+				SELECT 
+					imgEquipo, 
+					equipo, 
+					asistenciasTotalesEquipo, 
+					maxAsistente, 
+					posicion, 
+					posicionCorta, 
+					asistencias, 
+					CAST(asistenciasTotalesEquipo * 1.0 / NULLIF((SELECT MAX(jornada_id) FROM jornada), 0) AS NUMERIC(10,2)) AS mediaAsistenciasXJornada 
+				FROM RankingAsistentes 
+				WHERE ranking = 1 
+				ORDER BY asistenciasTotalesEquipo DESC
+				""", nativeQuery = true)
+			List<AsistenciaDTO> getAsistenciasYAsistentesXEquipo();
 
 		@Query("SELECT new com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingAsistenciasDTO(" +
-				"m.imgEquipo, m.nombreEquipo, j.asistencias, j.nombre, j.posicion, jor.numeroJornada) " +
+				"m.imgEquipo, m.nombreEquipo, j.asistencias, j.nombre, j.posicion, j.posicionCorta, jor.numeroJornada) " +
 				"FROM Jugador j " + // Asumiendo que la Entidad se llama Jugador
 				"JOIN j.equipo e " + // Relación en la clase Jugador
 				"JOIN e.mister m " + // Relación en la clase Equipo
@@ -77,7 +119,7 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
 		List<RankingAsistenciasDTO> getAsistenciasEquipos();
 
 		@Query("SELECT new com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingGolesDTO(" +
-				"m.imgEquipo, m.nombreEquipo, j.goles, j.nombre, j.posicion, jor.numeroJornada) " +
+				"m.imgEquipo, m.nombreEquipo, j.goles, j.nombre, j.posicion, j.posicionCorta, jor.numeroJornada) " +
 				"FROM Jugador j " +
 				"JOIN j.equipo e " +
 				"JOIN e.mister m " + 

@@ -21,11 +21,11 @@ public interface MisterRepository extends JpaRepository<Mister, Long> {
     @Query(value = "SELECT m.* FROM MISTER m WHERE m.url_equipo = :urlEquipo", nativeQuery = true)
     Mister findByNombreEquipo(String urlEquipo);
 
-    @Query(value = "SELECT m.NOMBRE_EQUIPO AS mister, SUM(J.AMARILLAS) AS amarillas, SUM(J.ROJAS) AS rojas,SUM(J.AMARILLAS) + (SUM(J.ROJAS)) AS totalTarjetas " +
+    @Query(value = "SELECT m.img_equipo as imgEquipo, m.NOMBRE_EQUIPO AS mister, SUM(J.AMARILLAS) AS amarillas, SUM(J.ROJAS) AS rojas,SUM(J.AMARILLAS) + (SUM(J.ROJAS)) AS totalTarjetas " +
                     "FROM MISTER M "+
                     "JOIN EQUIPO E ON M.MISTER_ID = E.MISTER_ID "+
                     "JOIN JUGADOR J ON E.equipo_id = J.EQUIPO_ID "+
-                    "GROUP BY M.NOMBRE_EQUIPO "+
+                    "GROUP BY m.img_equipo, M.NOMBRE_EQUIPO "+
                     "ORDER BY totalTarjetas DESC", nativeQuery = true)
     List<TarjetasDTO> getTarjetasTotales();
 }

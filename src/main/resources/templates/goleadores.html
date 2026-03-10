@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <div class="table-wrapper">
+    <div class="table-wrapper goleadores">
         <div id="jornada-goles-todos" class="bloque-jornada-goles">
             <table class="styled-table">
                 <thead>
@@ -52,8 +52,8 @@
                         <td>
                             <div class="pichichi-cell">
                                 <span th:text="${g.pichichi}">Jugador</span>
-                                <span th:text="${g.getPosicionAbreviada(g.posicion)}" 
-                                    th:class="'badge-posicion pos-' + ${g.getPosicionAbreviada(g.posicion)}">DC</span>
+                                <span th:text="${g.posicionCorta}" 
+                                    th:class="'badge-posicion pos-' + ${g.posicionCorta}">DC</span>
                             </div>
                         </td>
                         <td class="text-center">
@@ -92,8 +92,8 @@
                              <td>
                                 <div class="pichichi-cell">
                                     <span th:text="${goles.nombreJugador}">Jugador</span>
-                                    <span th:text="${goles.getPosicionAbreviada(goles.posicion)}" 
-                                        th:class="'badge-posicion pos-' + ${goles.getPosicionAbreviada(goles.posicion)}">DC</span>
+                                    <span th:text="${goles.posicionCorta}" 
+                                        th:class="'badge-posicion pos-' + ${goles.posicionCorta}">DC</span>
                                 </div>
                             </td>
                             <td class="text-center">

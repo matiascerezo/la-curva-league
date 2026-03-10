@@ -16,6 +16,15 @@
                 <th>Posición</th>
                 <th>Equipo</th>
                 <th>Puntos Totales</th>
+                <th class="text-center cell-info">
+                    Dif. pts
+                    <div class="info-wrapper">
+                        <span class="info-icon">i</span>
+                        <div class="info-bubble">
+                            Diferencia de puntos con el equipo de arriba.
+                        </div>
+                    </div>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -32,6 +41,21 @@
                     </div>
                 </td>
                 <td th:text="${equipo.puntosTotales} + ' pts'">0 pts</td>
+                <td class="col-gap">
+                    <span th:if="${equipo.difPuntos == null}" class="gap-badge gap-lider">
+                        🏆
+                    </span>
+
+                    <span th:if="${equipo.difPuntos != null && equipo.difPuntos >= -10}" 
+                        class="gap-badge gap-fuego">
+                        <span th:text="${equipo.difPuntos}"></span> 🔥
+                    </span>
+
+                    <span th:if="${equipo.difPuntos != null && equipo.difPuntos < -10}" 
+                        class="gap-badge gap-normal"
+                        th:text="${equipo.difPuntos}">
+                    </span>
+                </td>
             </tr>
         </tbody>
     </table>

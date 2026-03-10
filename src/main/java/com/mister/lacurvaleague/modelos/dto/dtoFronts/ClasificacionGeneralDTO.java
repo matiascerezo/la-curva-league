@@ -8,5 +8,6 @@ public class ClasificacionGeneralDTO {
     String imgEquipo;
     String nombreEquipo;
     Long puntosTotales;
+    Long difPuntos; //diferencia con el de arriba
  
 }

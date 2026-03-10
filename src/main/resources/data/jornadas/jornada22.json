@@ -1,0 +1,140 @@
+{
+  "numeroJornada": 22,
+  "fechaInicio": "2026-01-30",
+  "fechaFin": "2026-02-02",
+  "equipos": [
+    {
+      "nombreEquipo": "Fénix del mar",
+      "nombreMister": "Mario",
+      "puntosJornada": 62,
+      "posicionJornada": 1,
+      "jugadores": [
+        { "nombre": "G.Moreno", "puntos": 15,"goles":2, "xiIdeal": true },
+        { "nombre": "L.Yamal", "puntos": 15, "goles":1,"xiIdeal": true },
+        { "nombre": "B.Iglesias", "puntos": 2, "amarillas":1 },
+        { "nombre": "J.de Frutos", "puntos": 8,"goles":1 },
+        { "nombre": "F.Ugrinic", "puntos": 4 },
+        { "nombre": "V.Tsygankov", "puntos": 3, "amarillas":1 },
+        { "nombre": "S.Altimira", "puntos": 2 },
+        { "nombre": "E.García", "puntos": 6 },
+        { "nombre": "C.Starfelt", "puntos": 4 },
+        { "nombre": "L.Cabrera", "puntos": -1 },
+        { "nombre": "A.Sivera", "puntos": 4 }
+      ]
+    },
+    {
+      "nombreEquipo": "Los 11 Yonkos",
+      "nombreMister": "Carlos",
+      "puntosJornada": 61,
+      "posicionJornada": 2,
+      "jugadores": [
+        { "nombre": "V.Muñoz", "puntos": 10,"goles":1 },
+        { "nombre": "Raphinha", "puntos": 5 },
+        { "nombre": "R.Lewandowski", "puntos": 4 },
+        { "nombre": "P.Fornals", "puntos": 12, "goles":1,"xiIdeal": true},
+        { "nombre": "L.Milla", "puntos": 6 },
+        { "nombre": "F.De Jong", "puntos": 8, "amarillas":1,"asistencias":1 },
+        { "nombre": "V.Reis", "puntos": 4 },
+        { "nombre": "M.Llorente", "puntos": 3 },
+        { "nombre": "J.Galán", "puntos": 2 },
+        { "nombre": "C.Romero", "puntos": 2 },
+        { "nombre": "J.Garcia", "puntos": 5 }
+      ]
+    },
+    {
+      "nombreEquipo": "Los Hokages de Merlès",
+      "nombreMister": "Matias",
+      "puntosJornada": 43,
+      "posicionJornada": 5,
+      "jugadores": [
+        { "nombre": "A.Ezzalzouli", "puntos": 6 },
+        { "nombre": "M.Oyarzabal", "puntos": 5 },
+        { "nombre": "A.Sørloth", "puntos": 2 },
+        { "nombre": "F.Mastantuono", "puntos": -1 },
+        { "nombre": "F.López", "puntos": 3 },
+        { "nombre": "A.Tchouaméni", "puntos": 3 },
+        { "nombre": "P.Barrios", "puntos": 2 },
+        { "nombre": "D.Blind", "puntos": 4 },
+        { "nombre": "D.Hancko", "puntos": 4 },
+        { "nombre": "M.Alonso", "puntos": 6 },
+        { "nombre": "U.Simón", "puntos": 9, "xiIdeal":true }
+      ]
+    },
+    {
+      "nombreEquipo": "Los Pollos Hermanos",
+      "nombreMister": "Dani",
+      "puntosJornada": 60,
+      "posicionJornada": 3,
+      "jugadores": [
+        { "nombre": "V.Muriqi", "puntos": 11,"goles":1,"asistencias":1, "xiIdeal": true },
+        { "nombre": "A.Budimir", "puntos": 9,"goles":1 },
+        { "nombre": "R.Fernández", "puntos": 9,"goles":1 },
+        { "nombre": "T.Almada", "puntos": 2 },
+        { "nombre": "T.Buchanan", "puntos": 2 },
+        { "nombre": "G.Valera", "puntos": 6,"asistencias":1 },
+        { "nombre": "C.Álvarez", "puntos": 3 },
+        { "nombre": "A.Balde", "puntos": 4 },
+        { "nombre": "J.Martin", "puntos": 6, "amarillas":1 },
+        { "nombre": "P.Cubarsi", "puntos": 4 },
+        { "nombre": "I.Radu", "puntos": 4 }
+      ]
+    },
+    {
+      "nombreEquipo": "Maylova FC",
+      "nombreMister": "Jon",
+      "puntosJornada": 47,
+      "posicionJornada": 4,
+      "jugadores": [
+        { "nombre": "V.Júnior", "puntos": 10,"goles":1, "amarillas":1 },
+        { "nombre": "F.Torres", "puntos": 9,"goles":1 },
+        { "nombre": "J.Álvarez", "puntos": 0 },
+        { "nombre": "J.Virgili", "puntos": 8 },
+        { "nombre": "E.Expósito", "puntos": 5 },
+        { "nombre": "B.Méndez", "puntos": -5, "rojas":1 },
+        { "nombre": "I.Martín", "puntos": 3 },
+        { "nombre": "R.Asencio", "puntos": 3 },
+        { "nombre": "M.Pubill", "puntos": 3 },
+        { "nombre": "M.Bartra", "puntos": 4 },
+        { "nombre": "A.Escandell", "puntos": 7 }
+      ]
+    },
+    {
+      "nombreEquipo": "Rayo Vaticano",
+      "nombreMister": "Sergi",
+      "puntosJornada": 41,
+      "posicionJornada": 7,
+      "jugadores": [
+        { "nombre": "G.Guedes", "puntos": 12,"goles":1, "xiIdeal": true },
+        { "nombre": "A.Adams", "puntos": 1 },
+        { "nombre": "K.Mbappé", "puntos": 6,"goles":1 },
+        { "nombre": "A.Güler", "puntos": 5 },
+        { "nombre": "B.Zaragoza", "puntos": 0, "partidoJugado": false },
+        { "nombre": "A.Baena", "puntos": 1 },
+        { "nombre": "A.Moleiro", "puntos": 2 },
+        { "nombre": "J.Koundé", "puntos": 4 },
+        { "nombre": "Á.Carreras", "puntos": 0, "partidoJugado": false },
+        { "nombre": "Á.Moreno", "puntos": 4 },
+        { "nombre": "T.Courtois", "puntos": 6 }
+      ]
+    },
+    {
+      "nombreEquipo": "Shalke Megiño",
+      "nombreMister": "Alcaide",
+      "puntosJornada": 42,
+      "posicionJornada": 6,
+      "jugadores": [
+        { "nombre": "L.Boyé", "puntos": 9,"goles":1 },
+        { "nombre": "E.Eyong", "puntos": 2 },
+        { "nombre": "A.Santos", "puntos": 3 },
+        { "nombre": "F.Valverde", "puntos": 7 },
+        { "nombre": "J.Bellingham", "puntos": 1 },
+        { "nombre": "D.Olmo", "puntos": 5, "asistencias":1 },
+        { "nombre": "J.Otto", "puntos": 3 },
+        { "nombre": "S.Carreira", "puntos": 2 },
+        { "nombre": "F.Boyomo", "puntos": 3 },
+        { "nombre": "J.Rueda", "puntos": 3 },
+        { "nombre": "J.Oblak", "puntos": 4 }
+      ]
+    }
+  ]
+}

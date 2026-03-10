@@ -7,7 +7,7 @@
       "nombreEquipo": "Los Hokages de Merlès",
       "nombreMister": "Matias",
       "puntosJornada": 44,
-      "posicionJornada": 3,
+      "posicionJornada": 5,
       "jugadores": [
         { "nombre": "F.Torres", "puntos": 7,"asistencias":1 },
         { "nombre": "I.Romero", "puntos": 8,"amarillas":1, "goles":1 },
@@ -26,7 +26,7 @@
       "nombreEquipo": "Maylova FC",
       "nombreMister": "Jon",
       "puntosJornada": 30,
-      "posicionJornada": 6,
+      "posicionJornada": 7,
       "jugadores": [
         { "nombre": "N.Pépé", "puntos": 5 },
         { "nombre": "A.González", "puntos": 2 },
@@ -63,8 +63,8 @@
     {
       "nombreEquipo": "Los 11 Yonkos",
       "nombreMister": "Carlos",
-      "puntosJornada": 52,
-      "posicionJornada": 2,
+      "puntosJornada": 51,
+      "posicionJornada": 3,
       "jugadores": [
         { "nombre": "G.Mikautadze", "puntos": 0 },
         { "nombre": "V.Muriqi", "puntos": 14,"goles": 2, "xiIdeal": true  },
@@ -101,8 +101,8 @@
     {
       "nombreEquipo": "Shalke Megiño",
       "nombreMister": "Alcaide",
-      "puntosJornada": 47,
-      "posicionJornada": 5,
+      "puntosJornada": 52,
+      "posicionJornada": 2,
       "jugadores": [
         { "nombre": "Raphinha", "puntos": 16,"goles": 2, "xiIdeal": true  },
         { "nombre": "T.Martínez", "puntos": 4 },
@@ -121,7 +121,7 @@
       "nombreEquipo": "Fénix del mar",
       "nombreMister": "Mario",
       "puntosJornada": 37,
-      "posicionJornada": 7,
+      "posicionJornada": 6,
       "jugadores": [
         { "nombre": "M.Joseph", "puntos": 5 },
         { "nombre": "P.Milla", "puntos": -2,"goles": 1,"rojas":1 },

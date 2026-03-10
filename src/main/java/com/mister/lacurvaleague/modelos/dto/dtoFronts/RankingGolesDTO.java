@@ -16,6 +16,7 @@ public class RankingGolesDTO implements FormatPosicion {
     private Integer goles;
     private String nombreJugador;
     private String posicion;
+    private String posicionCorta;
     private Integer numeroJornada;
 }
 

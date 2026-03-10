@@ -25,7 +25,7 @@
 	{
 	  "nombreEquipo": "Los 11 Yonkos",
 	  "nombreMister": "Carlos",
-	  "puntosJornada": 54,
+	  "puntosJornada": 58,
 	  "posicionJornada": 1,
 	  "jugadores": [
 			{ "nombre": "G.Mikautadze", "puntos": 2 },
@@ -63,7 +63,7 @@
 	{
 	  "nombreEquipo": "Los Pollos Hermanos",
 	  "nombreMister": "Dani",
-	  "puntosJornada": 40,
+	  "puntosJornada": 42,
 	  "posicionJornada": 6,
 	  "jugadores": [
 			{ "nombre": "R.Mir", "puntos": 1 },
@@ -82,7 +82,7 @@
 	{
 	  "nombreEquipo": "Maylova FC",
 	  "nombreMister": "Jon",
-	  "puntosJornada": 45,
+	  "puntosJornada": 49,
 	  "posicionJornada": 3,
 	  "jugadores": [
 			{ "nombre": "C.Hernández", "puntos": 10, "goles": 1,"asistencias":1 },
@@ -101,13 +101,13 @@
 	{
 	  "nombreEquipo": "Rayo Vaticano",
 	  "nombreMister": "Sergi",
-	  "puntosJornada": 53,
+	  "puntosJornada": 52,
 	  "posicionJornada": 2,
 	  "jugadores": [
 			{ "nombre": "K.Mbappé", "puntos": 8, "goles": 1 },
 			{ "nombre": "A.Ezzalzouli", "puntos": 10, "goles": 1 },
 			{ "nombre": "E.Eyong", "puntos": 4, "amarillas": 1 },
-			{ "nombre": "F.Mastantantuono", "puntos": 4, "amarillas": 1 },
+			{ "nombre": "F.Mastantuono", "puntos": 4, "amarillas": 1 },
 			{ "nombre": "S.Altimira", "puntos": 3 },
 			{ "nombre": "A.Blanco", "puntos": 3 },
 			{ "nombre": "B.Mendy", "puntos": 3 },
@@ -120,7 +120,7 @@
 	{
 	  "nombreEquipo": "Shalke Megiño",
 	  "nombreMister": "Alcaide",
-	  "puntosJornada": 42,
+	  "puntosJornada": 43,
 	  "posicionJornada": 5,
 	  "jugadores": [
 			{ "nombre": "P.Milla", "puntos": 4 },

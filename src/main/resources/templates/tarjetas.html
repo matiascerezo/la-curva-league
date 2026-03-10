@@ -28,7 +28,12 @@
                 <tbody>
                     <tr th:each="t, iter : ${tarjetasTotales}">
                         <td class="text-center" style="font-weight: bold;" th:text="${iter.count > 1 ? iter.count : '🐷'}">0</td>
-                        <td style="font-weight: 600; color: #1a237e;" th:text="${t.mister}"></td>
+                        <td style="font-weight: 600;">
+                            <div class="equipo-info-cell">
+                                <img th:src="${t.imgEquipo}" class="escudo-tabla">
+                                <span th:text="${t.mister}"></span>
+                            </div>
+                        </td>
                         
                         <td class="text-center">
                             <span class="badge-amarilla" th:text="${t.amarillas}">0</span>

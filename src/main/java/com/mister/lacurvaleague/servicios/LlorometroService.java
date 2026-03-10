@@ -1,8 +1,8 @@
 package com.mister.lacurvaleague.servicios;
 
 import com.mister.lacurvaleague.modelos.Llorometro;
-import com.mister.lacurvaleague.modelos.dto.LlorometroDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.LloroDetalleDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.LlorometroDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.MisterLlorosDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingLlorosDTO;
 import com.mister.lacurvaleague.repository.JornadaRepository;

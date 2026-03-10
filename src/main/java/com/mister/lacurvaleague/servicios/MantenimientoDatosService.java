@@ -22,13 +22,13 @@ import com.mister.lacurvaleague.modelos.Jornada;
 import com.mister.lacurvaleague.modelos.Jugador;
 import com.mister.lacurvaleague.modelos.JugadorReal;
 import com.mister.lacurvaleague.modelos.Llorometro;
-import com.mister.lacurvaleague.modelos.dto.EquipoDTO;
-import com.mister.lacurvaleague.modelos.dto.JornadaDTO;
-import com.mister.lacurvaleague.modelos.dto.JugadorDTO;
-import com.mister.lacurvaleague.modelos.dto.JugadorRealDTO;
-import com.mister.lacurvaleague.modelos.dto.LlorometroDTO;
-import com.mister.lacurvaleague.modelos.dto.MisterDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.EquipoDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.JornadaDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.JugadorDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.JugadorRealDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.LloroDetalleDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.LlorometroDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.MisterDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.MisterLlorosDTO;
 import com.mister.lacurvaleague.modelos.dto.util.FormatPosicion;
 import com.mister.lacurvaleague.repository.EquipoRepository;
@@ -96,6 +96,7 @@ public class MantenimientoDatosService implements FormatPosicion {
                         Jugador j = procesarJugador(jugadorDTO, equipo);
                         String posicion = mapaPosiciones.getOrDefault(jugadorDTO.getNombre(), "Desconocido");
                         j.setPosicion(posicion);
+                        j.setPosicionCorta(getPosicionAbreviada(posicion));
                         listaJugadores.add(j);
                     }
                 }
@@ -123,7 +124,7 @@ public class MantenimientoDatosService implements FormatPosicion {
             PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
             if(jornada != null) {
-                path = String.valueOf(jornada);
+                path = "jornada" + String.valueOf(jornada);
             }
             Resource[] resources = resolver.getResources("classpath*:" + PATH_JSON_JORNADA + path +".json");
             totalJornadas = resources.length;
@@ -300,12 +301,13 @@ public class MantenimientoDatosService implements FormatPosicion {
                     m.setNombreEquipo(misterDTO.getNombreEquipo());
                     m.setNombreMister(misterDTO.getNombreMister());
                     m.setUrlEquipo(misterDTO.getUrlEquipo());
+                    m.setImgEquipo(misterDTO.getImgMister());
                     listaMistersOK.add(m);
                 }
             }
             //Guardo de una vez todos los misters.
             misterRepository.saveAll(listaMistersOK);
-                    return "Misters cargados: " + listaMistersOK.size();
+            return "Misters cargados: " + listaMistersOK.size();
         } catch (IOException e) {
             return "Error al cargar los misters.";
         }

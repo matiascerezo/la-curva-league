@@ -5,6 +5,7 @@ import lombok.Value;
 @Value
 public class TarjetasDTO {
 
+    String imgEquipo;
     String mister;
     Long amarillas;
     Long rojas;

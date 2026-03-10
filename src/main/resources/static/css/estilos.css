@@ -188,6 +188,85 @@ body {
 .tabla-clasificacion tbody tr:nth-child(3) { background-color: #fbe9e7; }
 .tabla-clasificacion tbody tr:nth-child(3) td:first-child::before { content: "🥉 "; }
 
+/* Columna de GAP simplificada */
+.col-gap {
+    text-align: center;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.gap-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.gap-normal {
+    background-color: #e6fffa; /* Verde menta muy claro */
+    color: #2c7a7b;
+}
+
+.gap-fuego {
+    background-color: #fff0f0;
+    color: #e03131;
+    border: 1px solid #ffc9c9;
+}
+
+.gap-lider {
+    color: #f08c00;
+    background-color: #f7e3c7;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+/* Contenedor de la celda */
+.cell-info {
+    position: relative; /* Base para el posicionamiento */
+    white-space: nowrap; /* Evita que el texto de la cabecera se rompa */
+}
+
+.info-wrapper {
+    display: inline-block;
+    position: relative;
+    margin-left: 5px;
+}
+
+.info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 50%;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+/* El Pop-up que "flota" */
+.info-bubble {
+    display: none; /* Oculto por defecto */
+    position: absolute;
+    top: 25px;    /* Aparece a continuación hacia abajo */
+    right: 0;     /* Alineado al borde derecho del icono */
+    width: 160px;
+    background-color: #333;
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 0.7rem;
+    font-weight: normal;
+    z-index: 999; /* Por encima de las filas de la tabla */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    white-space: normal; /* Permite que el texto del mensaje sí salte de línea */
+}
+
+/* Mostrar al pasar el ratón */
+.info-wrapper:hover .info-bubble {
+    display: block;
+}
+
 /* =========================================
    4. FOOTER (Blindado y Proporcional)
    ========================================= */

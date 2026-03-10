@@ -19,7 +19,7 @@
                                     th:text="#{ranking.llorometro}">Llorómetro</a></li>
             <!-- <li class="nav-item"><a th:href="@{/top/records}" th:classappend="${seccionActual.contains('/top/records')} ? 'activo' : ''"
                                     th:text="#{ranking.records}">Récords Jornada</a></li> -->
-            <li class="nav-item"><a th:href="@{/inicio}" th:classappend="${seccionActual.contains('/top/records')} ? 'activo' : ''"
+            <li class="nav-item"><a th:classappend="${seccionActual.contains('/top/records')} ? 'activo' : ''"
                                     th:text="#{ranking.records}">Récords Jornada</a></li>
             <li class="nav-item"><a th:href="@{/top/tarjetas}" th:classappend="${seccionActual.contains('/top/tarjetas')} ? 'activo' : ''"
                                     th:text="#{ranking.tarjetas}">Tarjetas</a></li>
@@ -29,14 +29,14 @@
         <ul class="nav-list-equipos">
             <li class="nav-item"><a th:href="@{/club/fenix-del-mar}" th:classappend="${seccionActual.contains('/club/fenix-del-mar')} ? 'activo' : ''"
                                     th:text="#{equipo.fenix}">Fénix del mar</a></li>
-            <li class="nav-item"><a th:href="@{/club/maylova-fc}" th:classappend="${seccionActual.contains('/club/maylova-fc')} ? 'activo' : ''"
-                                    th:text="#{equipo.maylova}">Maylova FC</a></li>
             <li class="nav-item"><a th:href="@{/club/los-11-yonkos}" th:classappend="${seccionActual.contains('/club/los-11-yonkos')} ? 'activo' : ''"
                                     th:text="#{equipo.yonkos}">Los 11 Yonkos</a></li>
             <li class="nav-item"><a th:href="@{/club/los-hokages-de-merles}" th:classappend="${seccionActual.contains('/club/los-hokages-de-merles')} ? 'activo' : ''"
                                     th:text="#{equipo.hokages}">Los Hokages de Merlès</a></li>
             <li class="nav-item"><a th:href="@{/club/los-pollos-hermanos}" th:classappend="${seccionActual.contains('/club/los-pollos-hermanos')} ? 'activo' : ''"
                                     th:text="#{equipo.pollos}">Los Pollos Hermanos</a></li>
+            <li class="nav-item"><a th:href="@{/club/maylova-fc}" th:classappend="${seccionActual.contains('/club/maylova-fc')} ? 'activo' : ''"
+                                    th:text="#{equipo.maylova}">Maylova FC</a></li>
             <li class="nav-item"><a th:href="@{/club/rayo-vaticano}" th:classappend="${seccionActual.contains('/club/rayo-vaticano')} ? 'activo' : ''"
                                     th:text="#{equipo.rayo}">Rayo Vaticano</a></li>
             <li class="nav-item"><a th:href="@{/club/shalke-megino}" th:classappend="${seccionActual.contains('/club/shalke-megino')} ? 'activo' : ''"

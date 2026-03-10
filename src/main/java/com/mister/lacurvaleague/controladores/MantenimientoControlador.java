@@ -23,8 +23,7 @@ public class MantenimientoControlador {
 
     @GetMapping("/cargarJornada/{numeroJornada}")
     public String cargarDatosJornada(@PathVariable int numeroJornada) {
-        mantenimientoService.procesarTodasLasJornadas(numeroJornada);
-        return "¡Datos de la Jornada " + numeroJornada + " cargados correctamente en la base de datos!";
+       return mantenimientoService.procesarTodasLasJornadas(numeroJornada);
     }
 
     @GetMapping("/cargarTodasJornadas")

@@ -1,4 +1,4 @@
-package com.mister.lacurvaleague.modelos.dto;
+package com.mister.lacurvaleague.modelos.dto.dtoFronts;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,4 +12,5 @@ public class MisterDTO {
     private String nombreEquipo;
     private String nombreMister;
     private String urlEquipo;
+    private String imgMister;
 }
