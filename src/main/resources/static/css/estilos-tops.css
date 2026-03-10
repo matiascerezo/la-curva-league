@@ -304,9 +304,12 @@ body {
     overflow-x: auto
 }
 
+.table-wrapper.asistentes th {
+    min-width: 3rem; /* Ajusta este valor según necesites */
+}
 
 .table-wrapper.goleadores th {
-    min-width: 2.57rem; /* Ajusta este valor según necesites */
+    min-width: 4.5rem; /* Ajusta este valor según necesites */
 }
 
 
