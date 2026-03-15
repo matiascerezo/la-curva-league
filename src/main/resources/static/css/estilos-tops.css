@@ -107,7 +107,7 @@ body {
 }
 
 /* Colores de Posición */
-.pos-PT { background-color: #FFF242; color: #000; }
+.pos-PT { background-color: #dfd64f; color: #000; }
 .pos-DF { background-color: #0FD3FF; color: #000; }
 .pos-MC { background-color: #17d386; }
 .pos-DL { background-color: #ff6188; }
@@ -121,7 +121,7 @@ body {
     background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
     padding: 12px 25px;
     border-radius: 50px;
-    margin: 20px auto;
+    margin: 0.5rem auto;
     width: 90%;
     max-width: 500px;
     color: white;
@@ -280,12 +280,14 @@ body {
 }
 
 .canvas-wrapper {
-    background: var(--white);
-    padding: clamp(15px, 3vw, 30px);
-    border-radius: 20px;
-    box-shadow: var(--shadow-soft);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+    height: 21.8rem; /* Dale una altura fija para que no baile */
     width: 100%;
-    height: clamp(350px, 55vh, 550px);
 }
 
 /* =========================================
@@ -301,15 +303,20 @@ body {
     border-radius: 1rem;
     box-shadow: 0 10px 30px rgba(26, 35, 126, 0.15); /* Sombra profunda y suave */
     overflow: hidden;
-    overflow-x: auto
+    overflow-y: auto;
+    overflow-x: auto;
 }
 
 .table-wrapper.asistentes th {
-    min-width: 3rem; /* Ajusta este valor según necesites */
+    min-width: 3rem;
 }
 
 .table-wrapper.goleadores th {
-    min-width: 4.5rem; /* Ajusta este valor según necesites */
+    min-width: 4.5rem;
+}
+
+.table-wrapper.equipos {
+    height: 21.8rem;
 }
 
 
@@ -376,11 +383,109 @@ body {
     background-color: #fdfdfd; /* Un blanco casi puro para contrastar */
 }
 
+/* Contenedor principal con efecto cristal */
+.contenedor-termometro {
+    max-width: 80rem; 
+    padding: 1.25rem 2.5rem;    
+    margin: 0.5rem auto;
+    background: rgba(255, 255, 255, 0.8); /* Blanco traslúcido */
+    backdrop-filter: blur(10px); /* Desenfoque de fondo */
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1); /* Sombra suave */
+}
+
+.contenedor-termometro.equipos {
+    max-width: 20rem;
+    margin: 0rem;
+    flex: 1;
+}
+
+.info-termometro {
+    display: flex;
+    justify-content: center; /* Centramos el texto */
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #1e293b; /* Color pizarra oscuro para mejor lectura */
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+}
+
+/* Etiqueta dinámica (CRÍTICO, ESTABLE, etc.) */
+.estado-llanto {
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.5rem;
+    background: #fee2e2; /* Fondo rojizo suave */
+    color: #ef4444; /* Texto rojo */
+    font-size: 0.7rem;
+}
+
+/* La base de la barra - Más fina y estilizada */
+.barra-exterior {
+    width: 100%;
+    height: 0.75rem; /* Más delgada queda más moderna */
+    background: #f1f5f9;
+    border-radius: 1rem;
+    position: relative;
+    overflow: visible !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* El mercurio - Con un degradado más vibrante */
+.barra-interior {
+    height: 100%;
+    background: linear-gradient(90deg, #3bff18, #d3f43f, #ff092e);
+    border-radius: 1rem;
+    transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efecto elástico */
+    position: relative;
+}
+
+/* Un pequeño indicador redondo al final de la barra */
+.barra-interior::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0.5rem;
+    height: 0.5rem;
+    background: white;
+    border-radius: 50%;
+    margin-right: 2px;
+}
+
+.fila-controles {
+    display: flex;          /* Activa el modo lado a lado */
+    align-items: center;   /* Hace que ambos tengan la misma altura si quieres */
+    justify-content: center; /* Los centra en la pantalla */
+    gap: 1rem;              /* Espacio de separación entre ellos */
+    flex-wrap: wrap;        /* Si no caben (en móvil), el termómetro bajará debajo */
+    margin: 2rem auto;      /* Margen superior e inferior */
+    max-width: 90%;         /* Para que no toque los bordes de la pantalla */
+}
+
+.app-navigator.equipos {
+    margin: 0rem auto; 
+}
+
+/* Animación de latido para niveles altos */
+@keyframes latido-rojo {
+    0% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.8); }
+    100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
+}
+
+.pulso-critico {
+    animation: latido-rojo 1.5s infinite;
+}
 /* =========================================
    5. RESPONSIVE MASTER
    ========================================= */
 
-@media (max-width: 992px) {
+@media (max-width: 62rem) {
     .split-container { flex-direction: column; }
     
     /* Transformación de Tabla a Tarjetas (Llorómetro y otros) */
@@ -401,6 +506,10 @@ body {
         box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     }
 
+
+}
+
+@media (max-width: 48rem) {
     .mister-nombre {
         background-color: var(--primary-blue);
         color: white !important;
@@ -410,7 +519,7 @@ body {
 
 /* Ocultar elementos según clase */
 .columnaCorta { display: none; }
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
     .columnaLarga, .col-media { display: none; }
     .columnaCorta { display: table-cell !important; }
 }
@@ -573,7 +682,7 @@ body {
 
 /* Columna de la Gráfica */
 .chart-column {
-    flex: 2.5; /* Ocupa 2.5 partes (más ancha como en tu foto) */
+    flex: 2.5; 
     width: 100%;
 }
 

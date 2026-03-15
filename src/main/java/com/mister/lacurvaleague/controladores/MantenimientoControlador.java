@@ -33,7 +33,7 @@ public class MantenimientoControlador {
 
     @GetMapping("/cargarJugadores")
     public String cargarDatosTodosLosJugadores() {
-        return mantenimientoService.cargarJugadoresReales();
+        return mantenimientoService.cargarJugadoresReales(true, null);
     }
 
     @GetMapping("/cargarMisters")
@@ -43,9 +43,8 @@ public class MantenimientoControlador {
 
     @GetMapping("/cargarLloros")
     public String cargarLlorometro() {
-        return mantenimientoService.procesarTodosLosLloros();
-    }
-    
+        return mantenimientoService.procesarTodosLosLloros(true, null);
+    }    
     
     @GetMapping(value = "/cargarTodo")
     public ResponseEntity<Void> cargarTodo(){

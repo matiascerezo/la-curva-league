@@ -10,6 +10,7 @@ import com.mister.lacurvaleague.repository.LlorometroRepository;
 import com.mister.lacurvaleague.repository.MisterRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -73,5 +74,37 @@ public class LlorometroService {
 
     public List<RankingLlorosDTO> getLlorosEquipos(){
         return llorometroRepository.getLlorosEquipos();
+    }
+
+    /**
+     * Conversor de lloros según la cantidad total de todos los misters o solamente de uno.
+     * @param misterId
+     * @return
+     */
+    public Map<String, Object> getLloros3UltimasJornadas(Long misterId){
+        
+        int cantidadLloros = llorometroRepository.getLloros3UltimasJornadas(misterId);
+        
+        //Si no tenemos misterId, calculamos el máximo de lloros "globales".
+        int maximoCriterio = (misterId == null) ? 15 : 6; 
+        
+        // 3. Calculamos porcentaje
+        double porcentaje = (cantidadLloros * 100.0) / maximoCriterio;
+        if (porcentaje > 100) porcentaje = 100; //No deberiamos sobrepasar el 100% de lloros, pero por si acaso.
+        if (porcentaje == 0) { porcentaje = 5; //Si no tenemos lloros registrados, ponemos 5% para que se vea la linea con algo de contenido.
+            
+        }
+
+        // 4. Determinamos el texto del nivel
+        String etiqueta;
+        if (porcentaje < 30) etiqueta = "BAJO";
+        else if (porcentaje < 70) etiqueta = "MEDIO";
+        else etiqueta = "ALTO";
+
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("porcentaje", (int) porcentaje);
+        respuesta.put("etiqueta", etiqueta);
+        
+        return respuesta;
     }
 }

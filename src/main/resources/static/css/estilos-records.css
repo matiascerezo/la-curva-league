@@ -1,0 +1,204 @@
+/* Tablas de records */
+.records-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.table-record {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border-collapse: separate;
+    border-spacing: 0;
+    vertical-align: middle;
+}
+
+.table-record th {
+    padding: 12px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.table-record td {
+    padding: 0.62rem;
+    border-bottom: 1px solid #f1f3f5;
+    font-size: 0.9rem;
+}
+
+/* Tabla de Mejores */
+.table-best thead {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+}
+
+.table-best tr:nth-child(1) td:first-child { color: #b45309; font-weight: 800; } /* 1º Dorado */
+
+.badge-top {
+    background: #ecfdf5;
+    color: #059669;
+    padding: 0.12rem 0.5rem;
+    border-radius: 1.25rem;
+    font-weight: bold;
+}
+
+.badge-top.mejores-jugadores{
+    white-space: nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tabla de Peores */
+.table-worst thead {
+    background: linear-gradient(135deg, #4b5563 0%, #1f2937 100%);
+    color: white;
+}
+
+.table-worst .pts-low {
+    color: #dc2626;
+    font-weight: bold;
+}
+
+.table-worst tr:hover {
+    background-color: #fff5f5;
+}
+
+/* Tabla de Curiosidades */
+.table-info thead {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+}
+
+.info-label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    display: block;
+}
+
+/* Estilo específico para la tabla de MVPs */
+/* Cabecera de la tabla MVP */
+.table-mvp thead {
+    background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%) !important;
+    color: white !important;
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+/* Para la tabla de mejores jugadores */
+.table-mejores-jugadores thead {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%) !important;
+    color: white !important;
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+/* Para la tabla de más llorones */
+.table-mas-llorones thead {
+    background: linear-gradient(135deg, #7dd3fc 0%, #0ea5e9 100%) !important;
+    color: white !important;
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+/* El badge de la estrella (el de la derecha) */
+.mvp-badge-star {
+    background: #eef2ff; /* Azul muy pálido */
+    color: #4338ca;      /* Texto azul fuerte */
+    font-weight: 800;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.62rem;/* Bordes más suaves */
+    border: 0.06rem solid #c7d2fe;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.26rem;
+}
+
+
+/* Cabecera para la tabla de puntos negativos */
+.table-negativos-totales thead {
+    background: linear-gradient(135deg, #ef4444 0%, #991b1b 100%); /* Rojo sangre */
+    color: white !important;
+}
+
+/* Para la tabla de mejores jugadores */
+.table-jugador-negativo thead {
+    background: linear-gradient(135deg, #a87f5a 0%, #6f4e37 100%) !important;
+    color: white !important;
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+/* El badge del castigo */
+.badge-negativo {
+    background: #fef2f2;
+    color: #b91c1c;
+    font-weight: 800;
+    padding: 0.25rem 0.62rem;
+    border-radius: 0.5rem;
+    border: 0.06rem solid #fecaca;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; /* Alineamos los puntos a la derecha de la celda */
+    white-space: nowrap;       /* ¡PROHIBIDO saltar de línea! */
+    gap: 0.25rem;
+}
+
+.badge-negativo.lloro {
+    color: #7dd3fc;
+    border: 0.06rem solid #7da5fc;
+    background: #f2fdfe;
+}
+
+.equipo-cell-content, .jugador-cell-content {
+    display: flex;
+    align-items: center; /* Centrado vertical Flexbox */
+    gap: 0.62rem;           /* Espacio entre logo y texto */
+    text-align: left;    /* El texto interno a la izquierda */
+}
+
+.equipo-cell-content.tops {
+    text-align: right;
+}
+
+/* Tabla puntos totales perdidos*/
+.contenedor-lastres {
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+    margin: 1rem 0;
+}
+
+.header-negativo {
+    display: flex;
+    align-items: center;
+    gap: 0.62rem;
+    color: #ef4444;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 0.8rem;
+}
+
+.pos-negativa {
+    font-weight: 800;
+    color: #94a3b8;
+}
+
+.equipo-name {
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.puntos-rojos {
+    color: #ef4444;
+    font-weight: 800;
+    float: right;
+}
+
+/* Asegura que el contenedor del grid deje espacio al footer */
+.main-content-wrapper {
+    min-height: 80vh; /* Empuja el footer hacia abajo si hay poco contenido */
+    display: block;
+    clear: both;
+    padding-bottom: 50px; /* Espacio de seguridad */
+}
+

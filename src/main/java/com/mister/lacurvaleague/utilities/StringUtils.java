@@ -28,7 +28,7 @@ public class StringUtils {
         return slug.toLowerCase(Locale.ENGLISH).replaceAll("-{2,}", "-");
     }
 
-    public boolean niNuloNiVacio(String text){
+    public static boolean niNuloNiVacio(String text){
         return text != null && !text.isBlank();
     }
 }

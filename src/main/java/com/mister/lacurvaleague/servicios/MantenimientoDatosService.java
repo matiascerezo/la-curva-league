@@ -37,6 +37,7 @@ import com.mister.lacurvaleague.repository.JugadorRealRepository;
 import com.mister.lacurvaleague.repository.JugadorRepository;
 import com.mister.lacurvaleague.repository.LlorometroRepository;
 import com.mister.lacurvaleague.repository.MisterRepository;
+import com.mister.lacurvaleague.utilities.StringUtils;
 
 import jakarta.transaction.Transactional;
 
@@ -53,6 +54,7 @@ public class MantenimientoDatosService implements FormatPosicion {
     private String PATH_JSON_MISTERS;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     private JugadorRepository jugadorRepository;   
@@ -72,12 +74,12 @@ public class MantenimientoDatosService implements FormatPosicion {
      * @return Jornada con los datos del fichero .json
      */
     @Transactional
-    public int procesarJornada(Resource recurso) {
+    public int procesarJornada(InputStream is) {
         List<Jornada> listaJornadas = new ArrayList<>();
         List<Equipo> listaEquipos = new ArrayList<>();
         List<Jugador> listaJugadores = new ArrayList<>();
 
-        try (InputStream is = recurso.getInputStream()) {
+        try {
             
             JornadaDTO jornadaDTO = objectMapper.readValue(is, JornadaDTO.class);
             Set<Integer> jornadasEnBBDD = jornadaRepository.findAllNumerosJornada();
@@ -102,7 +104,7 @@ public class MantenimientoDatosService implements FormatPosicion {
                 }
             }         
         } catch (IOException e) {
-            throw new RuntimeException("Error al leer el JSON del recurso: " + recurso.getFilename(), e);
+            throw new RuntimeException("Error al leer el JSON del recurso: " + e);
         }
         if(!listaJugadores.isEmpty()) {
             jornadaRepository.saveAll(listaJornadas);
@@ -119,18 +121,18 @@ public class MantenimientoDatosService implements FormatPosicion {
    public String procesarTodasLasJornadas(Integer jornada) {
         int totalJornadas = 0;
         int jornadasProcesadas = 0;
-        String path = "*";
         try {
             PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
-            if(jornada != null) {
-                path = "jornada" + String.valueOf(jornada);
-            }
+            String path = (jornada != null) ? "jornada" + jornada : "*";
+
             Resource[] resources = resolver.getResources("classpath*:" + PATH_JSON_JORNADA + path +".json");
             totalJornadas = resources.length;
 
             for (Resource resource : resources) {
-                jornadasProcesadas = procesarJornada(resource);
+                try (InputStream is = resource.getInputStream()) {
+                    jornadasProcesadas = procesarJornada(is);
+                }
             }
 
         } catch (IOException e) {
@@ -144,15 +146,21 @@ public class MantenimientoDatosService implements FormatPosicion {
      * Cargar todos los jugadores con su posición real.
      *
      */
-    public String cargarJugadoresReales() {
+    public String cargarJugadoresReales(boolean ficheroLocal, InputStream is) {
 
         int jugadoresCargados = 0;
         int totales = 0;
 
         try {
-            String rutaPathFichero = PATH_JSON_JUGADORES + "jugadores_reales.json";
-            
-            InputStream is = getClass().getClassLoader().getResourceAsStream(rutaPathFichero);
+            if(ficheroLocal) {
+                String rutaPathFichero = PATH_JSON_JUGADORES + "jugadores_reales.json";           
+                is = getClass().getClassLoader().getResourceAsStream(rutaPathFichero);
+            }
+
+            if(is == null) {
+                return "No encuentra fichero";
+            }
+
             List<JugadorRealDTO> listaJugadoresDTO = objectMapper.readValue(is, new TypeReference<List<JugadorRealDTO>>() {});
             totales = listaJugadoresDTO.size();
             
@@ -313,26 +321,27 @@ public class MantenimientoDatosService implements FormatPosicion {
         }
     }
 
-    public String procesarTodosLosLloros() {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            // Leemos el archivo y lo convertimos en una lista de nuestras jornadas
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/lloros/lloros.json");
-            List<LlorometroDTO> listLlorometroDTOs = mapper.readValue(inputStream, new TypeReference<List<LlorometroDTO>>(){});
-            List<Llorometro> listaLloromentro = new ArrayList<>();
+    public String procesarJornadaLlorosExt(InputStream inputStream) {
+        return procesarTodosLosLloros(false, inputStream);
+    }
 
-            //Busco todas las jornadas para comprobar si existe la jornada leída del JSON (máximo habrá 38, debería ser rápido).
-            Map<Integer,Jornada> jornadas = jornadaRepository.findAll()
-                            .stream()
-                            .collect(Collectors.toMap(Jornada::getNumeroJornada, j -> j));
-            
+    public String procesarTodosLosLloros(boolean procesarTodoLocal, InputStream inputStream) {
+        try {
+            if(procesarTodoLocal) {
+                // Leemos el archivo y lo convertimos en una lista de nuestras jornadas
+                inputStream = getClass().getClassLoader().getResourceAsStream("data/lloros/lloros.json");
+            }
+            List<LlorometroDTO> listLlorometroDTOs = mapper.readValue(inputStream, new TypeReference<List<LlorometroDTO>>(){});
+            List<Llorometro> listaLlorometro = new ArrayList<>();
+
             //Recupero todos los misters.
             Map<String, Mister> misters = misterRepository.findAll()
             .stream().collect(Collectors.toMap(Mister::getNombreEquipo, m -> m));
 
             for (LlorometroDTO lloroDTO : listLlorometroDTOs) {
-                Jornada jornada = jornadas.get(lloroDTO.getNumeroJornada());
-                if(jornada != null){
+                boolean existeJornadaBBDD = StringUtils.niNuloNiVacio(llorometroRepository.existenLlorosJornadasX(lloroDTO.getNumeroJornada()));
+                if(!existeJornadaBBDD){
+                    Jornada jornada = jornadaRepository.findByNumeroJornada(lloroDTO.getNumeroJornada());
                     for(MisterLlorosDTO equipoLloroDTO : lloroDTO.getEquiposLloros()){
                         Mister mister = misters.get(equipoLloroDTO.getNombreMister());
                         if(mister != null){
@@ -341,16 +350,16 @@ public class MantenimientoDatosService implements FormatPosicion {
                                 lloro.setJornada(jornada);
                                 lloro.setMister(mister);
                                 lloro.setMotivo(lloroDetalleDTO.getMotivo());
-                                listaLloromentro.add(lloro);
+                                listaLlorometro.add(lloro);
                             }
                         }
                     }
                 }
             }
-            if (!listaLloromentro.isEmpty()) {
-                llorometroRepository.saveAll(listaLloromentro);
+            if (!listaLlorometro.isEmpty()) {
+                llorometroRepository.saveAll(listaLlorometro);
             } 
-            return "Lloros procesados: " + listaLloromentro.size();
+            return "Lloros procesados: " + listaLlorometro.size();
         } catch (IOException e) {
             e.printStackTrace();
             return "Error al insertar lloros.";
@@ -369,5 +378,52 @@ public class MantenimientoDatosService implements FormatPosicion {
         jr.setPosicion(jugadorRealDTO.getPosicion());
         jr.setPosicionCorta(this.getPosicionAbreviada(jugadorRealDTO.getPosicion()));
         return jr;
+    }
+
+    /**
+    * Procesa un fichero independiente de lloros.
+    * @param inputStream
+    * @return
+    */
+    public String cargarLlorometroFicheroExt(InputStream inputStream) {
+        return procesarJornadaLlorosExt(inputStream);
+    }
+
+    /**
+     * Procesa un fchero independiente de jornada.
+     * @param inputStream
+     * @return
+     */
+    public String cargarJornadaFicheroExt(InputStream inputStream) {
+        return "Jornadas procesadas: " + procesarJornada(inputStream);
+    }
+
+    /**
+     * Procesa un fchero independiente de jugadores_reales.
+     * @param inputStream
+     * @return
+     */
+    public String cargarJugadoresRealesFicheroExt(InputStream inputStream) {
+        return "Jornadas procesadas: " + cargarJugadoresReales(false, inputStream);
+    }
+
+    /**
+     * Método que recibe un fichero inputStream y lo procesa según que tipo sea.
+     * @param is
+     * @param nombreFichero
+     * @return
+     */
+    public String procesarFicheroJSON(InputStream is, String nombreFichero) {
+        String nombreFicheroSinExtension = StringUtils.niNuloNiVacio(nombreFichero) ? nombreFichero.split(".json")[0] : "";
+        switch (nombreFicheroSinExtension) {
+            case "lloros":
+                return cargarLlorometroFicheroExt(is);
+            case "jornada":
+                return cargarJornadaFicheroExt(is);
+            case "jugadores_reales":
+                return cargarJugadoresRealesFicheroExt(is);
+            default:
+                return "";
+        }
     }
 }

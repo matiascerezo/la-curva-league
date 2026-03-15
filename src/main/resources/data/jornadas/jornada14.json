@@ -38,7 +38,7 @@
         { "nombre": "C.Romero", "puntos": 4,"amarillas":1 },
         { "nombre": "N.Mendy", "puntos": 13, "goles":1,"xiIdeal": true },
         { "nombre": "J.Rueda", "puntos": 2 },
-        { "nombre": "J.Garcia", "puntos": 9,"asistencias":1, "xiIdeal": true }
+        { "nombre": "J.Garcia", "puntos": 9,"amarillas":1, "xiIdeal": true }
       ]
     },
     {

@@ -10,22 +10,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingAsistenciasDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingGolesDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingLlorosDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.TarjetasDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.dtoRecordJornadas.MejorJornadaDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.dtoRecordJornadas.MvpDTO;
 import com.mister.lacurvaleague.repository.EquipoRepository;
 import com.mister.lacurvaleague.repository.MisterRepository;
 import com.mister.lacurvaleague.servicios.LlorometroService;
 import com.mister.lacurvaleague.servicios.MisterService;
+import com.mister.lacurvaleague.servicios.MisterService.EquipoLastreDTO;
+import com.mister.lacurvaleague.servicios.MisterService.JugadoresMasPuntosDTO;
+import com.mister.lacurvaleague.servicios.MisterService.MistersMasLloronesDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -60,14 +68,18 @@ public class NavegacionControlador {
     @GetMapping("/club/{nombreMisterURL}")
     public String verEquipo(@PathVariable String nombreMisterURL, Model model) {
         
-        String nombreMister = misterService.getNombreEquipoByURL(nombreMisterURL);
+        Mister mister = misterService.getMisterByURL(nombreMisterURL);
         String imgEquipo = misterService.getImgEquipo(nombreMisterURL);
         List<ClasificacionEquipoDTO> cEquipoDTOs = misterService.obtenerPuntosEquipoXJornadaByURL(nombreMisterURL);
-        model.addAttribute("nombreEquipo", nombreMister);
+        Map<String, Object> lloros3UltimasJornadas = llorometroService.getLloros3UltimasJornadas(mister.getMisterId());    
+
+        model.addAttribute("nombreEquipo", mister.getNombreEquipo());
         model.addAttribute("imgEquipo", imgEquipo);
         model.addAttribute("puntosEquipoJornadas", cEquipoDTOs);
         model.addAttribute("puntosEquipoJornadasGrafica", cEquipoDTOs.reversed());
-        model.addAttribute("colorEquipo", env.getProperty("color."+nombreMisterURL));
+        model.addAttribute("colorEquipo", env.getProperty("color."+ nombreMisterURL));
+        model.addAttribute("etiqueta", lloros3UltimasJornadas.get("etiqueta"));
+        model.addAttribute("porcentaje", lloros3UltimasJornadas.get("porcentaje"));
         return "equipos";
     }
 
@@ -160,14 +172,40 @@ public class NavegacionControlador {
                                     .sorted()
                                     .collect(Collectors.toList());
 
+        Map<String, Object> lloros3UltimasJornadas = llorometroService.getLloros3UltimasJornadas(null);                                  
+
         model.addAttribute("mapaLlorosJornadas", llorosMap);
         model.addAttribute("listaJornadas", listaJornadas);
         model.addAttribute("numJornadaActual", listaJornadas.getFirst());
+        model.addAttribute("etiqueta", lloros3UltimasJornadas.get("etiqueta"));
+        model.addAttribute("porcentaje", lloros3UltimasJornadas.get("porcentaje"));
         return "llorometro";
     }
 
     @ModelAttribute("ultimaActualizacion")
     public String getUltimaActualizacion(){
         return fechaActualizacion;
+    }
+
+    @GetMapping("/top/records")
+    public String mostrarPantallaRecords(Model model) {
+        List<MejorJornadaDTO> mejoresJornadas = misterService.getTop3MejoresJornadas();
+        List<MejorJornadaDTO> peoresJornadas = misterService.getTop3PeoresJornadas();
+        List<MvpDTO> listaMvps = misterService.getMVP();
+        List<MistersMasLloronesDTO> misterMasLlorones = misterService.getListJugadoresMasLloronesTotales(null, PageRequest.of(0, 3));
+        List<MvpDTO> peoresJugadores = misterService.getPeoresJugadores();
+        List<EquipoLastreDTO> puntosNegativosXEquipo = misterService.getPuntosNegativosXEquipo(PageRequest.of(0, 7));
+        List<JugadoresMasPuntosDTO> jugadoresMasPuntos = misterService.getListJugadoresMasPuntosTotales(null, PageRequest.of(0, 7));
+        
+        //TOP JUGADORES CON MAS PUNTOS DA IGUAL EL EQUIPO
+
+        model.addAttribute("mejoresJornadas", mejoresJornadas);
+        model.addAttribute("peoresJornadas", peoresJornadas);
+        model.addAttribute("listaMvps", listaMvps);
+        model.addAttribute("misterMasLlorones", misterMasLlorones);
+        model.addAttribute("peoresJugadores", peoresJugadores);
+        model.addAttribute("topLastres", puntosNegativosXEquipo);
+        model.addAttribute("jugadoresMasPuntos", jugadoresMasPuntos);
+        return "records";
     }
 }

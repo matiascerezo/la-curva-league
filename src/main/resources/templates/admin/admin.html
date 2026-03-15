@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>La Curva League - Panel de administrador</title>>
+    <link rel="stylesheet" th:href="@{/css/estilos-admin.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
+</head>
+<body>
+    <nav th:replace="~{fragments/navbar :: nav}"></nav>
+<div class="admin-container">
+    <header class="admin-header">
+        <h1>⚙️Panel de Control⚙️</h1>
+    </header>
+
+    <div class="admin-grid">
+        <section class="admin-card">
+            <h3>📤 Importar Datos (JSON)</h3>
+            <p class="info-label">Selecciona el archivo (jornadaX.json, lloros.json, etc.)</p>
+            
+            <form th:action="@{/mantenimiento/admin/subirJson}" method="post" enctype="multipart/form-data" class="upload-form">
+                <div class="file-drop-area" id="drop-area">
+                    <span class="fake-btn" id="file-box">Elegir archivo</span>
+                    <span class="file-msg" id="file-msg">o arrastra y suelta aquí</span>
+                    <span id="remove-file" class="boton-eliminar" style="display: none;">&times;</span>
+                    <input class="file-input" type="file" name="file" id="file-input" accept=".json" required>
+                </div>
+                <button type="submit" class="btn-primary">🚀 Cargar datos</button>
+            </form>
+            
+            <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+            <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+        </section>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script th:src="@{/js/admin.js}"></script>
+</body>
+</html>

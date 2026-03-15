@@ -25,6 +25,19 @@
         </div>
     </div>
 
+    <div class="contenedor-termometro">
+        <div class="info-termometro">
+            <span>Nivel general de llantos:</span>
+            <strong th:text="${etiqueta}"></strong>
+        </div>
+        <div class="barra-exterior">
+            <div class="barra-interior" 
+                th:classappend="${etiqueta == 'ALTO'} ? 'pulso-critico' : ''"
+                th:style="'width: ' + ${porcentaje} + '%'">
+            </div>
+        </div>
+    </div>
+
     <div class="table-wrapper">
         <div th:each="jornadaEntry : ${mapaLlorosJornadas}" 
             th:id="'bloque-jornada-lloros-' + ${jornadaEntry.key}" 

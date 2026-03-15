@@ -13,6 +13,7 @@ import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.GoleadorDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingAsistenciasDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingGolesDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.dtoRecordJornadas.MvpDTO;
 
 @Repository
 public interface EquipoRepository extends JpaRepository<Equipo, Long> {
@@ -127,4 +128,38 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
 				"WHERE j.goles > 0 " +
 				"ORDER BY nombreEquipo ASC, goles DESC")
 		List<RankingGolesDTO> getGolesEquipos();
+
+		@Query(value = """
+				SELECT 
+					m.img_equipo AS imgEquipo,
+					m.nombre_equipo AS nombreEquipo,
+					j.nombre AS nombreJugador,
+					j.posicion_corta AS posicion,
+					COUNT(j.xi_ideal) AS totalMvps
+				FROM jugador j
+				JOIN equipo e ON j.equipo_id = e.equipo_id
+				JOIN mister m ON e.mister_id = m.mister_id
+				WHERE j.xi_ideal = true
+				GROUP BY j.nombre, j.posicion_corta, m.nombre_equipo, m.img_equipo
+				ORDER BY totalMvps DESC, j.nombre ASC
+				LIMIT 3
+				""", nativeQuery = true)
+		List<MvpDTO> getMVP();
+
+		@Query(value = """
+				SELECT 
+					m.img_equipo AS imgEquipo, 
+					m.nombre_equipo AS nombreEquipo, 
+					j.nombre AS nombreJugador, 
+					j.posicion_corta AS posicion, 
+					SUM(j.puntos) AS totalMvps --realmente = puntos 
+				FROM jugador j 
+				JOIN equipo e ON j.equipo_id = e.equipo_id 
+				JOIN mister m ON e.mister_id = m.mister_id 
+				WHERE j.puntos < 0 
+				GROUP BY j.nombre, j.posicion_corta, m.nombre_equipo, m.img_equipo 
+				ORDER BY totalMvps ASC, j.nombre ASC 
+				LIMIT 7
+				""", nativeQuery = true)
+		List<MvpDTO> getPeoresJugadores();
 }

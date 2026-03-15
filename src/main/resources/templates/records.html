@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>La Curva League - Récords</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos-tops.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos-records.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <nav th:replace="~{fragments/navbar :: nav}"></nav>
+    <div class="records-grid">
+        <table class="table-record table-best">
+            <thead>
+                <tr><th colspan="3">🔥 Top 3 Mejores Jornadas</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="jornada, iter : ${mejoresJornadas}">
+                    <td class="text-center" style="font-weight: bold;" th:text="${iter.count}">0</td>
+                    <td style="font-weight: 600;">
+                        <div class="equipo-cell-content tops">
+                            <img th:src="${jornada.imgEquipo}" class="escudo-tabla">
+                            <span th:text="${jornada.nombreEquipo}"></span>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge-top" th:text="${jornada.puntos} +' pts'">0</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table-record table-worst">
+            <thead>
+                <tr><th colspan="3">💀 Top 3 Palmadas históricas</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="peorj, iter : ${peoresJornadas}">
+                    <td class="text-center" style="font-weight: bold;" th:text="${iter.count}">0</td>
+                    <td style="font-weight: 600;">
+                        <div class="equipo-cell-content">
+                            <img th:src="${peorj.imgEquipo}" class="escudo-tabla">
+                            <span th:text="${peorj.nombreEquipo}"></span>
+                        </div>
+                    </td>
+                    <td class="pts-low">
+                        <span th:text="${peorj.puntos} +' pts'">0</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table-record table-mvp">
+            <thead>
+                <tr><th colspan="4">🌟 TOP 3 Jugadores XI Ideal</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="jugador, iter : ${listaMvps}">
+                    <td class="text-center" style="font-weight: bold;" th:text="${iter.count}">0</td>
+                    <td style="font-weight: 600;">
+                        <div class="equipo-info-cell">
+                            <img th:src="${jugador.imgEquipo}" class="escudo-tabla">
+                            <span th:text="${jugador.nombreEquipo}"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <span th:text="${jugador.nombreJugador}"></span>
+                        <span th:text="${jugador.posicionCorta}" 
+                                            th:class="'badge-posicion pos-' + ${jugador.posicionCorta}">DC</span>
+                    </td>
+                    <td class="text-end">
+                        <span class="mvp-count" th:text="${jugador.totalMvps + ' ⭐'}"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table-record table-mas-llorones">
+            <thead>
+                <tr><th colspan="3">😭 TOP 3 MÁS LLORONES</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="jugador, iter : ${misterMasLlorones}">
+                    <td class="text-center" style="font-weight: bold;" th:text="${iter.count}">0</td>
+                    <td style="font-weight: 600;">
+                        <div class="equipo-cell-content">
+                            <img th:src="${jugador.imgEquipo}" class="escudo-tabla">
+                            <span th:text="${jugador.nombreEquipo}"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge-negativo lloro" th:text="${jugador.llorosTotales + ' 😭'}"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="records-grid">
+        <table class="table-record table-mejores-jugadores">
+            <thead>
+                <tr><th colspan="4">🌟 TOP Mejores Jugadores</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="jugador, iter : ${jugadoresMasPuntos}">
+                    <td class="text-center" style="font-weight: bold;" th:text="${iter.count}">0</td>
+                    <td style="font-weight: 600;">
+                        <div class="equipo-cell-content">
+                            <img th:src="${jugador.imgEquipo}" class="escudo-tabla">
+                            <span th:text="${jugador.nombreEquipo}"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="jugador-cell-content">
+                            <span th:text="${jugador.nombre}"></span>
+                            <span th:text="${jugador.posicionCorta}" 
+                                                th:class="'badge-posicion pos-' + ${jugador.posicionCorta}">DC</span>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge-top mejores-jugadores" th:text="${jugador.puntos + ' pts'}"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table-record table-jugador-negativo">
+            <thead>
+                <tr><th colspan="4">💀 EL MURO DE LOS LAMENTOS</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="jugador, iter : ${peoresJugadores}">
+                    <td class="text-center" style="font-weight: bold;" th:text="${iter.count}">0</td>
+                    <td style="font-weight: 600;">
+                        <div class="equipo-cell-content">
+                            <img th:src="${jugador.imgEquipo}" class="escudo-tabla">
+                            <span th:text="${jugador.nombreEquipo}"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="jugador-cell-content">
+                            <span th:text="${jugador.nombreJugador}"></span>
+                            <span th:text="${jugador.posicionCorta}" 
+                                th:class="'badge-posicion pos-' + ${jugador.posicionCorta}">DC</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge-negativo" th:text="${jugador.totalMvps + ' pts'}"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table-record table-negativos-totales"> 
+            <thead>
+                <tr>
+                    <th colspan="3">
+                        <i class="fas fa-skull-crossbones"></i> PUNTOS TOTALES RESTADOS
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="lastre, iter : ${topLastres}">
+                    <td class="text-center" style="font-weight: bold;" th:text="${iter.count}">1</td>
+                    
+                    <td style="font-weight: 600;">
+                        <div class="equipo-cell-content">
+                            <img th:src="${lastre.imgEquipo}" class="escudo-tabla" style="width: 24px; height: 24px;">
+                            <span th:text="${lastre.nombreEquipo}" style="font-weight: 600;"></span>
+                        </div>
+                    </td>
+                    
+                    <td style="text-align: right;">
+                        <div>
+                            <span class="badge-negativo" th:text="${lastre.puntos} + ' pts'">-20 pts</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>  
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>
