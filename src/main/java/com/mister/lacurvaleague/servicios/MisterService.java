@@ -9,6 +9,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import com.mister.lacurvaleague.modelos.Clausulazos;
 import com.mister.lacurvaleague.modelos.Equipo;
 import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.AsistenciaDTO;
@@ -19,6 +21,7 @@ import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingAsistenciasDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingGolesDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.dtoRecordJornadas.MejorJornadaDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.dtoRecordJornadas.MvpDTO;
+import com.mister.lacurvaleague.repository.ClausulazoRepository;
 import com.mister.lacurvaleague.repository.EquipoRepository;
 import com.mister.lacurvaleague.repository.JornadaRepository;
 import com.mister.lacurvaleague.repository.MisterRepository;
@@ -40,6 +43,9 @@ public class MisterService {
 
     @Autowired
     private LlorometroRepository llorometroRepository;
+
+    @Autowired
+    private ClausulazoRepository clausulazoRepository;
 
     MisterService(JugadorRepository jugadorRepository) {
         this.jugadorRepository = jugadorRepository;
@@ -143,6 +149,10 @@ public class MisterService {
 
     public List<MistersMasLloronesDTO> getListJugadoresMasLloronesTotales(String nombreEquipo, Pageable pag) {
         return llorometroRepository.getListJugadoresMasLlorosTotales(nombreEquipo, pag);
+    }
+
+    public List<Clausulazos> getClausulazosTotales() {
+        return clausulazoRepository.findAll();
     }
     
 }

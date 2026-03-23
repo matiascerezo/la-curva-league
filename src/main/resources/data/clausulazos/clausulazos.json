@@ -1,0 +1,250 @@
+[
+  {
+    "misterComprador": "Los Pollos Hermanos",
+    "misterVendedor": "Los 11 Yonkos",
+    "nombreJugador": "N.Tenaglia",
+    "posicionJugador": "DF",
+    "precioPagado": 8677500,
+    "fechaTransaccion": "2026-03-22"
+  },
+  {
+    "misterComprador": "Los Pollos Hermanos",
+    "misterVendedor": "Los Hokages de Merlès",
+    "nombreJugador": "G.Mikautadze",
+    "posicionJugador": "DL",
+    "precioPagado": 41500625,
+    "fechaTransaccion": "2026-03-21"
+  },
+  {
+    "misterComprador": "Maylova FC",
+    "misterVendedor": "Los Hokages de Merlès",
+    "nombreJugador": "J.Musso",
+    "posicionJugador": "PT",
+    "precioPagado": 1066950,
+    "fechaTransaccion": "2026-03-19"
+  },
+  {
+    "misterComprador": "Shalke Megiño",
+    "misterVendedor": "Maylova FC",
+    "nombreJugador": "A.Escandell",
+    "posicionJugador": "PT",
+    "precioPagado": 56944000,
+    "fechaTransaccion": "2026-03-19"
+  },
+  {
+    "misterComprador": "Fénix del mar",
+    "misterVendedor": "Los Pollos Hermanos",
+    "nombreJugador": "P.Cubarsi",
+    "posicionJugador": "DF",
+    "precioPagado": 66680000,
+    "fechaTransaccion": "2026-03-19"
+  },
+  {
+    "misterComprador": "Los Pollos Hermanos",
+    "misterVendedor": "Maylova FC",
+    "nombreJugador": "C.Espí",
+    "posicionJugador": "DL",
+    "precioPagado": 4492000,
+    "fechaTransaccion": "2026-03-18"
+  },
+  {
+    "misterComprador": "Shalke Megiño",
+    "misterVendedor": "Los Pollos Hermanos",
+    "nombreJugador": "M.Bernal",
+    "posicionJugador": "MC",
+    "precioPagado": 22816000,
+    "fechaTransaccion": "2026-03-17"
+  },
+  {
+    "misterComprador": "Los Pollos Hermanos",
+    "misterVendedor": "Rayo Vaticano",
+    "nombreJugador": "S.Dimitrievski",
+    "posicionJugador": "PT",
+    "precioPagado": 5767500,
+    "fechaTransaccion": "2026-03-17"
+  },
+  {
+    "misterComprador": "Fénix del mar",
+    "misterVendedor": "Los Pollos Hermanos",
+    "nombreJugador": "V.Muñoz",
+    "posicionJugador": "DL",
+    "precioPagado": 71478000,
+    "fechaTransaccion": "2026-03-16"
+  },
+  {
+    "misterComprador": "Los Pollos Hermanos",
+    "misterVendedor": "Shalke Megiño",
+    "nombreJugador": "F.Valverde",
+    "posicionJugador": "MC",
+    "precioPagado": 84001250,
+    "fechaTransaccion": "2026-03-14"
+  },
+  {
+    "misterComprador": "Maylova FC",
+    "misterVendedor": "Los Pollos Hermanos",
+    "nombreJugador": "V.Muriqi",
+    "posicionJugador": "DL",
+    "precioPagado": 95008000,
+    "fechaTransaccion": "2026-03-12"
+  },
+  {
+    "misterComprador": "Los Pollos Hermanos",
+    "misterVendedor": "Maylova FC",
+    "nombreJugador": "V.Júnior",
+    "posicionJugador": "DL",
+    "precioPagado": 119677494,
+    "fechaTransaccion": "2026-03-12"
+  },
+  {
+    "misterComprador": "Fénix del mar",
+    "misterVendedor": "Los Pollos Hermanos",
+    "nombreJugador": "M.Oyarzabal",
+    "posicionJugador": "DL",
+    "precioPagado": 97716000,
+    "fechaTransaccion": "2026-03-10"
+  },
+  {
+    "misterComprador": "Los 11 Yonkos",
+    "misterVendedor": "Fénix del mar",
+    "nombreJugador": "M.Dituro",
+    "posicionJugador": "PT",
+    "precioPagado": 3822000,
+    "fechaTransaccion": "2026-03-10"
+  },
+  {
+    "misterComprador": "Fénix del mar",
+    "misterVendedor": "Los 11 Yonkos",
+    "nombreJugador": "J.Garcia",
+    "posicionJugador": "PT",
+    "precioPagado": 70640000,
+    "fechaTransaccion": "2026-03-09"
+  },
+  {
+    "misterComprador": "Los 11 Yonkos",
+    "misterVendedor": "Los Hokages de Merlès",
+    "nombreJugador": "L.Ramazani",
+    "posicionJugador": "MC",
+    "precioPagado": 11856000,
+    "fechaTransaccion": "2026-03-08"
+  },
+  {
+    "misterComprador": "Rayo Vaticano",
+    "misterVendedor": "Los 11 Yonkos",
+    "nombreJugador": "M.Satriano",
+    "posicionJugador": "DL",
+    "precioPagado": 2985000,
+    "fechaTransaccion": "2026-03-08"
+  },
+  {
+    "misterComprador": "Fénix del mar",
+    "misterVendedor": "Los 11 Yonkos",
+    "nombreJugador": "L.Milla",
+    "posicionJugador": "MC",
+    "precioPagado": 75192000,
+    "fechaTransaccion": "2026-03-07"
+  },
+  {
+    "misterComprador": "Los 11 Yonkos",
+    "misterVendedor": "Fénix del mar",
+    "nombreJugador": "L.Yamal",
+    "posicionJugador": "DL",
+    "precioPagado": 290856000,
+    "fechaTransaccion": "2026-03-07"
+  },
+  {
+    "misterComprador": "Los Hokages de Merlès",
+    "misterVendedor": "Los 11 Yonkos",
+    "nombreJugador": "Pedri",
+    "posicionJugador": "MC",
+    "precioPagado": 154000000,
+    "fechaTransaccion": "2026-03-07"
+  },
+  {
+    "misterComprador": "Los Pollos Hermanos",
+    "misterVendedor": "Maylova FC",
+    "nombreJugador": "Á.Fidalgo",
+    "posicionJugador": "MC",
+    "precioPagado": 14121000,
+    "fechaTransaccion": "2026-03-06"
+  },
+  {
+    "misterComprador": "Los Hokages de Merlès",
+    "misterVendedor": "Rayo Vaticano",
+    "nombreJugador": "K.Salas",
+    "posicionJugador": "DF",
+    "precioPagado": 11668500,
+    "fechaTransaccion": "2026-03-06"
+  },
+  {
+    "misterComprador": "Fénix del mar",
+    "misterVendedor": "Los Hokages de Merlès",
+    "nombreJugador": "E.García",
+    "posicionJugador": "DF",
+    "precioPagado": 135869130,
+    "fechaTransaccion": "2026-03-06"
+  },
+  {
+    "misterComprador": "Los Hokages de Merlès",
+    "misterVendedor": "Fénix del mar",
+    "nombreJugador": "E.García",
+    "posicionJugador": "DF",
+    "precioPagado": 90579420,
+    "fechaTransaccion": "2026-03-05"
+  },
+  {
+    "misterComprador": "Fénix del mar",
+    "misterVendedor": "Los Pollos Hermanos",
+    "nombreJugador": "M.Arambarri",
+    "posicionJugador": "MC",
+    "precioPagado": 32500000,
+    "fechaTransaccion": "2026-03-04"
+  },
+  {
+    "misterComprador": "Los Pollos Hermanos",
+    "misterVendedor": "Fénix del mar",
+    "nombreJugador": "J.de Frutos",
+    "posicionJugador": "MC",
+    "precioPagado": 55744000,
+    "fechaTransaccion": "2026-03-04"
+  },
+  {
+    "misterComprador": "Rayo Vaticano",
+    "misterVendedor": "Maylova FC",
+    "nombreJugador": "K.Salas",
+    "posicionJugador": "DF",
+    "precioPagado": 7779000,
+    "fechaTransaccion": "2026-03-03"
+  },
+  {
+    "misterComprador": "Los Hokages de Merlès",
+    "misterVendedor": "Los Pollos Hermanos",
+    "nombreJugador": "L.Ramazani",
+    "posicionJugador": "MC",
+    "precioPagado": 3952000,
+    "fechaTransaccion": "2026-03-01"
+  },
+  {
+    "misterComprador": "Maylova FC",
+    "misterVendedor": "Fénix del mar",
+    "nombreJugador": "A.Ounahi",
+    "posicionJugador": "MC",
+    "precioPagado": 41003996,
+    "fechaTransaccion": "2026-02-23"
+  },
+  {
+    "misterComprador": "Los Pollos Hermanos",
+    "misterVendedor": "Maylova FC",
+    "nombreJugador": "M.Bernal",
+    "posicionJugador": "MC",
+    "precioPagado": 5704000,
+    "fechaTransaccion": "2026-02-22"
+  },
+  {
+    "misterComprador": "Fénix del mar",
+    "misterVendedor": "Maylova FC",
+    "nombreJugador": "M.Pubill",
+    "posicionJugador": "DF",
+    "precioPagado": 34954500,
+    "fechaTransaccion": "2026-02-22"
+  }
+]

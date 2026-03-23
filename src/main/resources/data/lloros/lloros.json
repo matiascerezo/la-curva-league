@@ -72,5 +72,43 @@
         ]
       }
     ]
+  },
+  {
+    "numeroJornada": 28,
+    "equiposLloros": [
+      {
+        "nombreMister": "Los Hokages de Merlès",
+        "lloros": [
+          { "motivo": "'De coña lo de este tio, cuando consigo recortar puntos, llora un poco y le marcan 3 jugadores' (Gallo Paticano ha marcado 3 goles.)" }
+        ]
+      },
+      {
+        "nombreMister": "Maylova FC",
+        "lloros": [
+          { "motivo": "'Está claro aquí quién tiene la suerte siempre a mano, no es nada nuevo.' (Payo Vatiano ha metido un gol)" }
+        ]
+      },
+	  {
+        "nombreMister": "Los Pollos Hermanos",
+        "lloros": [
+          { "motivo": "'Welcome Fede. Spoiler: rotura de biceps femoral antes del min 90.' (Clausuló a Fede Valverde)" }
+        ]
+      },
+	  {
+        "nombreMister": "Rayo Vaticano",
+        "lloros": [
+          { "motivo": "'Moleiro no fue titular.' (Justificando a Fénix que un tio no titular fue algo malo)" },
+		  { "motivo": "'Final de jornada: 1.los joputas,2.los 11 yonkis...' (Lloró porque se veía último en la jornada y le marcó hasta el utillero.)" }
+        ]
+      },
+      {
+        "nombreMister": "Fénix del mar",
+        "lloros": [
+          { "motivo": "'Jajaja y luego te jugarán todos' (Vayanabo le dijo a Fénix que era un fin de semana negro por las rotaciones)" },
+		  { "motivo": "'A llorar a la llorería, máquina.' (Refiriéndose a Vayanabo)" },
+		  { "motivo": "'Me vas a comparar 2 cerapios con un 2 de un jugador. - Vete a la mierda rayo mininabo.'" }
+        ]
+      }
+    ]
   }
 ]

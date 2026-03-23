@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+data/lacurvadb.mv.db
+data/lacurvadb.trace.db
+src/main/resources/application-local.properties

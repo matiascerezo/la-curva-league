@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+    <nav th:fragment="nav" class="navbar">
+    <div class="nav-top">
+        <a th:href="@{/inicio}" class="nav-logo">
+            <img th:src="@{/img/lcl.png}" alt="LCL Logo" draggable="false">
+            <span>La Curva League</span>
+        </a>
+    </div>
+    <div class="nav-scroll-container">
+        <ul class="nav-list-tops">
+            <li class="nav-item">
+                <a th:href="@{/mantenimiento/admin/panel}" 
+                th:classappend="${seccionActual.contains('/mantenimiento/admin/panel')} ? 'activo' : ''"
+                th:text="#{admin.panel}">Panel de control</a>
+            </li>
+
+            <li class="nav-item">
+                <a th:href="@{/mantenimiento/admin/equipos}" 
+                th:classappend="${seccionActual.contains('/mantenimiento/admin/equipos')} ? 'activo' : ''"
+                th:text="#{admin.equipos}">Gestionar equipos</a>
+            </li>
+
+            <li class="nav-item">
+                <a th:href="@{/mantenimiento/admin/jornadas}" 
+                th:classappend="${seccionActual.contains('/mantenimiento/admin/jornadas')} ? 'activo' : ''"
+                th:text="#{admin.jornadas}">Gestionar jornadas</a>
+            </li>
+
+            <li class="nav-item">
+                <a th:href="@{/mantenimiento/admin/jugadores}" 
+                th:classappend="${seccionActual.contains('/mantenimiento/admin/jugadores')} ? 'activo' : ''"
+                th:text="#{admin.jugadores}">Gestionar jugadores</a>
+            </li>
+
+            <li class="nav-item">
+                <a th:href="@{/mantenimiento/admin/jugadores-reales}" 
+                th:classappend="${seccionActual.contains('/mantenimiento/admin/jugadores-reales')} ? 'activo' : ''"
+                th:text="#{admin.jugadores-reales}">Gestionar jugadores reales</a>
+            </li>
+
+            <li class="nav-item">
+                <a th:href="@{/mantenimiento/admin/llorometro}" 
+                th:classappend="${seccionActual.contains('/mantenimiento/admin/llorometro')} ? 'activo' : ''"
+                th:text="#{admin.llorometro}">Gestionar llorometro</a>
+            </li>
+
+            <li class="nav-item">
+                <a th:href="@{/mantenimiento/admin/mister}" 
+                th:classappend="${seccionActual.contains('/mantenimiento/admin/mister')} ? 'activo' : ''"
+                th:text="#{admin.mister}">Gestionar misters</a>
+            </li>
+        </ul>
+    </div>
+    </nav>
+</body>
+</html>

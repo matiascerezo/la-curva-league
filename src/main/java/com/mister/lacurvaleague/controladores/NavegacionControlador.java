@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.mister.lacurvaleague.modelos.Clausulazos;
 import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazosDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingAsistenciasDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingGolesDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingLlorosDTO;
@@ -125,6 +127,13 @@ public class NavegacionControlador {
         model.addAttribute("listaJornadasAsistencias", listaJornadas);
         model.addAttribute("listaAsistentes", misterService.getAsistenciasYAsistentesXEquipo());
         return "asistentes";
+    }
+
+    @GetMapping("/top/clausulazos")
+    public String getClausulazosTotales(Model model) {
+        List<Clausulazos> listaClausulazos = misterService.getClausulazosTotales();
+        model.addAttribute("listaClausulazos", listaClausulazos);
+        return "clausulazos";
     }
 
     @GetMapping("/top/goleadores")

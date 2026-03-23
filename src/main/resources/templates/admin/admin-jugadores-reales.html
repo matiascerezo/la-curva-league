@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>La Curva League - Panel de administrador</title>
+    <link rel="stylesheet" th:href="@{/css/estilos-admin.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos-records.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
+</head>
+<body>
+    <nav th:replace="~{admin/admin-navbar :: nav}"></nav>
+    <div class="admin-container">
+    <header class="admin-header">
+        <h1>⚙️ Panel de Control ⚙️</h1>
+    </header>
+
+    <div class="records-grid">
+        <table class="table-record table-info">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Posición</th>
+                    <th>Puntos</th>
+                    <th>Jornada</th>
+                    <th>Mister</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="equipo : ${adminEquipos}">
+                    <td th:text="${equipo.equipoId}"></td>
+                    <td th:text="${equipo.posicionJornada}"></td>
+                    <td th:text="${equipo.puntosJornada}"></td>
+                    <td th:text="${equipo.jornadaId}"></td>
+                    <td th:text="${equipo.misterId}"></td>
+                    <td>
+                        <button class="btn-edit" th:onclick="'abrirModalEditar(' + ${equipo.equipoId} + ')'">✏️</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script th:src="@{/js/admin.js}"></script>
+</body>
+</html>
