@@ -106,6 +106,7 @@ body {
     text-transform: uppercase;
 }
 
+
 /* Colores de Posición */
 .pos-PT { background-color: #dfd64f; color: #000; }
 .pos-DF { background-color: #0FD3FF; color: #000; }
@@ -176,13 +177,16 @@ body {
 
 .asist-box {
     background: #e8eaf6;
-    padding: 6px 12px;
-    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    border-radius: 0.8rem;
     text-align: center;
-    min-width: 50px;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: center;
 }
-.asist-box span { display: block; font-weight: 800; color: #1a237e; font-size: 1.1rem; }
-.asist-box small { font-size: 0.6rem; text-transform: uppercase}
+.asist-box span { 
+    display: block; font-weight: 800; color: #1a237e; font-size: 1.1rem; 
+}
 
 /* Fondo oscuro del modal */
 .modal-selector {
@@ -702,4 +706,149 @@ body {
     .tabla-puntos-equipo-scroll, .chart-column {
         width: 100%;
     }
+}
+
+/* =========================================
+   7. SECCIÓN: CLAUSULAZOS (ESPECÍFICO)
+   ========================================= */
+
+/* Colores específicos para enfatizar el robo */
+.mister-nombre.comprador {
+    color: #2ecc71 !important; /* Verde éxito */
+    font-weight: 600;
+}
+
+.mister-nombre.vendedor {
+    color: #e74c3c !important; /* Rojo pérdida */
+    font-weight: 600;
+}
+
+.icon-clausulazo {
+    font-size: 1.5rem;
+    filter: drop-shadow(0 0 5px rgba(0,0,0,0.1));
+    transform: scale(1);
+}
+
+@media (max-width: 48rem) { /* 768px / 16 = 48rem */
+
+    .main-container-equipos.clausulazo{margin: 0.5rem auto;}
+
+    .mister-nombre.comprador, .mister-nombre.vendedor {
+        color: white !important; 
+        font-weight: 600;
+    }
+
+    .styled-table-clausulazo {
+        border: none !important;
+        background: transparent !important;
+    }
+
+    .styled-table-clausulazo thead {
+        display: none;
+    }
+
+    .styled-table-clausulazo tbody tr {
+        display: block;
+        background: white;
+        margin-bottom: 1rem; /* Espaciado relativo */
+        border-radius: 1rem;
+        box-shadow: 0 0.5rem 1.25rem rgba(0,0,0,0.08);
+        overflow: hidden;
+        border: 0.0625rem solid #e2e8f0;
+        position: relative;
+    }
+
+    .styled-table-clausulazo td {
+        display: flex;
+        align-items: center;
+        width: 100% !important;
+        box-sizing: border-box;
+        border: none !important;
+    }
+
+    /* === 1. FRANJA COMPRADOR (VERDE) === */
+    .styled-table-clausulazo td.comprador {
+        background-color: #0d9488;
+        color: white;
+        padding: 0.75rem 1.25rem !important;
+        justify-content: space-between;
+    }
+
+    .styled-table-clausulazo td.comprador::before {
+        content: "NUEVO DUEÑO";
+        font-size: 0.65rem;
+        font-weight: 800;
+        color: #ccfbf1;
+        letter-spacing: 0.03rem;
+    }
+
+    .styled-table-clausulazo td.comprador img {
+        width: 2rem;
+        height: 2rem;
+        margin-left: 0.6rem;
+        border: 0.125rem solid rgba(255,255,255,0.5);
+        border-radius: 50%;
+    }
+
+    /* === 2. FRANJA VENDEDOR (ROJO) === */
+    .styled-table-clausulazo td.vendedor {
+        background-color: #e53e3e;
+        color: white;
+        padding: 0.6rem 1.25rem !important;
+        justify-content: space-between;
+        border-bottom: 0.0625rem solid rgba(255,255,255,0.1) !important;
+    }
+
+    .styled-table-clausulazo td.vendedor::before {
+        content: "CLUB ANTERIOR";
+        font-size: 0.65rem;
+        font-weight: 800;
+        color: #fff5f5;
+        letter-spacing: 0.03rem;
+    }
+
+    .styled-table-clausulazo td.vendedor img {
+        width: 1.6rem;
+        height: 1.6rem;
+        margin-left: 0.6rem;
+    }
+
+    /* === 3. BLOQUE JUGADOR === */
+    .styled-table-clausulazo td:nth-child(5) {
+        justify-content: center;
+        padding: 1.25rem 1.25rem 0.6rem 1.25rem !important;
+        flex-direction: column;
+    }
+
+    .styled-table-clausulazo td .nombre-jugador {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #1a202c;
+        margin-bottom: 0.3rem;
+        text-align: center;
+    }
+
+    /* === 4. BLOQUE PRECIO === */
+    .styled-table-clausulazo td:last-child {
+        justify-content: center;
+        padding: 0 1.25rem 1.25rem 1.25rem !important;
+    }
+
+    /* === 5. FECHA (Sutil en la esquina) === */
+    .styled-table-clausulazo td:first-child {
+        position: absolute;
+        bottom: 0.3rem;
+        right: 0.6rem;
+        width: auto !important;
+        padding: 0 !important;
+        font-size: 0.7rem;
+        color: #a0aec0;
+        display: block;
+    }
+
+    /* Ocultamos lo innecesario */
+    .styled-table-clausulazo td:nth-child(3) {
+        display: none;
+    }
+
 }

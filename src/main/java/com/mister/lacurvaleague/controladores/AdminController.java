@@ -42,6 +42,7 @@ public class AdminController {
             String fileName = file.getOriginalFilename();
             String mensaje = mantenimientoDatosService.procesarFicheroJSON(file.getInputStream(), fileName);
             
+            if(mensaje.contains("Error")) return mensaje;
             redirectAttributes.addFlashAttribute("Todo bien.", mensaje);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error crítico: " + e.getMessage());

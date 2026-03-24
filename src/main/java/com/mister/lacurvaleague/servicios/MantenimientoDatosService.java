@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,12 +17,15 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mister.lacurvaleague.modelos.Clausulazos;
 import com.mister.lacurvaleague.modelos.Equipo;
 import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.Jornada;
 import com.mister.lacurvaleague.modelos.Jugador;
 import com.mister.lacurvaleague.modelos.JugadorReal;
 import com.mister.lacurvaleague.modelos.Llorometro;
+import com.mister.lacurvaleague.modelos.dto.dtoAdmin.AdminEquipoDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazosDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.EquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.JornadaDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.JugadorDTO;
@@ -31,6 +35,7 @@ import com.mister.lacurvaleague.modelos.dto.dtoFronts.LlorometroDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.MisterDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.MisterLlorosDTO;
 import com.mister.lacurvaleague.modelos.dto.util.FormatPosicion;
+import com.mister.lacurvaleague.repository.ClausulazoRepository;
 import com.mister.lacurvaleague.repository.EquipoRepository;
 import com.mister.lacurvaleague.repository.JornadaRepository;
 import com.mister.lacurvaleague.repository.JugadorRealRepository;
@@ -68,6 +73,8 @@ public class MantenimientoDatosService implements FormatPosicion {
     private MisterRepository misterRepository;
     @Autowired
     private LlorometroRepository llorometroRepository;
+    @Autowired
+    private ClausulazoRepository clausulazosRepository;
 
     /**
      * Método que lee el fichero .json de la jornada recibida por parámetro.
@@ -407,6 +414,10 @@ public class MantenimientoDatosService implements FormatPosicion {
         return "Jornadas procesadas: " + cargarJugadoresReales(false, inputStream);
     }
 
+    public String cargarClausulazosFicheroExt(InputStream inputStream) {
+        return "Clausulazos procesados: " + cargarClausulazos(inputStream);
+    }
+
     /**
      * Método que recibe un fichero inputStream y lo procesa según que tipo sea.
      * @param is
@@ -415,15 +426,70 @@ public class MantenimientoDatosService implements FormatPosicion {
      */
     public String procesarFicheroJSON(InputStream is, String nombreFichero) {
         String nombreFicheroSinExtension = StringUtils.niNuloNiVacio(nombreFichero) ? nombreFichero.split(".json")[0] : "";
+        
+        if(nombreFicheroSinExtension.startsWith("jornada")) {
+            return cargarJornadaFicheroExt(is);
+        }
         switch (nombreFicheroSinExtension) {
             case "lloros":
                 return cargarLlorometroFicheroExt(is);
-            case "jornada":
-                return cargarJornadaFicheroExt(is);
             case "jugadores_reales":
                 return cargarJugadoresRealesFicheroExt(is);
+            case "clausulazos":
+                return cargarClausulazosFicheroExt(is);
             default:
                 return "";
+        }
+    }
+
+    public List<AdminEquipoDTO> obtenerTodosLosEquiposOrdenados() {
+        return equipoRepository.findAll().stream()
+                .filter(Objects::nonNull)
+                .map(ae-> {
+                    try { 
+                        return new AdminEquipoDTO(
+                            ae.getEquipoId(),
+                            ae.getPosicionJornada(),
+                            ae.getPuntosJornada(),
+                            ae.getJornada().getJornadaId(),
+                            ae.getMister().getMisterId()
+                        );
+                } catch (Exception e) {
+                    return null; 
+                }
+            })
+            .filter(Objects::nonNull)
+            .toList();
+    }
+
+    public String cargarClausulazos(InputStream is) {
+        
+        try {
+            List<ClausulazosDTO> clausulazosDTOs = objectMapper.readValue(is, new TypeReference<List<ClausulazosDTO>>() {});
+
+            //Busco los misters ya en BBDD
+            Set<String> mistersBBDD = misterRepository.findAll()
+                .stream()
+                .map(Mister::getNombreEquipo)
+                .collect(Collectors.toSet());
+
+            List<Clausulazos> listaClausulazosOK = new ArrayList<>();
+            for (ClausulazosDTO clausulazoDTO : clausulazosDTOs) {
+                if(mistersBBDD.contains(clausulazoDTO.getMisterComprador()) && mistersBBDD.contains(clausulazoDTO.getMisterVendedor())){
+                    Clausulazos c = new Clausulazos();
+                    c.setMisterComprador(clausulazoDTO.getMisterComprador());
+                    c.setMisterVendedor(clausulazoDTO.getMisterVendedor());
+                    c.setNombreJugador(clausulazoDTO.getNombreJugador());
+                    c.setPosicionJugador(clausulazoDTO.getPosicionJugador());
+                    c.setPrecioPagado(clausulazoDTO.getPrecioPagado());
+                    c.setFechaCompra(clausulazoDTO.getFechaCompra());
+                    listaClausulazosOK.add(c);
+                }
+            }
+            clausulazosRepository.saveAll(listaClausulazosOK);
+            return "Clausulazos cargados: " + clausulazosDTOs.size();
+        } catch (IOException e) {
+            return "Error al cargar los clausulazos.";
         }
     }
 }

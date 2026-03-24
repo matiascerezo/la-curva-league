@@ -49,12 +49,12 @@
                     <button class="close-btn" onclick="cerrarSelector()">✕</button>
                 </div>
                 <div class="grid-jornadas">
-                    <button class="btn-grid" onclick="irARangoDirecto(0)">Todo</button>
+                    <button class="btn-grid" onclick="irARangoDirecto(0,false)">Todo</button>
                     <th:block th:each="i, iter : ${#numbers.sequence(1, 38, 8)}">
                         <button class="btn-grid" 
                                 th:with="fin=${(i + 7 > 38) ? 38 : i + 7}"
                                 th:text="|J${i}-J${fin}|"
-                                th:onclick="|irARangoDirecto(${iter.index + 1})|">
+                                th:onclick="|irARangoDirecto(${iter.index + 1},false)|">
                         </button>
                     </th:block>
                 </div>

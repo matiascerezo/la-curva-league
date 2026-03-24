@@ -12,18 +12,24 @@ const rangos = [
 let indiceRango = 0; // 0 es "Todo"
 
 function actualizarInterfazRango() {
-    const r = rangos[indiceRango];
-    
-    // Actualizar Textos
-    document.getElementById('textoRangoActual').innerText = r.texto;
-    document.getElementById('labelRango').innerText = (indiceRango === 0) ? "RESUMEN" : "PUNTUACIÓN";
-    
-    // Gestionar visibilidad de flechas (el < desaparece en Todo)
-    document.getElementById('btnPrev').style.visibility = (indiceRango === 0) ? 'hidden' : 'visible';
-    document.getElementById('btnSigui').style.visibility = (indiceRango === rangos.length - 1) ? 'hidden' : 'visible';
 
-    // Llamar a tu función original para filtrar tabla y gráfico
-    filtrarPorRango(r.inicio, r.fin, null);
+    const titleElement = document.getElementById('title');
+    const isInicio = titleElement && titleElement.innerText.includes('Clasificación General');
+
+    if(!isInicio) {
+        const r = rangos[indiceRango];
+    
+        // Actualizar Textos
+        document.getElementById('textoRangoActual').innerText = r.texto;
+        document.getElementById('labelRango').innerText = (indiceRango === 0) ? "RESUMEN" : "PUNTUACIÓN";
+        
+        // Gestionar visibilidad de flechas (el < desaparece en Todo)
+        document.getElementById('btnPrev').style.visibility = (indiceRango === 0) ? 'hidden' : 'visible';
+        document.getElementById('btnSigui').style.visibility = (indiceRango === rangos.length - 1) ? 'hidden' : 'visible';
+
+        // Llamar a tu función original para filtrar tabla y gráfico
+        filtrarPorRango(r.inicio, r.fin, null);
+    }
 }
 
 function cambiarRango(direccion) {
@@ -77,3 +83,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const burbujaTablaActiva = document.querySelector('.contenedor-filtros-jornada .burbuja-jornada.active');
     if (burbujaTablaActiva) burbujaTablaActiva.click();
 });
+
+function cargarTablaClasificacionPorRango(rango, elemento) {
+    // 1. Efecto visual: Cambiar botón activo
+    document.querySelectorAll('.btn-rango').forEach(btn => btn.classList.remove('active'));
+    elemento.classList.add('active');
+
+    // 2. Cambiar el texto de la cabecera de puntos (opcional)
+    const cabecera = document.getElementById('cabeceraPuntos');
+    if (rango === 0) cabecera.innerText = "Puntos Totales";
+    else if (rango === 1) cabecera.innerText = "Puntos Ida";
+    else cabecera.innerText = "Puntos Vuelta";
+
+    // 3. Llamada al fragmento de Spring
+    fetch(`/clasificacion/${rango}`)
+        .then(response => response.text())
+        .then(html => {
+            // Reemplazamos solo el contenido del tbody
+            document.getElementById('contenedor-filas').innerHTML = html;
+        })
+        .catch(err => console.error("Error al cargar el rango:", err));
+}

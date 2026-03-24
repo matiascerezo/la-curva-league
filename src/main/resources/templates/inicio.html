@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Clasificación General</title>
+    <title id="title">Clasificación General</title>
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
+    <script th:src="@{/js/burbuja-equipos.js}" defer></script>
 </head>
 <body>
 <div class="main-container-equipos">
     <h1 class= "h1-class-gen" style="text-align: center;" th:text="|Clasificación (J${jornadaActual}/J38)|"> Clasificación (0/38)</h1>
+    
+    <div class="rango-selector-container">
+        <button class="btn-rango active" onclick="cargarTablaClasificacionPorRango(0, this)">Todo</button>
+        <button class="btn-rango" onclick="cargarTablaClasificacionPorRango(1, this)">1ª Vuelta (J1-J19)</button>
+        <button class="btn-rango" onclick="cargarTablaClasificacionPorRango(2, this)">2ª Vuelta (J20-J38)</button>
+    </div>
+
     <div class="table-wrapper">
     <table class="tabla-clasificacion">
         <thead>
             <tr>
                 <th>Posición</th>
                 <th>Equipo</th>
-                <th>Puntos Totales</th>
+                <th id="cabeceraPuntos">Puntos Totales</th>
                 <th class="text-center cell-info">
                     Dif. pts
                     <div class="info-wrapper">
@@ -27,33 +35,21 @@
                 </th>
             </tr>
         </thead>
-        <tbody>
-            <tr th:each="equipo, iter : ${listaEquipos}">
-                <td th:text="${iter.count > 3 ? iter.count : ''}">1</td>
+        <tbody id="contenedor-filas" th:fragment="tabla-cuerpo">
+            <tr th:each="equipo, iter : ${listaMostrar ?: listaEquipos}" class="fila-equipo">
+                <td class="posicion-celda" th:text="${iter.count > 3 ? iter.count : ''}">1</td>
                 <td>
                     <div class="equipo-info-cell">
-                        <img th:src="${equipo.imgEquipo}" 
-                            alt="Escudo" 
-                            class="escudo-tabla">
-                        
-                        <span th:text="${equipo.nombreEquipo}" 
-                            class="nombre-equipo-tabla"></span>
+                        <img th:src="${equipo.imgEquipo}" alt="Escudo" class="escudo-tabla">
+                        <span th:text="${equipo.nombreEquipo}" class="nombre-equipo-tabla"></span>
                     </div>
                 </td>
-                <td th:text="${equipo.puntosTotales} + ' pts'">0 pts</td>
+                <td class="puntos-celda" th:text="${equipo.puntosTotales} + ' pts'">0 pts</td>
                 <td class="col-gap">
-                    <span th:if="${equipo.difPuntos == null}" class="gap-badge gap-lider">
-                        🏆
-                    </span>
-
-                    <span th:if="${equipo.difPuntos != null && equipo.difPuntos >= -10}" 
-                        class="gap-badge gap-fuego">
-                        <span th:text="${equipo.difPuntos}"></span> 🔥
-                    </span>
-
-                    <span th:if="${equipo.difPuntos != null && equipo.difPuntos < -10}" 
-                        class="gap-badge gap-normal"
-                        th:text="${equipo.difPuntos}">
+                    <span th:if="${equipo.difPuntos == null}" class="gap-badge gap-lider">🏆</span>
+                    <span th:if="${equipo.difPuntos != null}" 
+                        th:class="${equipo.difPuntos >= -10} ? 'gap-badge gap-fuego' : 'gap-badge gap-normal'"
+                        th:text="${equipo.difPuntos + (equipo.difPuntos >= -10 ? ' 🔥' : '')}">
                     </span>
                 </td>
             </tr>

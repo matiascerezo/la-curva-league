@@ -35,6 +35,16 @@ public class MisterControlador {
         return misterService.getClasificacionGeneral();
     }
 
+    @GetMapping("/tablaPuntosPrimeraVuelta")
+    public List<ClasificacionGeneralDTO> getClasificacionPrimeraVuelta(){
+        return misterService.getClasificacionPrimeraVuelta();
+    }
+
+    @GetMapping("/tablaPuntosSegundaVuelta")
+    public List<ClasificacionGeneralDTO> getClasificacionSegundaVuelta(){
+        return misterService.getClasificacionSegundaVuelta();
+    }
+
     @GetMapping("/jugadores")
     public List<Jugador> verTodosLosJugadores() {
         // Esto devuelve la lista completa de lo que hay en la tabla

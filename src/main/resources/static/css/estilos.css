@@ -267,6 +267,35 @@ body {
     display: block;
 }
 
+.rango-selector-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.btn-rango {
+    background: rgba(255, 255, 255, 0.5);
+    color: #1a237e;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 1.25rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: 0.06rem solid #1a237e;;
+}
+
+.btn-rango:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-rango.active {
+    background: #1a237e;
+    color: #ffffff; 
+    font-weight: bold;
+}
+
 /* =========================================
    4. FOOTER (Blindado y Proporcional)
    ========================================= */

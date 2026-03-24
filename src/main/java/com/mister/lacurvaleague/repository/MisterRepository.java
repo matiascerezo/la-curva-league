@@ -12,6 +12,8 @@ import com.mister.lacurvaleague.modelos.dto.dtoFronts.TarjetasDTO;
 @Repository
 public interface MisterRepository extends JpaRepository<Mister, Long> {
 
+    
+
     @Query(value = "SELECT * FROM MISTER m WHERE m.NOMBRE_EQUIPO = :nombreEquipo", nativeQuery = true)
     Mister getMisterByNombreEquipo(String nombreEquipo);
 

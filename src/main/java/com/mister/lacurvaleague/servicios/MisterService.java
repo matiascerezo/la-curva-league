@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.mister.lacurvaleague.modelos.Clausulazos;
 import com.mister.lacurvaleague.modelos.Equipo;
 import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.AsistenciaDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazosDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.GoleadorDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingAsistenciasDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingGolesDTO;
@@ -80,6 +80,14 @@ public class MisterService {
 
     public List<ClasificacionGeneralDTO> getClasificacionGeneral(){
         return equipoRepository.getClasificacionGeneral();
+    }
+
+    public List<ClasificacionGeneralDTO> getClasificacionPrimeraVuelta(){
+        return equipoRepository.getClasificacionGeneralPorRango(1,19);
+    }
+
+    public List<ClasificacionGeneralDTO> getClasificacionSegundaVuelta(){
+        return equipoRepository.getClasificacionGeneralPorRango(20,38);
     }
 
     public Optional<Equipo> getEquipo(long id) {
@@ -151,8 +159,8 @@ public class MisterService {
         return llorometroRepository.getListJugadoresMasLlorosTotales(nombreEquipo, pag);
     }
 
-    public List<Clausulazos> getClausulazosTotales() {
-        return clausulazoRepository.findAll();
+    public List<ClausulazosDTO> getClausulazosTotales() {
+        return clausulazoRepository.getAllClausulazos();
     }
     
 }

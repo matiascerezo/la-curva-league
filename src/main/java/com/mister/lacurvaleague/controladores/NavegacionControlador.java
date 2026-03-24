@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.mister.lacurvaleague.modelos.Clausulazos;
 import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
@@ -95,6 +94,16 @@ public class NavegacionControlador {
         return misterControlador.getClasificacionGeneral();
     }
 
+    @ModelAttribute("clasificacionPrimeraVuelta")
+    public List<ClasificacionGeneralDTO> getClasificacionPrimeraVuelta() {
+        return misterControlador.getClasificacionPrimeraVuelta();
+    }
+
+    @ModelAttribute("clasificacionSegundaVuelta")
+    public List<ClasificacionGeneralDTO> getClasificacionSegundaVuelta() {
+        return misterControlador.getClasificacionSegundaVuelta();
+    }
+
     @ModelAttribute("jornadaActual")
     public int getJornadaActual() {
         String jornada = misterService.getJornadaActual();
@@ -111,6 +120,25 @@ public class NavegacionControlador {
         return misterService.getAsistenciasEquipos();
     }
 
+    @GetMapping("/clasificacion/{rango}")
+    public String getClasificacionRango(@PathVariable String rango, Model model) {
+        List<ClasificacionGeneralDTO> lista;
+        
+        switch (rango) {
+            case "1": // Primera Vuelta
+                lista = misterControlador.getClasificacionPrimeraVuelta();
+                break;
+            case "2": // Segunda Vuelta
+                lista = misterControlador.getClasificacionSegundaVuelta();
+                break;
+            default: // Todo
+                lista = misterControlador.getClasificacionGeneral();
+                break;
+        }
+        
+        model.addAttribute("listaMostrar", lista);
+        return "inicio :: tabla-cuerpo"; 
+    }
 
     @GetMapping("/top/asistentes")
     public String getAsistenciasYAsistentesXEquipo(Model model) {
@@ -131,7 +159,7 @@ public class NavegacionControlador {
 
     @GetMapping("/top/clausulazos")
     public String getClausulazosTotales(Model model) {
-        List<Clausulazos> listaClausulazos = misterService.getClausulazosTotales();
+        List<ClausulazosDTO> listaClausulazos = misterService.getClausulazosTotales();
         model.addAttribute("listaClausulazos", listaClausulazos);
         return "clausulazos";
     }
