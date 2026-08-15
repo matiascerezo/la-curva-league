@@ -2,7 +2,10 @@ package com.mister.lacurvaleague.servicios;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -31,6 +34,7 @@ import com.mister.lacurvaleague.modelos.dto.dtoFronts.JornadaDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.JugadorDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.JugadorRealDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.LloroDetalleDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.LloroIndividualDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.LlorometroDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.MisterDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.MisterLlorosDTO;
@@ -61,20 +65,55 @@ public class MantenimientoDatosService implements FormatPosicion {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final ObjectMapper mapper = new ObjectMapper();
 
-    @Autowired
-    private JugadorRepository jugadorRepository;   
-    @Autowired
-    private JugadorRealRepository jugadorRealRepository; 
-    @Autowired
-    private EquipoRepository equipoRepository;
-    @Autowired
-    private JornadaRepository jornadaRepository;
-    @Autowired
-    private MisterRepository misterRepository;
-    @Autowired
-    private LlorometroRepository llorometroRepository;
-    @Autowired
-    private ClausulazoRepository clausulazosRepository;
+    private final JugadorRepository jugadorRepository;   
+    private final JugadorRealRepository jugadorRealRepository; 
+    private final EquipoRepository equipoRepository;
+    private final JornadaRepository jornadaRepository;
+    private final MisterRepository misterRepository;
+    private final LlorometroRepository llorometroRepository;
+    private final ClausulazoRepository clausulazosRepository;
+
+    MantenimientoDatosService(JugadorRealRepository jugadorRealRepository, JugadorRepository jugadorRepository, EquipoRepository equipoRepository, JornadaRepository jornadaRepository, LlorometroRepository llorometroRepository, MisterRepository misterRepository, ClausulazoRepository clausulazosRepository) {
+        this.jugadorRealRepository = jugadorRealRepository;
+        this.jugadorRepository = jugadorRepository;
+        this.equipoRepository = equipoRepository;
+        this.jornadaRepository = jornadaRepository;
+        this.llorometroRepository = llorometroRepository;
+        this.misterRepository = misterRepository;
+        this.clausulazosRepository = clausulazosRepository;
+    }
+
+    /**
+     * Insertar jornada vacia (Antes de que empiece la liga o pruebas)
+     * @param is
+     * @return
+     */
+    @Transactional
+    public int procesarJornadaVacia(InputStream is) {
+        List<Jornada> listaJornadas = new ArrayList<>();
+        List<Equipo> listaEquipos = new ArrayList<>();
+
+        try {
+            
+            JornadaDTO jornadaDTO = objectMapper.readValue(is, JornadaDTO.class);
+            Set<Integer> jornadasEnBBDD = jornadaRepository.findAllNumerosJornada();
+            
+            if (!jornadasEnBBDD.contains(jornadaDTO.getNumeroJornada())) {
+                Jornada jornada = procesarJornada(jornadaDTO);
+                listaJornadas.add(jornada);
+                
+                for (EquipoDTO equipoDTO : jornadaDTO.getEquipos()) {
+                    Equipo equipo = procesarEquipo(equipoDTO, jornada);
+                    listaEquipos.add(equipo);
+                }
+            }         
+        } catch (IOException e) {
+            throw new RuntimeException("Error al leer el JSON del recurso: " + e);
+        }
+        jornadaRepository.saveAll(listaJornadas);
+        equipoRepository.saveAll(listaEquipos);
+        return listaEquipos.size();
+    }
 
     /**
      * Método que lee el fichero .json de la jornada recibida por parámetro.
@@ -295,12 +334,14 @@ public class MantenimientoDatosService implements FormatPosicion {
      * Cargar todos los misters
      *
      */
-    public String cargarMisters() {
+    public String cargarMisters(InputStream is) {
 
         try {
-            String rutaPathFichero = PATH_JSON_MISTERS + "misters.json";
+            if(is == null) {
+                String rutaPathFichero = PATH_JSON_MISTERS + "misters.json";
+                is = getClass().getClassLoader().getResourceAsStream(rutaPathFichero);
+            }
             
-            InputStream is = getClass().getClassLoader().getResourceAsStream(rutaPathFichero);
             List<MisterDTO> misterDTOs = objectMapper.readValue(is, new TypeReference<List<MisterDTO>>() {});
 
             //Busco los misters ya en BBDD
@@ -329,16 +370,16 @@ public class MantenimientoDatosService implements FormatPosicion {
     }
 
     public String procesarJornadaLlorosExt(InputStream inputStream) {
-        return procesarTodosLosLloros(false, inputStream);
+        return procesarTodosLosLloros(false, inputStream, null);
     }
 
-    public String procesarTodosLosLloros(boolean procesarTodoLocal, InputStream inputStream) {
+    public String procesarTodosLosLloros(boolean procesarTodoLocal, InputStream inputStream, List<LlorometroDTO> listLlorometroDTOs) {
         try {
             if(procesarTodoLocal) {
                 // Leemos el archivo y lo convertimos en una lista de nuestras jornadas
                 inputStream = getClass().getClassLoader().getResourceAsStream("data/lloros/lloros.json");
-            }
-            List<LlorometroDTO> listLlorometroDTOs = mapper.readValue(inputStream, new TypeReference<List<LlorometroDTO>>(){});
+            }            
+            listLlorometroDTOs = mapper.readValue(inputStream, new TypeReference<List<LlorometroDTO>>(){});
             List<Llorometro> listaLlorometro = new ArrayList<>();
 
             //Recupero todos los misters.
@@ -374,6 +415,22 @@ public class MantenimientoDatosService implements FormatPosicion {
     }
 
     /**
+     * Procesar lloro individual via front
+     * @param lloroDTO
+     * @return
+     */
+    public String procesarLloroInd(LloroIndividualDTO lloroDTO) {
+        Jornada jornada = jornadaRepository.findByNumeroJornada(lloroDTO.getNumeroJornada());
+        Mister mister = misterRepository.getMisterByNombreEquipo(lloroDTO.getNombreEquipo());          
+        Llorometro lloro = new Llorometro();
+        lloro.setJornada(jornada);
+        lloro.setMister(mister);
+        lloro.setMotivo(lloroDTO.getTextoLloro());
+        llorometroRepository.save(lloro);
+        return "Lloro procesado: " + 1; 
+    }
+
+    /**
      * Hacemos conversión del JugadorRealDTO al Jugador
      * @param jugadorRealDTO
      * @return
@@ -396,8 +453,12 @@ public class MantenimientoDatosService implements FormatPosicion {
         return procesarJornadaLlorosExt(inputStream);
     }
 
+    public String cargarJornadaVaciaFicheroExt(InputStream inputStream) {
+        return "Jornadas procesadas: " + procesarJornadaVacia(inputStream);
+    }
+
     /**
-     * Procesa un fchero independiente de jornada.
+     * Procesa un fichero independiente de jornada.
      * @param inputStream
      * @return
      */
@@ -414,8 +475,16 @@ public class MantenimientoDatosService implements FormatPosicion {
         return "Jornadas procesadas: " + cargarJugadoresReales(false, inputStream);
     }
 
+    public String cargarClausulazoFront(List<ClausulazosDTO> clausulazosDTOs) {
+        return cargarClausulazos(null, clausulazosDTOs);
+    }
+
     public String cargarClausulazosFicheroExt(InputStream inputStream) {
-        return "Clausulazos procesados: " + cargarClausulazos(inputStream);
+        return "Clausulazos procesados: " + cargarClausulazos(inputStream, null);
+    }
+
+    public String cargarMistersFicheroExt(InputStream inputStream) {
+        return "Misters procesados: " + cargarMisters(inputStream);
     }
 
     /**
@@ -428,6 +497,9 @@ public class MantenimientoDatosService implements FormatPosicion {
         String nombreFicheroSinExtension = StringUtils.niNuloNiVacio(nombreFichero) ? nombreFichero.split(".json")[0] : "";
         
         if(nombreFicheroSinExtension.startsWith("jornada")) {
+            if(nombreFicheroSinExtension.endsWith("0")) {
+                return cargarJornadaVaciaFicheroExt(is);
+            }
             return cargarJornadaFicheroExt(is);
         }
         switch (nombreFicheroSinExtension) {
@@ -437,6 +509,8 @@ public class MantenimientoDatosService implements FormatPosicion {
                 return cargarJugadoresRealesFicheroExt(is);
             case "clausulazos":
                 return cargarClausulazosFicheroExt(is);
+            case "misters":
+                return cargarMistersFicheroExt(is);
             default:
                 return "";
         }
@@ -462,10 +536,36 @@ public class MantenimientoDatosService implements FormatPosicion {
             .toList();
     }
 
-    public String cargarClausulazos(InputStream is) {
+    /**
+     * Procesa e inserta un clausulazo introducido por el front
+     * @param is
+     * @param clausulazosDTOs
+     * @return
+     */
+    public String cargarClausulazoInd(List<ClausulazosDTO> clausulazosDTOs) {
+        return cargarClausulazos(null, clausulazosDTOs);
+    }
+
+    /**
+     * Procesa e inserta un lloro introducido por el front
+     * @param llorometroDTOs
+     * @return
+     */
+    public String cargarLloroInd(LloroIndividualDTO lloroDTO) {
+        return procesarLloroInd(lloroDTO);
+    }
+
+    public String cargarClausulazosListaIS(InputStream is, List<ClausulazosDTO> clausulazosDTOs) {
+        return cargarClausulazos(is, null);
+    }
+
+    public String cargarClausulazos(InputStream is, List<ClausulazosDTO> clausulazosDTOs) {
         
         try {
-            List<ClausulazosDTO> clausulazosDTOs = objectMapper.readValue(is, new TypeReference<List<ClausulazosDTO>>() {});
+
+            if (null != is) {
+                 clausulazosDTOs = objectMapper.readValue(is, new TypeReference<List<ClausulazosDTO>>() {});
+            }          
 
             //Busco los misters ya en BBDD
             Set<String> mistersBBDD = misterRepository.findAll()
@@ -491,5 +591,13 @@ public class MantenimientoDatosService implements FormatPosicion {
         } catch (IOException e) {
             return "Error al cargar los clausulazos.";
         }
+    }
+
+    public void actualizarEquipo(Equipo e) {
+        equipoRepository.save(e);
+    }
+
+    public void actualizarMister(Mister m) {
+        misterRepository.save(m);
     }
 }

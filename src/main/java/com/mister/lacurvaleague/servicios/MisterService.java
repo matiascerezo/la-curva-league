@@ -5,10 +5,13 @@ import com.mister.lacurvaleague.repository.LlorometroRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mister.lacurvaleague.modelos.Equipo;
 import com.mister.lacurvaleague.modelos.Mister;
@@ -106,6 +109,14 @@ public class MisterService {
         return misterRepository.findByNombreEquipo(nombreEquipoURL).getNombreEquipo();
     }
 
+    public List<Mister> getTodosLosMisters(){
+        return misterRepository.findAll();
+    }
+
+    public List<Mister> getTodosMistersOrdenados() {
+        return misterRepository.findAllByOrderByNombreEquipoAsc();
+    }
+
     public List<GoleadorDTO> getGolesYGoleadoresXEquipo(){
         return equipoRepository.getGolesYGoleadoresXEquipo();
     }
@@ -161,6 +172,10 @@ public class MisterService {
 
     public List<ClausulazosDTO> getClausulazosTotales() {
         return clausulazoRepository.getAllClausulazos();
+    }
+
+    public Set<Integer> getListaJornadas() {
+        return jornadaRepository.findAllNumerosJornada();
     }
     
 }

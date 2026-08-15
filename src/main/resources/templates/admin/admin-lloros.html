@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Lloro</title>
+    
+    <link rel="stylesheet" th:href="@{/css/estilos-admin.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos-lloros.css}">
+    <script th:src="@{/js/admin.js}" defer></script>
+    <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
+    <script th:src="@{/js/admin-lloros.js}" defer></script>
+    <script th:src="@{/js/admin.js}" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+    <nav th:replace="~{admin/admin-navbar :: nav}"></nav>
+
+    <header class="admin-header head-lloros">
+        <h1 class="h1-admin">😭 Gestión de lloros 😭</h1>
+    </header>
+
+    <div class="lloros-container">
+        <h2 class="lloros-titulo">Añadir Lloro</h2>
+
+        <form id="formLloro" onsubmit="guardarLloro(event)">
+            
+            <div class="form-group">
+                <label for="misterEquipo">Equipo llorón:</label>
+                <div class="select-with-logo">
+                    <img id="imgEquipo" class="club-logo-preview empty" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ccc'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>" alt="Logo Club">
+                    <select id="selectEquipo" class="form-control" onchange="actualizarLogo('selectEquipo','imgEquipo')" required>
+                        <option value="">-- Selecciona Equipo --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="numeroJornada">Jornada:</label>
+                <select id="numeroJornada" class="form-control" required>
+                    <option value="">-- Selecciona Jornada --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="textoLloro">Motivo del Lloro:</label>
+                <textarea id="textoLloro" class="form-control" maxlength="250" rows="5" placeholder="Escribe aquí la lloradita de la jornada..." oninput="actualizarContador()" required></textarea>
+                <div class="contador-caracteres">
+                    <span id="contadorChars">0</span> / 250 caracteres
+                </div>
+            </div>
+
+            <!-- Botón Submit -->
+            <button type="submit" class="btn-submit-lloro">
+                😭 Enviar Lloro
+            </button>
+        </form>
+    </div>
+
+    <nav th:replace="~{fragments/footer :: footer}"></nav>
+
+</body>
+</html>

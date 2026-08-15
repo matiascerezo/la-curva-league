@@ -12,7 +12,8 @@ import com.mister.lacurvaleague.modelos.dto.dtoFronts.TarjetasDTO;
 @Repository
 public interface MisterRepository extends JpaRepository<Mister, Long> {
 
-    
+    // Devuelve todos los misters ordenados alfabéticamente por 'nombreEquipo'
+    List<Mister> findAllByOrderByNombreEquipoAsc();
 
     @Query(value = "SELECT * FROM MISTER m WHERE m.NOMBRE_EQUIPO = :nombreEquipo", nativeQuery = true)
     Mister getMisterByNombreEquipo(String nombreEquipo);

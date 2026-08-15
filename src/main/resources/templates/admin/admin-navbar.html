@@ -18,6 +18,12 @@
             </li>
 
             <li class="nav-item">
+                <a th:href="@{/mantenimiento/admin/clausulazos}" 
+                th:classappend="${seccionActual.contains('/mantenimiento/admin/clausulazos')} ? 'activo' : ''"
+                th:text="#{admin.clausulazos}">Gestionar clausulazos</a>
+            </li>
+
+            <li class="nav-item">
                 <a th:href="@{/mantenimiento/admin/equipos}" 
                 th:classappend="${seccionActual.contains('/mantenimiento/admin/equipos')} ? 'activo' : ''"
                 th:text="#{admin.equipos}">Gestionar equipos</a>
@@ -29,29 +35,29 @@
                 th:text="#{admin.jornadas}">Gestionar jornadas</a>
             </li>
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a th:href="@{/mantenimiento/admin/jugadores}" 
                 th:classappend="${seccionActual.contains('/mantenimiento/admin/jugadores')} ? 'activo' : ''"
                 th:text="#{admin.jugadores}">Gestionar jugadores</a>
-            </li>
+            </li> -->
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a th:href="@{/mantenimiento/admin/jugadores-reales}" 
                 th:classappend="${seccionActual.contains('/mantenimiento/admin/jugadores-reales')} ? 'activo' : ''"
                 th:text="#{admin.jugadores-reales}">Gestionar jugadores reales</a>
-            </li>
+            </li> -->
 
             <li class="nav-item">
-                <a th:href="@{/mantenimiento/admin/llorometro}" 
-                th:classappend="${seccionActual.contains('/mantenimiento/admin/llorometro')} ? 'activo' : ''"
-                th:text="#{admin.llorometro}">Gestionar llorometro</a>
+                <a th:href="@{/mantenimiento/admin/lloros}" 
+                th:classappend="${seccionActual.contains('/mantenimiento/admin/lloros')} ? 'activo' : ''"
+                th:text="#{admin.lloros}">Gestionar lloros</a>
             </li>
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a th:href="@{/mantenimiento/admin/mister}" 
                 th:classappend="${seccionActual.contains('/mantenimiento/admin/mister')} ? 'activo' : ''"
                 th:text="#{admin.mister}">Gestionar misters</a>
-            </li>
+            </li> -->
         </ul>
     </div>
     </nav>

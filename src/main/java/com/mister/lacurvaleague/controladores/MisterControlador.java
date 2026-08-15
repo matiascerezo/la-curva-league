@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mister.lacurvaleague.modelos.Equipo;
 import com.mister.lacurvaleague.modelos.Jornada;
 import com.mister.lacurvaleague.modelos.Jugador;
+import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
 import com.mister.lacurvaleague.repository.EquipoRepository;
 import com.mister.lacurvaleague.repository.JornadaRepository;
 import com.mister.lacurvaleague.repository.JugadorRepository;
 import com.mister.lacurvaleague.servicios.MisterService;
+
 
 
 @RestController
@@ -61,6 +63,12 @@ public class MisterControlador {
     public List<Equipo> verTodosLosEquipos() {
         // Esto devuelve la lista completa de lo que hay en la tabla
         return equipoRepository.findAll();
+    }
+
+    @GetMapping("/misters")
+    public List<Mister> getTodosLosMisters() {
+        // Esto devuelve la lista completa de lo que hay en la tabla
+        return misterService.getTodosLosMisters();
     }
 
     public List<Jugador> obtenerGoleadores() {

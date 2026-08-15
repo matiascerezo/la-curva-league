@@ -12,6 +12,14 @@
     color: #1e293b;
 }
 
+.h1-admin {
+    font-size: 1.8em;
+    display: block;
+    font-weight: bold;
+    unicode-bidi: isolate;
+    margin-top: 0rem;
+}
+
 .admin-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));

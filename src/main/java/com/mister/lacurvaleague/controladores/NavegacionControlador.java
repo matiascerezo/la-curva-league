@@ -37,34 +37,35 @@ import com.mister.lacurvaleague.servicios.MisterService.JugadoresMasPuntosDTO;
 import com.mister.lacurvaleague.servicios.MisterService.MistersMasLloronesDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @ControllerAdvice
 @PropertySource("classpath:messages.properties")
 public class NavegacionControlador {
 
-    @Autowired
-    LlorometroService llorometroService;
-    
-    @Autowired
-    MisterControlador misterControlador;
-    @Autowired
-    InicioController inicioController;
+    final LlorometroService llorometroService;  
+    final MisterControlador misterControlador;
+    final InicioController inicioController;
+    final MisterService misterService;
+    final MisterRepository misterRepository;
+    final EquipoRepository equipoRepository;
 
-    @Autowired
-    MisterService misterService;
-
-    @Autowired
-    MisterRepository misterRepository;
-
-    @Autowired
-    EquipoRepository equipoRepository;
-
-    @Autowired
-    private Environment env;
+    private final Environment env;
 
     @Value("${app.ultimaActualizacion}")
     private String fechaActualizacion;
+
+    NavegacionControlador(MisterService misterService, InicioController inicioController, MisterControlador misterControlador, LlorometroService llorometroService, MisterRepository misterRepository, EquipoRepository equipoRepository, Environment env) {
+        this.misterService = misterService;
+        this.inicioController = inicioController;
+        this.misterControlador = misterControlador;
+        this.llorometroService = llorometroService;
+        this.misterRepository = misterRepository;
+        this.equipoRepository = equipoRepository;
+        this.env = env;
+    }      
 
     @GetMapping("/club/{nombreMisterURL}")
     public String verEquipo(@PathVariable String nombreMisterURL, Model model) {

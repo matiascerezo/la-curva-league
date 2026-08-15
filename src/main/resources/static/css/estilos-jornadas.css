@@ -1,0 +1,181 @@
+.pitch-container {
+    max-width: 850px;
+    margin: 0rem 1rem 2rem;
+    background: linear-gradient(180deg, #1e7029 0%, #134e1b 100%);
+    border: 4px solid #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+.tactic-selector-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.tactic-selector-container select {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-weight: bold;
+}
+
+/* Ficha del jugador sobre el campo */
+.slot-jugador {
+    width: 115px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    padding: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px dashed #999;
+    position: relative;
+}
+
+.slot-jugador.ocupado {
+    border: 2px solid #2e7d32;
+    background: #ffffff;
+}
+
+.slot-jugador.xi-ideal {
+    border: 2px solid #ffd700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
+.slot-jugador.no-jugo {
+    opacity: 0.6;
+    filter: grayscale(80%);
+}
+
+.slot-jugador:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.slot-posicion {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.slot-nombre {
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin: 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.status-badge {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: block;
+    margin-top: 4px;
+}
+.badge-vacio { background: #ffebee; color: #c62828; }
+.badge-listo { background: #e8f5e9; color: #2e7d32; }
+
+.star-icon {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ffd700;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 450px;
+}
+
+.stat-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.stat-input {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-input label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.stat-input input[type="number"],
+.stat-input input[type="text"] {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.checkbox-group {
+    display: flex;
+    justify-content: space-between;
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 6px;
+    margin: 10px 0;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+/* Ajuste de escala cuando hay 5 jugadores en la misma línea */
+.pitch-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px 0;
+    gap: 4px; /* Evita desbordamiento horizontal */
+}
+
+/* Reducir ligeramente el tamaño del slot si hay muchos elementos */
+@media (max-width: 600px) {
+    .slot-jugador {
+        width: 65px;
+        padding: 4px;
+        font-size: 0.7rem;
+    }
+    .slot-nombre {
+        font-size: 0.75rem;
+    }
+}

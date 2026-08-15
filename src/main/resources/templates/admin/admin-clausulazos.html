@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Clausulazo</title>
+    
+    <link rel="stylesheet" th:href="@{/css/estilos-admin.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos-clausulazos.css}">
+    <script th:src="@{/js/admin.js}" defer></script>
+    <script th:src="@{/js/admin-clausulazos.js}" defer></script>
+    <link rel="shortcut icon" th:href="@{/favicon.png}" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+    <nav th:replace="~{admin/admin-navbar :: nav}"></nav>
+    <header class="admin-header head-clausulazos">
+        <h1 class="h1-admin">💸Gestión de clausulazos💸</h1>
+    </header>
+
+    <div class="clausulazo-container">
+        <h2 class="clausulazo-titulo">Nuevo Clausulazo</h2>
+
+        <form id="formClausulazo" onsubmit="guardarClausulazo(event)">
+                      
+            <!-- Comprador -->
+            <div class="form-group">
+                <label for="misterComprador">Míster Comprador:</label>
+                <div class="select-with-logo">
+                    <img id="imgComprador" class="club-logo-preview empty" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ccc'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>" alt="Logo Comprador">
+                    <select id="misterComprador" data-val-nombre class="form-control" onchange="actualizarLogo('misterComprador', 'imgComprador')" required>
+                        <option value="">-- Selecciona Comprador --</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Vendedor -->
+            <div class="form-group">
+                <label for="misterVendedor">Míster Vendedor:</label>
+                <div class="select-with-logo">
+                    <img id="imgVendedor" class="club-logo-preview empty" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ccc'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>" alt="Logo Vendedor">
+                    <select id="misterVendedor" data-val-nombre class="form-control" onchange="actualizarLogo('misterVendedor', 'imgVendedor')" required>
+                        <option value="">-- Selecciona Vendedor --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="nombreJugador">Nombre Jugador:</label>
+                <input type="text" id="nombreJugador" class="form-control" placeholder="Ej. N.Tenaglia" required>
+            </div>
+
+            <div class="form-group">
+                <label for="posicionJugador">Posición:</label>
+                <select id="posicionJugador" class="form-control" required>
+                    <option value="">-- Selecciona Posición --</option>
+                    <option value="POR">POR (Portero)</option>
+                    <option value="DF">DF (Defensa)</option>
+                    <option value="MC">MC (Centrocampista)</option>
+                    <option value="DL">DL (Delantero)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="precioPagado">Precio Pagado (€):</label>
+                <input type="number" id="precioPagado" class="form-control" min="0" placeholder="Ej. 8677500" required>
+            </div>
+
+            <div class="form-group">
+                <label for="fechaCompra">Fecha de Compra:</label>
+                <input type="date" id="fechaCompra" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn-submit-clausulazo">
+                💸 Guardar Clausulazo
+            </button>
+        </form>
+    </div>
+
+    <nav th:replace="~{fragments/footer :: footer}"></nav>
+
+</body>
+</html>
