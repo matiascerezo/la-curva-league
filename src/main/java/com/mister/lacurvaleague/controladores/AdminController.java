@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +19,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.mister.lacurvaleague.modelos.Equipo;
 import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.dto.dtoAdmin.AdminEquipoDTO;
-import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazosDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.AlineacionJornadaIndividualDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazoIndividualDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.LloroIndividualDTO;
-import com.mister.lacurvaleague.modelos.dto.dtoFronts.LlorometroDTO;
 import com.mister.lacurvaleague.servicios.MantenimientoDatosService;
 import com.mister.lacurvaleague.servicios.MisterService;
 
@@ -112,10 +113,10 @@ public class AdminController {
 
     @PostMapping("/guardarClausulazo")
     @ResponseBody
-    public ResponseEntity<String> guardarClausulazoFormulario(@RequestBody List<ClausulazosDTO> clausulazosDTOs) {
+    public ResponseEntity<String> guardarClausulazoFormulario(@RequestBody List<ClausulazoIndividualDTO> clausulazoDTOs) {
         try {
             // Pasamos null en InputStream para reutilizar tu método adapter
-            String resultado = mantenimientoDatosService.cargarClausulazoInd(clausulazosDTOs);
+            String resultado = mantenimientoDatosService.cargarClausulazoInd(clausulazoDTOs);
             return ResponseEntity.ok(resultado);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Error al guardar: " + e.getMessage());
@@ -132,4 +133,27 @@ public class AdminController {
             return ResponseEntity.internalServerError().body("Error al guardar: " + e.getMessage());
         }
     }
+
+    @PostMapping("/guardarAlineacion")
+    @ResponseBody
+    public ResponseEntity<String> guardarAlineacion(@RequestBody AlineacionJornadaIndividualDTO alineacionDTO) {
+        try {
+            String resultado = mantenimientoDatosService.guardarJornadaIndividual(alineacionDTO);
+            return ResponseEntity.ok(resultado);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error al guardar: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/cargarAlineacionEquipo/{jornadaNum}/equipo/{equipoId}")
+    @ResponseBody
+    public AlineacionJornadaIndividualDTO cargarAlineacionEquipo(@PathVariable("jornadaNum") int jornadaNum, @PathVariable("equipoId") Long equipoId) {
+        try {
+            AlineacionJornadaIndividualDTO resultado = mantenimientoDatosService.cargarAlineacionEquipo(jornadaNum, equipoId);
+            return resultado;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

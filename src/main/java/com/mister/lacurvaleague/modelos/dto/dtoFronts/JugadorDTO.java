@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor //Creamos el constructor con todos los campos
 public class JugadorDTO {
 
+    private Long jugadorId;
     private String nombre;
     private int puntos;
     private Integer goles;
@@ -18,5 +19,6 @@ public class JugadorDTO {
     private Boolean partidoJugado;
     private boolean xiIdeal;
     private Integer penaltisParados;
-
+    private String posicion;
+    private boolean pendiente;
 }

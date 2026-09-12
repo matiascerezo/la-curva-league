@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor // Genera el constructor con todos los campos
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE) // Crea constructor vacío para Jackson
-public class ClausulazosDTO {
+public class ClausulazoIndividualDTO {
 
     private String imgComprador;
     private String misterComprador;

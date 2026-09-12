@@ -16,4 +16,5 @@ public class MvpDTO implements FormatPosicion{
     private String nombreJugador;
     private String posicionCorta;
     private Long totalMvps;
+    
 }

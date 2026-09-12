@@ -12,6 +12,69 @@
 </head>
 <body>
     <nav th:replace="~{fragments/navbar :: nav}"></nav>
+    <!-- NUEVA SECCIÓN: CLAUSULAZOS Y GASTOS -->
+    <div class="records-grid">
+        <!-- Tabla: Más pesado clausulando -->
+        <table class="table-record table-clausulas-compradas">
+            <thead>
+                <tr><th colspan="3">🛍️ Clausulazos totales</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="mister, iter : ${misterMasClausulazos}">
+                    <td class="text-center" style="font-weight: bold;" th:text="${iter.count}">1</td>
+                    <td style="font-weight: 600;">
+                        <div class="equipo-cell-content">
+                            <img th:src="${mister.imgEquipo}" class="escudo-tabla">
+                            <span th:text="${mister.nombreEquipo}"></span>
+                        </div>
+                    </td>
+                    <td class="text-end">
+                        <span class="badge-clausulas" th:text="${mister.totalClausulazos + ' cláusulas'}">0 cláusulas</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table-record table-clausulas-perdidos">
+            <thead>
+                <tr><th colspan="3">😠 Clausulazos recibidos</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="mister, iter : ${topMasClausulado}">
+                    <td class="text-center" style="font-weight: bold;" th:text="${iter.count}">1</td>
+                    <td style="font-weight: 600;">
+                        <div class="equipo-cell-content">
+                            <img th:src="${mister.imgEquipo}" class="escudo-tabla">
+                            <span th:text="${mister.nombreEquipo}"></span>
+                        </div>
+                    </td>
+                    <td class="text-end">
+                        <span class="badge-clausulas" th:text="${mister.totalClausulazos + ' cláusulas'}">0 cláusulas</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Tabla: Dinero gastado en cláusulas -->
+        <table class="table-record table-dinero-gastado">
+            <thead>
+                <tr><th colspan="3">💵 Dinero total gastado en clausulazos</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="mister, iter : ${topGastadoresClausulas}">
+                    <td class="text-center" style="font-weight: bold;" th:text="${iter.count}">1</td>
+                    <td style="font-weight: 600;">
+                        <div class="equipo-cell-content">
+                            <img th:src="${mister.imgEquipo}" class="escudo-tabla">
+                            <span th:text="${mister.nombreEquipo}"></span>
+                        </div>
+                    </td>
+                    <td class="text-end">
+                        <span class="badge-dinero" th:text="${#numbers.formatDecimal(mister.totalGastado, 1, 'POINT', 0, 'POINT') + ' €'}">0 €</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <div class="records-grid">
         <table class="table-record table-best">
             <thead>

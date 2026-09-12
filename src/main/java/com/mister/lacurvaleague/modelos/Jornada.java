@@ -3,6 +3,8 @@ package com.mister.lacurvaleague.modelos;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,5 +31,6 @@ public class Jornada {
     private Date fechaFin;
 
     @OneToMany(mappedBy = "jornada", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Equipo> equipos;
 }

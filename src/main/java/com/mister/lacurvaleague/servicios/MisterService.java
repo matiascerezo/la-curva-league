@@ -10,15 +10,13 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mister.lacurvaleague.modelos.Equipo;
 import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.AsistenciaDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
-import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazosDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazoIndividualDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.GoleadorDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingAsistenciasDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingGolesDTO;
@@ -63,6 +61,9 @@ public class MisterService {
 
     public record MistersMasLloronesDTO(String imgEquipo, String nombreEquipo, Long llorosTotales) {}
 
+    public record MistersMasClausulazosDTO(String imgEquipo, String nombreEquipo, Long totalClausulazos) {}
+
+    public record MistersMasGastonesDTO(String imgEquipo, String nombreEquipo, Double totalGastado) {}
 
     public List<ClasificacionEquipoDTO> obtenerPuntosEquipoXJornada(String nombreMister){
         return equipoRepository.getClasificacionEquipo(getIdEquipo(nombreMister));
@@ -170,8 +171,20 @@ public class MisterService {
         return llorometroRepository.getListJugadoresMasLlorosTotales(nombreEquipo, pag);
     }
 
-    public List<ClausulazosDTO> getClausulazosTotales() {
-        return clausulazoRepository.getAllClausulazos();
+    public List<ClausulazoIndividualDTO> getClausulazosTotalesOrderFechaDesc() {
+        return clausulazoRepository.getAllClausulazosOrdenadosFechaDesc();
+    }
+
+    public List<MistersMasClausulazosDTO> getListMasClausulazosTotales() {
+        return clausulazoRepository.findTotalClausulazosPorMister();
+    }
+
+    public List<MistersMasClausulazosDTO> getListMasClausulazosRecibidos() {
+        return clausulazoRepository.findTotalClausulazosRecibidosPorMister();
+    }
+
+    public List<MistersMasGastonesDTO> getListMasGastonesEnClausulazos() {
+        return clausulazoRepository.findTotalDineroGastadoClausulazosPorCantidad();
     }
 
     public Set<Integer> getListaJornadas() {

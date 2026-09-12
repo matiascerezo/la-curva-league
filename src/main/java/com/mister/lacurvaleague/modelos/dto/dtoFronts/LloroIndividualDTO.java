@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class LloroIndividualDTO {
-    private String nombreEquipo;
+    private Long misterId;;
     private Integer numeroJornada;
     private String textoLloro;
 }

@@ -1,0 +1,63 @@
+{
+  "numeroJornada": 0,
+  "fechaInicio": "2026-08-01",
+  "fechaFin": "2026-08-01",
+  "equipos": [
+    {
+      "nombreEquipo": "Fénix del mar FC",
+      "nombreMister": "Mario",
+      "puntosJornada": 0,
+      "posicionJornada": 0,
+      "jugadores": []
+    },
+    {
+      "nombreEquipo": "GUDI LEGENDS",
+      "nombreMister": "Gudi",
+      "puntosJornada": 0,
+      "posicionJornada": 0,
+      "jugadores": []
+    },
+    {
+      "nombreEquipo": "Los 11 Yonkos",
+      "nombreMister": "Carlos",
+      "puntosJornada": 0,
+      "posicionJornada": 0,
+      "jugadores": []
+    },
+    {
+      "nombreEquipo": "Los Titanes de Merlès",
+      "nombreMister": "Matias",
+      "puntosJornada": 0,
+      "posicionJornada": 0,
+      "jugadores": []
+    },
+    {
+      "nombreEquipo": "Los Pollos Hermanos",
+      "nombreMister": "Dani",
+      "puntosJornada": 0,
+      "posicionJornada": 0,
+      "jugadores": []
+    },
+    {
+      "nombreEquipo": "Maylova FC",
+      "nombreMister": "Jon",
+      "puntosJornada": 0,
+      "posicionJornada": 0,
+      "jugadores": []
+    },
+    {
+      "nombreEquipo": "Rayo Vaticano FC",
+      "nombreMister": "Sergi",
+      "puntosJornada": 0,
+      "posicionJornada": 0,
+      "jugadores": []
+    },
+    {
+      "nombreEquipo": "Shalke Megiño",
+      "nombreMister": "Alcaide",
+      "puntosJornada": 0,
+      "posicionJornada": 0,
+      "jugadores": []
+    }
+  ]
+}

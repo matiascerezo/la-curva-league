@@ -12,4 +12,20 @@ public interface FormatPosicion {
             default -> "DESC";
         };
     }
+
+    /**
+     * Recibe una posición abreviada y devuelve posicion completa.
+     * @param posicionAbr
+     * @return
+     */
+   static String getPosicionCompleta(String posicionAbr) {
+        if (posicionAbr == null) return "DESC";
+        return switch (posicionAbr.toLowerCase()) {
+            case "dl" -> "Delantero";
+            case "mc" -> "Centrocampista";
+            case "df" -> "Defensa";
+            case "pt" -> "Portero";
+            default -> "DESC";
+        };
+    }
 }

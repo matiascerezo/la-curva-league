@@ -2,6 +2,9 @@ package com.mister.lacurvaleague.modelos;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,10 +37,12 @@ public class Equipo {
     private int posicionJornada;
 
     @OneToMany(mappedBy = "equipo", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Jugador> jugadores;
 
     @ManyToOne
     @JoinColumn(name = "jornada_id")
+    @JsonBackReference
     private Jornada jornada;
     
 }

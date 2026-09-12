@@ -11,5 +11,5 @@ public class MejorJornadaDTO {
     
     private String imgEquipo;
     private String nombreEquipo;
-    private Integer puntos;
+    private Long puntos;
 }

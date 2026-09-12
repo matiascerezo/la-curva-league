@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionGeneralDTO;
-import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazosDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazoIndividualDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingAsistenciasDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingGolesDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingLlorosDTO;
@@ -34,10 +34,11 @@ import com.mister.lacurvaleague.servicios.LlorometroService;
 import com.mister.lacurvaleague.servicios.MisterService;
 import com.mister.lacurvaleague.servicios.MisterService.EquipoLastreDTO;
 import com.mister.lacurvaleague.servicios.MisterService.JugadoresMasPuntosDTO;
+import com.mister.lacurvaleague.servicios.MisterService.MistersMasClausulazosDTO;
+import com.mister.lacurvaleague.servicios.MisterService.MistersMasGastonesDTO;
 import com.mister.lacurvaleague.servicios.MisterService.MistersMasLloronesDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -160,7 +161,7 @@ public class NavegacionControlador {
 
     @GetMapping("/top/clausulazos")
     public String getClausulazosTotales(Model model) {
-        List<ClausulazosDTO> listaClausulazos = misterService.getClausulazosTotales();
+        List<ClausulazoIndividualDTO> listaClausulazos = misterService.getClausulazosTotalesOrderFechaDesc();
         model.addAttribute("listaClausulazos", listaClausulazos);
         return "clausulazos";
     }
@@ -234,7 +235,10 @@ public class NavegacionControlador {
         List<MvpDTO> peoresJugadores = misterService.getPeoresJugadores();
         List<EquipoLastreDTO> puntosNegativosXEquipo = misterService.getPuntosNegativosXEquipo(PageRequest.of(0, 7));
         List<JugadoresMasPuntosDTO> jugadoresMasPuntos = misterService.getListJugadoresMasPuntosTotales(null, PageRequest.of(0, 7));
-        
+        List<MistersMasClausulazosDTO> misterMasClausulazos = misterService.getListMasClausulazosTotales();
+        List<MistersMasClausulazosDTO> topMasClausulado = misterService.getListMasClausulazosRecibidos();
+        List<MistersMasGastonesDTO> topGastadoresClausulas = misterService.getListMasGastonesEnClausulazos();
+
         //TOP JUGADORES CON MAS PUNTOS DA IGUAL EL EQUIPO
 
         model.addAttribute("mejoresJornadas", mejoresJornadas);
@@ -244,6 +248,9 @@ public class NavegacionControlador {
         model.addAttribute("peoresJugadores", peoresJugadores);
         model.addAttribute("topLastres", puntosNegativosXEquipo);
         model.addAttribute("jugadoresMasPuntos", jugadoresMasPuntos);
+        model.addAttribute("misterMasClausulazos", misterMasClausulazos);
+        model.addAttribute("topMasClausulado", topMasClausulado);
+        model.addAttribute("topGastadoresClausulas", topGastadoresClausulas);
         return "records";
     }
 }

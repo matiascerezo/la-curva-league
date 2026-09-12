@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.mister.lacurvaleague.modelos.Equipo;
@@ -172,4 +173,14 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
 				LIMIT 7
 				""", nativeQuery = true)
 		List<MvpDTO> getPeoresJugadores();
+
+		Equipo findByMisterMisterIdAndJornadaJornadaId(Long misterId, Long jornadaId);
+
+		@Query("SELECT e FROM Equipo e WHERE e.mister.misterId = :misterId AND e.jornada.jornadaId = :jornadaId")
+		Equipo buscarPorMisterYJornada(@Param("misterId") Long misterId, @Param("jornadaId") Long jornadaId);
+
+		@Query("SELECT e FROM Equipo e WHERE e.jornada.jornadaId = :jornadaId ORDER BY coalesce(e.puntosJornada, 0) DESC")
+		List<Equipo> findByJornadaIdPorPuntos(@Param("jornadaId") Long jornadaId);
+
+		Equipo findByMisterMisterId(Long misterId);
 }

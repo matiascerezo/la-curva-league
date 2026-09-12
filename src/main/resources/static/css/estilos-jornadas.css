@@ -1,40 +1,81 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Contenedor Principal del Campo */
 .pitch-container {
     max-width: 850px;
-    margin: 0rem 1rem 2rem;
+    margin: 1rem auto 2rem;
     background: linear-gradient(180deg, #1e7029 0%, #134e1b 100%);
     border: 4px solid #ffffff;
     border-radius: 12px;
-    padding: 20px;
+    padding: 16px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    width: calc(100% - 1.5rem);
 }
 
+/* Selectores Superiores */
 .tactic-selector-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    flex-wrap: wrap;
     margin-bottom: 20px;
     color: white;
 }
 
 .tactic-selector-container select {
-    padding: 6px 12px;
+    padding: 6px 10px;
     border-radius: 6px;
     border: 1px solid #ccc;
     font-weight: bold;
+    font-size: 0.85rem;
 }
 
-/* Ficha del jugador sobre el campo */
+/* Botón Guardar */
+.btn-guardar-alineacion {
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: bold;
+    background: #ffffff;
+    color: #1b5e20;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: transform 0.1s ease;
+}
+
+.btn-guardar-alineacion:active {
+    transform: scale(0.97);
+}
+
+/* Filas y Terreno de Juego */
+.pitch-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 14px 0;
+    gap: 4px;
+}
+
+/* Slots de Jugadores */
 .slot-jugador {
-    width: 115px;
+    width: 110px;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 8px;
-    padding: 8px;
+    padding: 6px;
     text-align: center;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     border: 2px dashed #999;
     position: relative;
+}
+
+.slot-jugador:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 
 .slot-jugador.ocupado {
@@ -52,130 +93,199 @@
     filter: grayscale(80%);
 }
 
-.slot-jugador:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
-
 .slot-posicion {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: bold;
     color: #666;
     text-transform: uppercase;
 }
 
 .slot-nombre {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: bold;
-    margin: 4px 0;
+    margin: 3px 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .status-badge {
-    font-size: 0.7rem;
-    padding: 2px 6px;
+    font-size: 0.65rem;
+    padding: 2px 4px;
     border-radius: 4px;
     display: block;
-    margin-top: 4px;
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .badge-vacio { background: #ffebee; color: #c62828; }
 .badge-listo { background: #e8f5e9; color: #2e7d32; }
 
 .star-icon {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: -6px;
+    right: -6px;
     background: #ffd700;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-/* Modal */
+/* Modal y Formulario de Estadísticas */
 .modal {
     display: none;
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6);
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(2px);
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    padding: 12px;
 }
 
 .modal-content {
     background: #fff;
-    padding: 25px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 450px;
+    padding: 20px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 420px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 1.15rem;
+}
+
+.stat-input {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.stat-input label {
+    font-size: 0.78rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stat-input input[type="number"],
+.stat-input input[type="text"] {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+.input-puntos-destacado {
+    font-weight: bold !important;
+    font-size: 1.1rem !important;
+    border: 2px solid #2e7d32 !important;
+    color: #1b5e20;
+}
+
+.checkbox-group {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    background: #f1f5f2;
+    padding: 8px 6px;
+    border-radius: 8px;
+    margin: 12px 0;
+    gap: 8px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 .stat-group {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    margin: 15px 0;
+    margin: 12px 0;
 }
 
-.stat-input {
-    display: flex;
-    flex-direction: column;
+.stat-full-width {
+    grid-column: 1 / -1;
 }
 
-.stat-input label {
-    font-size: 0.8rem;
-    font-weight: bold;
-    margin-bottom: 4px;
-}
-
-.stat-input input[type="number"],
-.stat-input input[type="text"] {
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.checkbox-group {
+.modal-actions {
     display: flex;
     justify-content: space-between;
-    background: #f5f5f5;
-    padding: 10px;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.btn-modal-cancelar {
+    padding: 10px 18px;
+    background: #e0e0e0;
+    border: none;
     border-radius: 6px;
-    margin: 10px 0;
-}
-
-.checkbox-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.85rem;
     font-weight: bold;
+    cursor: pointer;
 }
 
-/* Ajuste de escala cuando hay 5 jugadores en la misma línea */
-.pitch-row {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 20px 0;
-    gap: 4px; /* Evita desbordamiento horizontal */
+.btn-modal-guardar {
+    padding: 10px 18px;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    flex-grow: 1;
 }
 
-/* Reducir ligeramente el tamaño del slot si hay muchos elementos */
-@media (max-width: 600px) {
-    .slot-jugador {
-        width: 65px;
-        padding: 4px;
-        font-size: 0.7rem;
+/* Pantallas Móviles (Pixel, iPhone) */
+@media (max-width: 480px) {
+    .pitch-container {
+        padding: 10px 6px;
     }
+
+    .slot-jugador {
+        width: 19%;
+        min-width: 60px;
+        padding: 4px 2px;
+    }
+
+    .slot-posicion {
+        font-size: 0.65rem;
+    }
+
     .slot-nombre {
-        font-size: 0.75rem;
+        font-size: 0.68rem;
+    }
+
+    .status-badge {
+        font-size: 0.55rem;
+        padding: 2px;
+    }
+
+    .modal-content {
+        padding: 16px;
     }
 }

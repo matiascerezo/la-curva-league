@@ -35,12 +35,12 @@ async function cargarJornadas() {
 async function guardarLloro(event) {
     event.preventDefault();
 
-    const equipo = document.getElementById('selectEquipo').value;
+    const misterId = document.getElementById('selectEquipo').value;
     const jornada = parseInt(document.getElementById('numeroJornada').value, 10);
     const texto = document.getElementById('textoLloro').value.trim();
 
     const datos = {
-        nombreEquipo: equipo,
+        misterId: misterId,
         numeroJornada: jornada,
         textoLloro: texto
     };

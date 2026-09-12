@@ -1,9 +1,10 @@
 [
-  { "nombreEquipo": "Los Hokages de Merlès","nombreMister": "Matias", "urlEquipo": "los-hokages-de-merles","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/689da426afb7e.png"},
+  { "nombreEquipo": "Los Titanes de Merlès","nombreMister": "Matias", "urlEquipo": "los-titanes-de-merles","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/6a6dfbc917806.png"},
   { "nombreEquipo": "Maylova FC", "nombreMister": "Jon", "urlEquipo": "maylova-fc","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/68ab4b4b9825b.png"},
-  { "nombreEquipo": "Rayo Vaticano","nombreMister": "Sergi", "urlEquipo": "rayo-vaticano","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/68acee9be8ef7.png"},
+  { "nombreEquipo": "Petri United FC","nombreMister": "Sergi", "urlEquipo": "petri-united","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/6a6e1f231a7bc.png"},
   { "nombreEquipo": "Los 11 Yonkos","nombreMister": "Carlos", "urlEquipo": "los-11-yonkos","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/68af2b1d35220.png"},
   { "nombreEquipo": "Los Pollos Hermanos","nombreMister": "Dani", "urlEquipo": "los-pollos-hermanos","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/5ce18908c57ce.png"},
-  { "nombreEquipo": "Fénix del mar","nombreMister": "Mario", "urlEquipo": "fenix-del-mar","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/68b6ba747dcee.png"},
+  { "nombreEquipo": "Nersy FC","nombreMister": "Mario", "urlEquipo": "nersy","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/6a8822f86d271.png"},
+  { "nombreEquipo": "GUDI LEGENDS","nombreMister": "Gudi", "urlEquipo": "gudi-legends","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/6a690bf9a8946.png"},
   { "nombreEquipo": "Shalke Megiño","nombreMister": "Alcaide", "urlEquipo": "shalke-megino","imgMister":"https://cdn-mister.mundodeportivo.com/file/cdn-mister/users/68ab3605524a5.png"}
 ]

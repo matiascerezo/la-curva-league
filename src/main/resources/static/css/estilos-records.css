@@ -63,10 +63,6 @@
     font-weight: bold;
 }
 
-.table-worst tr:hover {
-    background-color: #fff5f5;
-}
-
 /* Tabla de Curiosidades */
 .table-info thead {
     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
@@ -200,5 +196,69 @@
     display: block;
     clear: both;
     padding-bottom: 50px; /* Espacio de seguridad */
+}
+
+/* ==========================================================================
+   TABLAS DE CLAUSULAZOS Y DINERO
+   ========================================================================== */
+
+/* Borde distintivo para la tabla de mayor número de cláusulas */
+.table-clausulas-compradas {
+    border-top: 4px solid #3b82f6;
+}
+
+.table-clausulas-compradas thead th {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: #ffffff;
+}
+
+.table-clausulas-perdidos {
+    border-top: 4px solid #f63b60;
+}
+
+.table-clausulas-perdidos thead th {
+    background: linear-gradient(135deg, #f31d47 0%, #f63b60 100%);
+    color: #ffffff;
+}
+
+/* Borde distintivo para la tabla de dinero gastado */
+.table-dinero-gastado {
+    border-top: 4px solid #10b981;
+}
+
+.table-dinero-gastado thead th {
+    background: linear-gradient(135deg, #064e3b 0%, #10b981 100%);
+    color: #ffffff;
+}
+
+/* Badges para el número de cláusulas pagadas */
+.badge-clausulas {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1e40af;
+    background-color: #dbeafe;
+    border: 1px solid #bfdbfe;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+/* Badges para los importes de dinero gastado */
+.badge-dinero {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #065f46;
+    background-color: #d1fae5;
+    border: 1px solid #a7f3d0;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+/* Ajustes auxiliares de alineación */
+.text-end {
+    text-align: right;
 }
 

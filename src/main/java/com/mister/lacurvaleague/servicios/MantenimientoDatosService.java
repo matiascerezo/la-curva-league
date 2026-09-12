@@ -5,11 +5,15 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +26,15 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mister.lacurvaleague.modelos.Clausulazos;
 import com.mister.lacurvaleague.modelos.Equipo;
+import com.mister.lacurvaleague.modelos.Esquema;
 import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.Jornada;
 import com.mister.lacurvaleague.modelos.Jugador;
 import com.mister.lacurvaleague.modelos.JugadorReal;
 import com.mister.lacurvaleague.modelos.Llorometro;
 import com.mister.lacurvaleague.modelos.dto.dtoAdmin.AdminEquipoDTO;
-import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazosDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.AlineacionJornadaIndividualDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazoIndividualDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.EquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.JornadaDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.JugadorDTO;
@@ -41,6 +47,7 @@ import com.mister.lacurvaleague.modelos.dto.dtoFronts.MisterLlorosDTO;
 import com.mister.lacurvaleague.modelos.dto.util.FormatPosicion;
 import com.mister.lacurvaleague.repository.ClausulazoRepository;
 import com.mister.lacurvaleague.repository.EquipoRepository;
+import com.mister.lacurvaleague.repository.EsquemaRepository;
 import com.mister.lacurvaleague.repository.JornadaRepository;
 import com.mister.lacurvaleague.repository.JugadorRealRepository;
 import com.mister.lacurvaleague.repository.JugadorRepository;
@@ -48,10 +55,13 @@ import com.mister.lacurvaleague.repository.LlorometroRepository;
 import com.mister.lacurvaleague.repository.MisterRepository;
 import com.mister.lacurvaleague.utilities.StringUtils;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 @Service
 public class MantenimientoDatosService implements FormatPosicion {
+
+    private final MisterService misterService;
 
     @Value("${path.json_jornadas}")
     private String PATH_JSON_JORNADA;
@@ -72,8 +82,11 @@ public class MantenimientoDatosService implements FormatPosicion {
     private final MisterRepository misterRepository;
     private final LlorometroRepository llorometroRepository;
     private final ClausulazoRepository clausulazosRepository;
+    private final EsquemaRepository esquemaRepository;
 
-    MantenimientoDatosService(JugadorRealRepository jugadorRealRepository, JugadorRepository jugadorRepository, EquipoRepository equipoRepository, JornadaRepository jornadaRepository, LlorometroRepository llorometroRepository, MisterRepository misterRepository, ClausulazoRepository clausulazosRepository) {
+    MantenimientoDatosService(JugadorRealRepository jugadorRealRepository, JugadorRepository jugadorRepository, EquipoRepository equipoRepository, 
+                                JornadaRepository jornadaRepository, LlorometroRepository llorometroRepository, MisterRepository misterRepository, 
+                                ClausulazoRepository clausulazosRepository, MisterService misterService, EsquemaRepository esquemaRepository) {
         this.jugadorRealRepository = jugadorRealRepository;
         this.jugadorRepository = jugadorRepository;
         this.equipoRepository = equipoRepository;
@@ -81,6 +94,8 @@ public class MantenimientoDatosService implements FormatPosicion {
         this.llorometroRepository = llorometroRepository;
         this.misterRepository = misterRepository;
         this.clausulazosRepository = clausulazosRepository;
+        this.misterService = misterService;
+        this.esquemaRepository = esquemaRepository;
     }
 
     /**
@@ -255,6 +270,7 @@ public class MantenimientoDatosService implements FormatPosicion {
         if (Boolean.TRUE.equals(jugadorDTO.isXiIdeal())) jugador.setXiIdeal(jugadorDTO.isXiIdeal());
         if (jugadorDTO.getPartidoJugado() != null) jugador.setPartidoJugado(jugadorDTO.getPartidoJugado());
         if(jugadorDTO.getPenaltisParados()!=null) jugador.setPenaltisParados(jugadorDTO.getPenaltisParados());
+        if (Boolean.TRUE.equals(jugadorDTO.isPendiente())) jugador.setPendiente(jugadorDTO.isPendiente());
         jugador.setEquipo(equipo);
         return jugador;
     }
@@ -421,7 +437,7 @@ public class MantenimientoDatosService implements FormatPosicion {
      */
     public String procesarLloroInd(LloroIndividualDTO lloroDTO) {
         Jornada jornada = jornadaRepository.findByNumeroJornada(lloroDTO.getNumeroJornada());
-        Mister mister = misterRepository.getMisterByNombreEquipo(lloroDTO.getNombreEquipo());          
+        Mister mister = misterRepository.findById(lloroDTO.getMisterId()).orElse(new Mister());          
         Llorometro lloro = new Llorometro();
         lloro.setJornada(jornada);
         lloro.setMister(mister);
@@ -475,7 +491,7 @@ public class MantenimientoDatosService implements FormatPosicion {
         return "Jornadas procesadas: " + cargarJugadoresReales(false, inputStream);
     }
 
-    public String cargarClausulazoFront(List<ClausulazosDTO> clausulazosDTOs) {
+    public String cargarClausulazoFront(List<ClausulazoIndividualDTO> clausulazosDTOs) {
         return cargarClausulazos(null, clausulazosDTOs);
     }
 
@@ -542,7 +558,7 @@ public class MantenimientoDatosService implements FormatPosicion {
      * @param clausulazosDTOs
      * @return
      */
-    public String cargarClausulazoInd(List<ClausulazosDTO> clausulazosDTOs) {
+    public String cargarClausulazoInd(List<ClausulazoIndividualDTO> clausulazosDTOs) {
         return cargarClausulazos(null, clausulazosDTOs);
     }
 
@@ -555,16 +571,27 @@ public class MantenimientoDatosService implements FormatPosicion {
         return procesarLloroInd(lloroDTO);
     }
 
-    public String cargarClausulazosListaIS(InputStream is, List<ClausulazosDTO> clausulazosDTOs) {
+    /**
+     * Procesa e inserta una alinacion introducido por el front.
+     * @param is
+     * @param clausulazosDTOs
+     * @return
+     */
+    public String cargarJornadaInd(AlineacionJornadaIndividualDTO alineacionDTO) {
+        return guardarJornadaIndividual(alineacionDTO);
+    }
+
+    public String cargarClausulazosListaIS(InputStream is, List<ClausulazoIndividualDTO> clausulazosDTOs) {
         return cargarClausulazos(is, null);
     }
 
-    public String cargarClausulazos(InputStream is, List<ClausulazosDTO> clausulazosDTOs) {
+
+    public String cargarClausulazos(InputStream is, List<ClausulazoIndividualDTO> clausulazosDTOs) {
         
         try {
 
             if (null != is) {
-                 clausulazosDTOs = objectMapper.readValue(is, new TypeReference<List<ClausulazosDTO>>() {});
+                 clausulazosDTOs = objectMapper.readValue(is, new TypeReference<List<ClausulazoIndividualDTO>>() {});
             }          
 
             //Busco los misters ya en BBDD
@@ -574,7 +601,7 @@ public class MantenimientoDatosService implements FormatPosicion {
                 .collect(Collectors.toSet());
 
             List<Clausulazos> listaClausulazosOK = new ArrayList<>();
-            for (ClausulazosDTO clausulazoDTO : clausulazosDTOs) {
+            for (ClausulazoIndividualDTO clausulazoDTO : clausulazosDTOs) {
                 if(mistersBBDD.contains(clausulazoDTO.getMisterComprador()) && mistersBBDD.contains(clausulazoDTO.getMisterVendedor())){
                     Clausulazos c = new Clausulazos();
                     c.setMisterComprador(clausulazoDTO.getMisterComprador());
@@ -599,5 +626,146 @@ public class MantenimientoDatosService implements FormatPosicion {
 
     public void actualizarMister(Mister m) {
         misterRepository.save(m);
+    }
+
+    @Transactional
+    public String guardarJornadaIndividual(AlineacionJornadaIndividualDTO alineacion) {
+        Jornada jornada = jornadaRepository.findByNumeroJornada(alineacion.getNumeroJornada());
+        Mister mister = misterRepository.findById(alineacion.getMisterId())
+                .orElseThrow(() -> new EntityNotFoundException("Míster no encontrado"));
+
+        // 1. Obtener o inicializar el equipo UNA sola vez fuera del bucle
+        Equipo equipo = equipoRepository.buscarPorMisterYJornada(mister.getMisterId(), jornada.getJornadaId());
+        if (equipo == null) {
+            equipo = new Equipo();
+            equipo.setJornada(jornada);
+            equipo.setMister(mister);
+            equipo = equipoRepository.save(equipo);
+        }
+
+        // 2. Extraer IDs de jugadores existentes que vienen en el DTO
+        Set<Long> idsRecibidos = alineacion.getJugadores().stream()
+                .map(Jugador::getJugadorId)
+                .filter(id -> id != null && id > 0)
+                .collect(Collectors.toSet());
+
+        // 3. Cargar en memoria todos los jugadores existentes en un solo viaje a BD
+        Map<Long, Jugador> jugadoresExistentesMap = idsRecibidos.isEmpty()
+                ? Collections.emptyMap()
+                : jugadorRepository.findAllById(idsRecibidos).stream()
+                        .collect(Collectors.toMap(Jugador::getJugadorId, Function.identity()));
+
+        // 4. Preparar la lista de entidades (Insert / Update)
+        List<Jugador> jugadoresAGuardar = new ArrayList<>();
+        for (Jugador jugadorDto : alineacion.getJugadores()) {
+            Jugador jugadorAGuardar;
+            if (jugadorDto.getJugadorId() != null && jugadoresExistentesMap.containsKey(jugadorDto.getJugadorId())) {
+                jugadorAGuardar = jugadoresExistentesMap.get(jugadorDto.getJugadorId()); // UPDATE
+            } else {
+                jugadorAGuardar = new Jugador(); // INSERT
+                jugadorAGuardar.setEquipo(equipo);
+            }
+
+            mapearDatosJugador(jugadorDto, jugadorAGuardar);
+            jugadoresAGuardar.add(jugadorAGuardar);
+        }
+
+        // 5. Eliminar los jugadores del equipo que ya no están en la nueva alineación
+        if (equipo.getJugadores() != null && !equipo.getJugadores().isEmpty()) {
+            List<Jugador> sobrantes = equipo.getJugadores().stream()
+                    .filter(j -> !idsRecibidos.contains(j.getJugadorId()))
+                    .toList();
+
+            if (!sobrantes.isEmpty()) {
+                jugadorRepository.deleteAll(sobrantes);
+            }
+        }
+
+        // 6. Guardar todos los jugadores (Inserts y Updates en batch)
+        jugadorRepository.saveAll(jugadoresAGuardar);
+
+        // 7. Actualizar esquema y puntos del equipo
+        if (0L != equipo.getEquipoId() && equipo.getEquipoId() > 0) {
+            esquemaRepository.eliminarPorEquipoId(equipo.getEquipoId());
+        }
+        Esquema esquema = new Esquema();
+        esquema.setEquipo(equipo);
+        esquema.setEsquema(alineacion.getEsquema());
+        esquemaRepository.save(esquema);
+
+        equipo.setPuntosJornada(this.contadorPuntosJornada(alineacion.getJugadores()));
+        equipo.setPosicionJornada(this.calcularPosicionJornada(equipo, jornada.getJornadaId()));
+        equipoRepository.save(equipo);
+
+        return "Alineación guardada";
+    }
+
+    
+    /**
+     * Metodo par mapear el jugador.
+     * @param origen
+     * @param destino
+     */
+    private void mapearDatosJugador(Jugador jugadorDto, Jugador jugadorAGuardar) {
+        jugadorAGuardar.setPosicionCorta(jugadorDto.getPosicion());
+        jugadorAGuardar.setPosicion(FormatPosicion.getPosicionCompleta(jugadorDto.getPosicion()));
+        jugadorAGuardar.setNombre(jugadorDto.getNombre());
+        jugadorAGuardar.setPuntos(jugadorDto.getPuntos());
+        jugadorAGuardar.setGoles(jugadorDto.getGoles());
+        jugadorAGuardar.setAsistencias(jugadorDto.getAsistencias());
+        jugadorAGuardar.setAmarillas(jugadorDto.getAmarillas());
+        jugadorAGuardar.setRojas(jugadorDto.getRojas());
+        jugadorAGuardar.setPartidoJugado(jugadorDto.getPartidoJugado());
+        jugadorAGuardar.setXiIdeal(jugadorDto.isXiIdeal());
+        jugadorAGuardar.setPenaltisParados(jugadorDto.getPenaltisParados());
+        jugadorAGuardar.setPendiente(jugadorDto.isPendiente());
+    }
+
+    private int contadorPuntosJornada(List<Jugador> listaJugadores) {
+        return listaJugadores.stream()
+                                .mapToInt(p -> p.getPuntos())
+                                .sum();
+    }
+
+    /**
+     * Calcula la posicion del equipo en la jornada.
+     * @param equipo
+     * @param jornadaId
+     * @return
+     */
+    private int calcularPosicionJornada(Equipo equipo, Long jornadaId ) {
+
+        List<Equipo> listaEquipos = new ArrayList<>();
+
+        //Recupero la lista de mayor a menor x puntos
+        listaEquipos = equipoRepository.findByJornadaIdPorPuntos(jornadaId);
+
+        if(null == listaEquipos || listaEquipos.isEmpty()) return 1;
+        
+        if(!listaEquipos.isEmpty()) {
+            for (int i = 0; i < listaEquipos.size(); i++) {
+                Equipo e = listaEquipos.get(i);
+        
+                if (e.getEquipoId() == equipo.getEquipoId()) {            
+                    return i + 1;
+                }
+            }
+        }
+        return 1;
+    }
+
+    public AlineacionJornadaIndividualDTO cargarAlineacionEquipo(int numJornada, Long misterId) {
+        AlineacionJornadaIndividualDTO alineacion = new AlineacionJornadaIndividualDTO();
+        long jornadaId = jornadaRepository.findIdByNumeroJornada(numJornada);
+        Equipo equipo = equipoRepository.buscarPorMisterYJornada(misterId, jornadaId);
+        if(equipo.getJugadores().size() > 0) {
+            Esquema esquema = esquemaRepository.findByEquipoEquipoId(equipo.getEquipoId());
+            alineacion.setJugadores(equipo.getJugadores());
+            alineacion.setMisterId(misterId);
+            alineacion.setEsquema(esquema.getEsquema());
+            alineacion.setNumeroJornada(numJornada);
+            return alineacion;
+        }
+        return null;
     }
 }

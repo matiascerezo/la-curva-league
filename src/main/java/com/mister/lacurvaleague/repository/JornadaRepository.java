@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.mister.lacurvaleague.modelos.Jornada;
@@ -26,9 +27,10 @@ public interface JornadaRepository extends JpaRepository<Jornada, Long> {
                     SELECT 
                         m.img_equipo AS imgEquipo, 
                         m.nombre_equipo AS equipo, 
-                        e.puntos_jornada AS puntos 
+                        CAST(COALESCE(e.puntos_jornada, 0) AS BIGINT) as puntos 
                     FROM mister m
-                    JOIN equipo e ON e.mister_id = m.mister_id
+                    LEFT JOIN equipo e ON e.mister_id = m.mister_id
+                        GROUP BY m.img_equipo, m.nombre_equipo, CAST(COALESCE(e.puntos_jornada, 0) AS BIGINT)
                     ORDER BY puntos DESC, equipo ASC
                     LIMIT 3
                     """, nativeQuery = true)
@@ -38,13 +40,18 @@ public interface JornadaRepository extends JpaRepository<Jornada, Long> {
                     SELECT 
                         m.img_equipo AS imgEquipo, 
                         m.nombre_equipo AS equipo, 
-                        e.puntos_jornada AS puntos 
+                        COALESCE(SUM(CASE WHEN e.puntos_jornada < 0 THEN e.puntos_jornada ELSE 0 END), 0) AS puntos 
                     FROM mister m
-                    JOIN equipo e ON e.mister_id = m.mister_id
+                    LEFT JOIN equipo e ON e.mister_id = m.mister_id
+                        GROUP BY m.img_equipo, m.nombre_equipo
                     ORDER BY puntos ASC, equipo ASC
                     LIMIT 3
                     """, nativeQuery = true)
     List<MejorJornadaDTO> getTop3PeoresJornadas();
+
+    @Query("SELECT j.jornadaId FROM Jornada j WHERE j.numeroJornada = :numeroJornada")
+    Long findIdByNumeroJornada(@Param("numeroJornada") int numeroJornada);
+
 
 }
 

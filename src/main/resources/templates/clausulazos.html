@@ -18,8 +18,9 @@
                 <thead>
                     <tr>
                         <th>Fecha</th>
+                        <th>Vendedor</th>
+                        <th></th> 
                         <th>Comprador</th>
-                        <th></th> <th>Vendedor</th>
                         <th>Jugador</th>
                         <th>Precio Pagado</th>
                     </tr>
@@ -27,16 +28,6 @@
                 <tbody>                                        
                     <tr th:each="c : ${listaClausulazos}">
                         <td class="col-media" th:text="${#temporals.format(c.fechaCompra, 'dd/MM/yyyy')} ?: ${c.fechaCompra}"></td>
-                        
-                        <td class="mister-nombre comprador">
-                            <div class="equipo-info-cell">
-                                <img th:src="${c.imgComprador}" class="escudo-tabla" alt="">
-                                <span th:text="${c.misterComprador}"></span>
-                            </div>
-                        </td>
-                        
-                        <td><div class="icon-clausulazo">→</div></td>
-                        
                         <td class="mister-nombre vendedor">
                             <div class="equipo-info-cell">
                                 <img th:src="${c.imgVendedor}" class="escudo-tabla" alt="">
@@ -44,6 +35,15 @@
                             </div>
                         </td>
                         
+                        <td><div class="icon-clausulazo">→</div></td>
+                        
+                        <td class="mister-nombre comprador">
+                            <div class="equipo-info-cell">
+                                <img th:src="${c.imgComprador}" class="escudo-tabla" alt="">
+                                <span th:text="${c.misterComprador}"></span>
+                            </div>
+                        </td>
+                                           
                         <td>
                             <div class="pichichi-cell">
                                 <span class="nombre-jugador" th:text="${c.nombreJugador}"></span>

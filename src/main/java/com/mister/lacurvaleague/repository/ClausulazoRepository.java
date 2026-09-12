@@ -7,12 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.mister.lacurvaleague.modelos.Clausulazos;
-import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazosDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazoIndividualDTO;
+import com.mister.lacurvaleague.servicios.MisterService.MistersMasClausulazosDTO;
+import com.mister.lacurvaleague.servicios.MisterService.MistersMasGastonesDTO;
 
 @Repository
 public interface ClausulazoRepository extends JpaRepository<Clausulazos, Long> {
 
-        @Query("SELECT new com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazosDTO( "+
+        @Query("SELECT new com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazoIndividualDTO( "+
                         "m1.imgEquipo as imgComprador, "+
                         "m1.nombreEquipo as misterComprador, "+
                         "m2.imgEquipo as imgVendedor, "+
@@ -23,6 +25,37 @@ public interface ClausulazoRepository extends JpaRepository<Clausulazos, Long> {
                         "c.fechaCompra) "+
                     "FROM Clausulazos c "+
                     "JOIN Mister m1 ON c.misterComprador = m1.nombreEquipo "+
-                    "JOIN Mister m2 ON c.misterVendedor = m2.nombreEquipo")
-    List<ClausulazosDTO> getAllClausulazos();
+                    "JOIN Mister m2 ON c.misterVendedor = m2.nombreEquipo " +
+                    "ORDER BY c.fechaCompra desc")
+    List<ClausulazoIndividualDTO> getAllClausulazosOrdenadosFechaDesc();
+
+    @Query("SELECT new com.mister.lacurvaleague.servicios.MisterService$MistersMasClausulazosDTO( "+
+                    "m1.imgEquipo as imgComprador, " +
+                    "m1.nombreEquipo as misterComprador, " +
+                    "COUNT(c.nombreJugador) as totalClausulazos) "+ 
+                "FROM Mister m1 " +
+                "LEFT JOIN Clausulazos c ON c.misterComprador = m1.nombreEquipo " +
+                "GROUP BY m1.imgEquipo, m1.nombreEquipo " +
+                "ORDER BY totalClausulazos DESC")
+    List<MistersMasClausulazosDTO> findTotalClausulazosPorMister();
+
+    @Query("SELECT new com.mister.lacurvaleague.servicios.MisterService$MistersMasClausulazosDTO( "+
+                    "m1.imgEquipo as imgVendedor, " +
+                    "m1.nombreEquipo as misterVendedor, " +
+                    "COUNT(c.nombreJugador) as totalClausulazos) "+ 
+                "FROM Mister m1 " +
+                "LEFT JOIN Clausulazos c ON c.misterVendedor = m1.nombreEquipo " +
+                "GROUP BY m1.imgEquipo, m1.nombreEquipo " +
+                "ORDER BY totalClausulazos DESC")
+    List<MistersMasClausulazosDTO> findTotalClausulazosRecibidosPorMister();
+
+    @Query("SELECT new com.mister.lacurvaleague.servicios.MisterService$MistersMasGastonesDTO( "+
+                    "m1.imgEquipo as imgComprador, " +
+                    "m1.nombreEquipo as misterComprador, " +
+                    "COALESCE(SUM(c.precioPagado),0) as totalGastado) "+ 
+                "FROM Mister m1 " +
+                "LEFT JOIN Clausulazos c ON c.misterComprador = m1.nombreEquipo " +
+                "GROUP BY m1.imgEquipo, m1.nombreEquipo " +
+                "ORDER BY totalGastado DESC")
+    List<MistersMasGastonesDTO> findTotalDineroGastadoClausulazosPorCantidad();
 }

@@ -1,5 +1,7 @@
 package com.mister.lacurvaleague.modelos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,8 +35,11 @@ public class Jugador {
     private boolean xiIdeal = false;
     private int penaltisParados = 0;
 
+    private boolean pendiente = true;
+
     @ManyToOne
     @JoinColumn(name = "equipo_id")
+    @JsonBackReference
     private Equipo equipo;
 
 }
