@@ -262,3 +262,18 @@
     text-align: right;
 }
 
+/* ==========================================================================
+   ESTILOS ESPECÍFICOS: TABLA PUNTOS EXTRA POR CAPITÁN
+   ========================================================================== */
+
+/* Estilo para la cabecera de la tabla de capitanes (Tono dorado/ámbar) */
+.table-puntos-capitan th {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%) !important;
+    color: #ffffff !important;
+    text-shadow: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.2);
+}
+
+/* Opcional: Un sutil borde o sombra destacada para la tarjeta */
+.table-puntos-capitan {
+    border-color: #f59e0b !important;
+}

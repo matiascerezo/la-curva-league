@@ -1,6 +1,6 @@
 package com.mister.lacurvaleague.modelos.dto.dtoFronts;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class JornadaDTO {
 
     private int numeroJornada;
-    private Date fechaInicio;
-    private Date fechaFin;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
     private List<EquipoDTO> equipos;
 }

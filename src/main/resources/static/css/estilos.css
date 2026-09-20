@@ -85,7 +85,8 @@ body {
 }
 
 .nav-list-equipos, .nav-list-tops {
-    display: inline-flex;
+    display: flex;
+    width: 100%;
     padding: 10px 15px;
     margin: 0;
     list-style: none;
@@ -359,4 +360,27 @@ body {
         text-align: center;
         align-items: center;
     }
+}
+
+/* ==========================================================================
+   ENLACE DE ADMINISTRACIÓN OCULTO / DISCRETO A LA DERECHA
+   ========================================================================== */
+
+/* 1. Si tu ul .nav-list-tops usa flexbox, margin-left: auto empuja este elemento al extremo derecho */
+.nav-list-tops .nav-item-admin {
+    margin-left: auto; 
+}
+
+/* 2. Estilo discreto: bajamos la opacidad para que pase totalmente desapercibido */
+.nav-list-tops .nav-item-admin a {
+    opacity: 0.25;                  /* Muy sutil y transparente por defecto */
+    transition: opacity 0.2s ease;  /* Suave al pasar el ratón */
+    text-decoration: none;
+    font-size: 0.9rem;              /* Ligeramente más pequeño si se desea */
+}
+
+/* 3. Al pasar el ratón (o en móvil al tocarlo), se ilumina sutilmente para que puedas pulsarlo */
+.nav-list-tops .nav-item-admin a:hover,
+.nav-list-tops .nav-item-admin a.activo {
+    opacity: 1;                     /* Se ve totalmente normal cuando entras o pasas el cursor */
 }

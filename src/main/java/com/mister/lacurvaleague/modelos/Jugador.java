@@ -2,6 +2,7 @@ package com.mister.lacurvaleague.modelos;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,6 +37,10 @@ public class Jugador {
     private int penaltisParados = 0;
 
     private boolean pendiente = true;
+    private boolean capitan = false;
+    
+    @Column(name = "multiplicador_capitan", nullable = true)
+    private Double multiplicadorCapitan = 0.0;
 
     @ManyToOne
     @JoinColumn(name = "equipo_id")

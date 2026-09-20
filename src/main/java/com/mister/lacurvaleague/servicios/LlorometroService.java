@@ -15,20 +15,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LlorometroService {
 
-    @Autowired
-    LlorometroRepository llorometroRepository;
+    final LlorometroRepository llorometroRepository;
+    final JornadaRepository jornadaRepository;
+    final MisterRepository misterRepository;
 
-    @Autowired
-    JornadaRepository jornadaRepository;
-
-    @Autowired
-    MisterRepository misterRepository;
+    LlorometroService(LlorometroRepository llorometroRepository, JornadaRepository jornadaRepository, MisterRepository misterRepository) {
+        this.llorometroRepository = llorometroRepository;
+        this.jornadaRepository = jornadaRepository;
+        this.misterRepository = misterRepository;
+    }
 
     public List<Llorometro> getLlorosJornadaX(Long jornadaId){
         return llorometroRepository.getLlorosJornadaX(jornadaId);

@@ -14,6 +14,26 @@
     <nav th:replace="~{fragments/navbar :: nav}"></nav>
     <!-- NUEVA SECCIÓN: CLAUSULAZOS Y GASTOS -->
     <div class="records-grid">
+        <!-- NUEVA TABLA: PUNTOS EXTRA POR CAPITÁN -->
+        <table class="table-record table-puntos-capitan">
+            <thead>
+                <tr><th colspan="3">👑 Puntos extra por Capitán</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="mister, iter : ${topPuntosXCapitan}">
+                    <td class="text-center" style="font-weight: bold;" th:text="${iter.count}">1</td>
+                    <td style="font-weight: 600;">
+                        <div class="equipo-cell-content">
+                            <img th:src="${mister.imgEquipo}" class="escudo-tabla">
+                            <span th:text="${mister.nombreEquipo}"></span>
+                        </div>
+                    </td>
+                    <td class="text-end">
+                        <span class="badge-top" th:text="${'+' + mister.puntosXCapitan + ' pts'}">0 pts</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <!-- Tabla: Más pesado clausulando -->
         <table class="table-record table-clausulas-compradas">
             <thead>

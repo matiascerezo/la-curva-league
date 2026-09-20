@@ -3,10 +3,12 @@ package com.mister.lacurvaleague.controladores;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mister.lacurvaleague.modelos.Equipo;
+import com.mister.lacurvaleague.modelos.Jornada;
 import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.dto.dtoAdmin.AdminEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.AlineacionJornadaIndividualDTO;
@@ -74,8 +77,6 @@ public class AdminController {
 
     @GetMapping("/jornadas")
     public String mostrarPanelJornada(@RequestParam(name = "jornada", required = false, defaultValue = "1") Integer jornada, Model model) {
-        
-        model.addAttribute("jornadaActual", jornada);
         return "admin/admin-jornada";
     }
 
@@ -109,6 +110,12 @@ public class AdminController {
     @GetMapping("/lloros")
     public String mostrarFormularioLloros() {
         return "admin/admin-lloros";
+    }
+
+    @GetMapping("/jornada/nuevo")
+    public String insertaNuevoRegistroJornada(Model model) {
+        model.addAttribute("jornada", new Jornada());
+        return "admin/admin-jornada-nueva";
     }
 
     @PostMapping("/guardarClausulazo")
@@ -147,13 +154,24 @@ public class AdminController {
 
     @GetMapping("/cargarAlineacionEquipo/{jornadaNum}/equipo/{equipoId}")
     @ResponseBody
-    public AlineacionJornadaIndividualDTO cargarAlineacionEquipo(@PathVariable("jornadaNum") int jornadaNum, @PathVariable("equipoId") Long equipoId) {
+    public  ResponseEntity<Object> cargarAlineacionEquipo(@PathVariable("jornadaNum") int jornadaNum, @PathVariable("equipoId") Long equipoId) {
         try {
             AlineacionJornadaIndividualDTO resultado = mantenimientoDatosService.cargarAlineacionEquipo(jornadaNum, equipoId);
-            return resultado;
+            return ResponseEntity.ok(resultado);
         } catch (Exception e) {
-            return null;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al cargar la alineación: " + e.getMessage());
         }
+    }
+
+    @PostMapping("/jornada/guardar")
+    public String guardarJornada(@ModelAttribute Jornada jornada, RedirectAttributes redirectAttributes) {
+        try {
+            mantenimientoDatosService.insertarNuevaJornada(jornada);
+            redirectAttributes.addFlashAttribute("success", "¡Jornada creada con éxito!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/mantenimiento/admin/panel";
     }
 
 }

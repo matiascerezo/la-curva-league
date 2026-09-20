@@ -1,7 +1,6 @@
 package com.mister.lacurvaleague.controladores;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,14 +21,18 @@ import com.mister.lacurvaleague.servicios.MisterService;
 @RequestMapping("/stats")
 public class MisterControlador {
 
-    @Autowired
-    private MisterService misterService;
-    @Autowired
-    private JugadorRepository jugadorRepository;
-    @Autowired
-    private JornadaRepository jornadaRepository;
-    @Autowired
-    private EquipoRepository equipoRepository;
+    private final MisterService misterService;
+    private final JugadorRepository jugadorRepository;
+    private final JornadaRepository jornadaRepository;
+    private final EquipoRepository equipoRepository;
+
+
+    MisterControlador(MisterService misterService, JugadorRepository jugadorRepository, JornadaRepository jornadaRepository, EquipoRepository equipoRepository) {
+        this.misterService = misterService;
+        this.jugadorRepository = jugadorRepository;
+        this.jornadaRepository = jornadaRepository;
+        this.equipoRepository = equipoRepository;
+    }
     
 
     @GetMapping("/tablaPuntos")

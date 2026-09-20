@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -37,6 +36,7 @@ import com.mister.lacurvaleague.servicios.MisterService.JugadoresMasPuntosDTO;
 import com.mister.lacurvaleague.servicios.MisterService.MistersMasClausulazosDTO;
 import com.mister.lacurvaleague.servicios.MisterService.MistersMasGastonesDTO;
 import com.mister.lacurvaleague.servicios.MisterService.MistersMasLloronesDTO;
+import com.mister.lacurvaleague.servicios.MisterService.PuntosCapitanesDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -238,8 +238,7 @@ public class NavegacionControlador {
         List<MistersMasClausulazosDTO> misterMasClausulazos = misterService.getListMasClausulazosTotales();
         List<MistersMasClausulazosDTO> topMasClausulado = misterService.getListMasClausulazosRecibidos();
         List<MistersMasGastonesDTO> topGastadoresClausulas = misterService.getListMasGastonesEnClausulazos();
-
-        //TOP JUGADORES CON MAS PUNTOS DA IGUAL EL EQUIPO
+        List<PuntosCapitanesDTO> topPuntosXCapitan = misterService.getPuntosXCapitanes();
 
         model.addAttribute("mejoresJornadas", mejoresJornadas);
         model.addAttribute("peoresJornadas", peoresJornadas);
@@ -251,6 +250,7 @@ public class NavegacionControlador {
         model.addAttribute("misterMasClausulazos", misterMasClausulazos);
         model.addAttribute("topMasClausulado", topMasClausulado);
         model.addAttribute("topGastadoresClausulas", topGastadoresClausulas);
+        model.addAttribute("topPuntosXCapitan", topPuntosXCapitan);
         return "records";
     }
 }

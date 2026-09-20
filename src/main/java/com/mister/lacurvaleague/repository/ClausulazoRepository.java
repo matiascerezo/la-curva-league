@@ -4,14 +4,11 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-
 import com.mister.lacurvaleague.modelos.Clausulazos;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazoIndividualDTO;
 import com.mister.lacurvaleague.servicios.MisterService.MistersMasClausulazosDTO;
 import com.mister.lacurvaleague.servicios.MisterService.MistersMasGastonesDTO;
 
-@Repository
 public interface ClausulazoRepository extends JpaRepository<Clausulazos, Long> {
 
         @Query("SELECT new com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazoIndividualDTO( "+
@@ -26,7 +23,7 @@ public interface ClausulazoRepository extends JpaRepository<Clausulazos, Long> {
                     "FROM Clausulazos c "+
                     "JOIN Mister m1 ON c.misterComprador = m1.nombreEquipo "+
                     "JOIN Mister m2 ON c.misterVendedor = m2.nombreEquipo " +
-                    "ORDER BY c.fechaCompra desc")
+                    "ORDER BY c.fechaCompra desc, c.clausulazoId desc")
     List<ClausulazoIndividualDTO> getAllClausulazosOrdenadosFechaDesc();
 
     @Query("SELECT new com.mister.lacurvaleague.servicios.MisterService$MistersMasClausulazosDTO( "+

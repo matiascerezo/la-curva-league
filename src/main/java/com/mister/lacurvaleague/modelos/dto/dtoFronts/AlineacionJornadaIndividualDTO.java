@@ -19,4 +19,5 @@ public class AlineacionJornadaIndividualDTO {
     Integer numeroJornada;
     String esquema;
     List<Jugador> jugadores;
+    Integer puntosJornada;
 }

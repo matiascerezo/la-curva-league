@@ -6,14 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-
 import com.mister.lacurvaleague.modelos.Llorometro;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.LlorometroDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingLlorosDTO;
 import com.mister.lacurvaleague.servicios.MisterService.MistersMasLloronesDTO;
 
-@Repository
 public interface LlorometroRepository extends JpaRepository<Llorometro, Long> {
 
     @Query(value = "SELECT * FROM LLOROMETRO l where l.jornada_id = :jornadaId", nativeQuery = true)

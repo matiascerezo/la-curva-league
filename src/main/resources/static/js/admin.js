@@ -66,20 +66,47 @@ function renderizarLinea(idContenedor, posicion, cantidad) {
         const slotId = `${posicion}-${i}`;
         const datos = alineacionActual[slotId];
         const estaOcupado = datos && datos.nombre !== '';
+        const pendiente = datos && datos.pendiente;
 
         const div = document.createElement('div');
-        div.className = `slot-jugador ${estaOcupado ? 'ocupado' : ''} ${datos?.xiIdeal ? 'xi-ideal' : ''} ${datos && !datos.partidoJugado ? 'no-jugo' : ''}`;
+        div.className = `slot-jugador ${estaOcupado ? 'ocupado' : ''} ${datos?.xiIdeal ? 'xi-ideal' : ''} ${datos?.pendiente ? 'pendiente' : ''} ${datos && !datos.partidoJugado ? 'no-jugo' : ''}`;
         div.onclick = () => abrirEdicionJugador(posicion, i);
 
         let infoBadge = 'Pendiente';
         if (estaOcupado) {
-            infoBadge = !datos.partidoJugado ? 'No jugó (0 pts)' : `⭐ ${datos.puntos} pts | ⚽ ${datos.goles}`;
+            if (!datos.partidoJugado) {
+                infoBadge = '❌';
+            } else if(pendiente) {
+                infoBadge = '⌛';
+            } else {
+                infoBadge = `⭐ ${datos.puntos} PUNTOS`;
+            }
+        }
+
+        // Badges independientes de esquina
+        let badgeCapitanHtml = '';
+        if (datos?.capitan) {
+            const multText = datos.multiplicadorCapitan ? `x${datos.multiplicadorCapitan}` : '';
+            badgeCapitanHtml = `<span class="badge-corner corner-top-left badge-capitan" title="Capitán ${multText}">👑 ${multText}</span>`;
+        }
+
+        let badgeGoles = (datos?.goles > 0) ? `<span class="goles-icon-corner" title="Goles: ${datos.goles}">${datos.goles > 1 ? datos.goles : ''}⚽</span>` : '';
+        let badgeAsistencias = (datos?.asistencias > 0) ? `<span class="asistencias-icon-corner" title="Asistencias: ${datos.asistencias}">${datos.asistencias > 1 ? datos.asistencias : ''}👟</span>` : '';
+
+        let badgeTarjetasHtml = '';
+        if (datos?.rojas > 0) {
+            badgeTarjetasHtml = `<span class="badge-corner corner-bottom-left badge-card-roja">🟥</span>`;
+        } else if (datos?.amarillas > 0) {
+            badgeTarjetasHtml = `<span class="badge-corner corner-bottom-left badge-card-amarilla">🟨 ${datos.amarillas > 1 ? datos.amarillas : ''}</span>`;
         }
 
         div.innerHTML = `
-            ${datos?.xiIdeal ? '<span class="star-icon">⭐</span>' : ''}
-            <div class="slot-posicion">${posicion}</div>
-            <div class="slot-nombre" id="nombre-${slotId}">${datos ? datos.nombre : 'Sin Asignar'}</div>
+            ${badgeCapitanHtml}
+            ${badgeGoles}
+            ${badgeAsistencias}
+            ${badgeTarjetasHtml}
+            <div class="slot-posicion-jornadas pos-${posicion}">${posicion}</div>
+            <div class="slot-nombre" id="nombre-${slotId}">${datos ? datos.nombre : 'Sin jugador'}</div>
             <span class="status-badge ${estaOcupado ? 'badge-listo' : 'badge-vacio'}" id="badge-${slotId}">
                 ${infoBadge}
             </span>
@@ -104,7 +131,9 @@ function abrirEdicionJugador(posicion, indice) {
         partidoJugado: true,
         xiIdeal: false,
         penaltisParados: 0,
-        pendiente: false
+        pendiente: false,
+        capitan: false,
+        multiplicadorCapitan: 2.0 //Por defecto lo dejo en 2.0
     };
 
     document.getElementById('modalTitulo').textContent = `Posición ${posicion} #${indice}`;
@@ -119,6 +148,11 @@ function abrirEdicionJugador(posicion, indice) {
     document.getElementById('inputPenaltisParados').value = datos.penaltisParados;
 
     document.getElementById('pendiente').checked = datos.pendiente;
+    document.getElementById('checkCapitan').checked = datos.capitan;
+    document.getElementById('selectMultiplicadorCapitan').value = datos.multiplicadorCapitan;
+
+    //Para habilitat el check de capitan o no
+    toggleMultiplicadorCapitan();
 
     //Si es portero muestro el contenedor final de penaltis parados y sino, no
     document.getElementById('contenedorPenaltisParados').style.display = posicion === 'PT' ? 'block' : 'none';
@@ -151,6 +185,8 @@ function guardarDatosJugador() {
     const penaltisParados = parseInt(document.getElementById('inputPenaltisParados')?.value, 10) || 0;
 
     const pendiente = document.getElementById('pendiente').checked;
+    const capitan = document.getElementById('checkCapitan').checked;
+    const multiplicadorCapitan = document.getElementById('selectMultiplicadorCapitan').value;
 
     // Recuperamos los datos previos para no perder el jugadorId si ya existía
     const datosPrevios = alineacionActual[slotSeleccionado] || {};
@@ -167,7 +203,9 @@ function guardarDatosJugador() {
             partidoJugado,
             xiIdeal,
             penaltisParados,
-            pendiente
+            pendiente,
+            capitan,
+            multiplicadorCapitan
         };
     } else {
         delete alineacionActual[slotSeleccionado];
@@ -175,6 +213,8 @@ function guardarDatosJugador() {
 
     const esquemaActual = document.getElementById('selectEsquema').value;
     cambiarEsquemaTactico(esquemaActual);
+
+    actualizarPuntosTotales();
 
     cerrarModal();
 }
@@ -260,10 +300,14 @@ async function cargarAlineacionEquipo() {
 
     // Si llega aquí, es porque AMBOS están informados (conEquipoYJornada es true)
     try {
-        const respuesta = await fetch(`/mantenimiento/admin/cargarAlineacionEquipo/${jornadaNum}/equipo/${equipoId}`);
+
+        // Añadimos ?_=' + new Date().getTime() para que la URL sea única siempre (por problemas de caché)
+        const respuesta = await fetch(`/mantenimiento/admin/cargarAlineacionEquipo/${jornadaNum}/equipo/${equipoId}?_=${new Date().getTime()}`);
         
         if (respuesta.ok) {
-            const textoRespuesta = await respuesta.text(); 
+            const textoRespuesta = await respuesta.text();
+            
+            alineacionActual = {}; //Reinicio la alineacion actual por si se queda algun jugador cacheado.
             const data = textoRespuesta.trim() ? JSON.parse(textoRespuesta) : alineacionActual = {};
 
             if (data.esquema) {
@@ -303,12 +347,15 @@ async function cargarAlineacionEquipo() {
                         xiIdeal: j.xiIdeal === true,
                         penaltisParados: j.penaltisParados || 0,
                         pendiente: j.pendiente !== false,
+                        capitan: j.capitan !== false,
+                        multiplicadorCapitan: j.multiplicadorCapitan
                     };
                 });
             } else {
                 alineacionActual = {};
             }
         } else {
+            alert(await respuesta.text());
             alineacionActual = {};
         }
     } catch (error) {
@@ -320,6 +367,7 @@ async function cargarAlineacionEquipo() {
         if (esquemaSelect) {
             cambiarEsquemaTactico(esquemaSelect.value);
         }
+        actualizarPuntosTotales();
     }
 }
 
@@ -332,6 +380,7 @@ async function guardarAlineacion() {
     const misterId = document.getElementById('selectEquipo').value;
     const jornadaNum = document.getElementById('selectJornada').value;
     const esquema = document.getElementById('selectEsquema').value;
+    const puntosJornada = document.getElementById('totalPuntosJornada').textContent;
 
     if (!misterId) {
         alert('Por favor, selecciona un equipo antes de guardar.');
@@ -356,7 +405,9 @@ async function guardarAlineacion() {
                 partidoJugado: datos.partidoJugado,
                 xiIdeal: datos.xiIdeal,
                 penaltisParados: datos.penaltisParados,
-                pendiente: datos.pendiente
+                pendiente: datos.pendiente,
+                capitan: datos.capitan,
+                multiplicadorCapitan: datos.multiplicadorCapitan
             });
         }
     });
@@ -365,7 +416,8 @@ async function guardarAlineacion() {
         misterId: parseInt(misterId, 10),
         numeroJornada: jornadaNum,
         esquema: esquema,
-        jugadores: listaJugadores
+        jugadores: listaJugadores,
+        puntosJornada: puntosJornada
     };
 
     try {
@@ -375,13 +427,46 @@ async function guardarAlineacion() {
             body: JSON.stringify(datos)
         });
 
+        const mensajeServidor = await respuesta.text();
+
         if (respuesta.ok) {
-            alert('¡Alineación guardada correctamente!');
-        } else {
+            await cargarAlineacionEquipo();
+            alert(mensajeServidor);
+        }  else {
             alert('Error al guardar la alineación en el servidor.');
         }
     } catch (error) {
         console.error('Error enviando la alineación:', error);
         alert('Error de conexión con la API REST.');
+    }
+}
+
+function toggleMultiplicadorCapitan() {
+    const checkCapitan = document.getElementById("checkCapitan");
+    const selectMultiplicador = document.getElementById("selectMultiplicadorCapitan");
+
+    if (checkCapitan && selectMultiplicador) {
+        selectMultiplicador.disabled = !checkCapitan.checked;
+    }
+}
+
+
+/**
+ * Recorre todos los jugadores de la alineación actual y actualiza el contador flotante.
+ */
+function actualizarPuntosTotales() {
+    let sumaTotal = 0;
+
+    Object.values(alineacionActual).forEach(datos => {
+        if (datos && datos.nombre && datos.partidoJugado) {
+            let ptsJugador = parseInt(datos.puntos, 10) || 0;
+            sumaTotal += ptsJugador;
+        }
+    });
+
+    const elementoTotal = document.getElementById('totalPuntosJornada');
+    if (elementoTotal) {
+        // Limitamos visualmente por si acaso a 3 posiciones (ej: 999 max)
+        elementoTotal.textContent = sumaTotal > 999 ? 999 : sumaTotal;
     }
 }

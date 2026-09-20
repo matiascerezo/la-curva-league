@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Jornada - Panel de administrador</title>
+    <link rel="stylesheet" th:href="@{/css/estilos-admin.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav th:replace="~{admin/admin-navbar :: nav}"></nav>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>📅 Registrar Nueva Jornada</h1>
+        </header>
+
+        <section class="admin-card" style="max-width: 500px; margin: 0 auto;">
+            <!-- Por esto (limpio de JS): -->
+            <form th:action="@{/mantenimiento/admin/jornada/guardar}" th:object="${jornada}" method="post">
+                
+                <div style="margin-bottom: 15px;">
+                    <label for="numeroJornada" class="info-label">Número de Jornada:</label>
+                    <input type="number" id="numeroJornada" th:field="*{numeroJornada}" required style="border: 1px solid #ccc; padding: 10px; width: 100%; border-radius: 6px; background: #fff;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label for="fechaInicio" class="info-label">Fecha de Inicio:</label>
+                    <input type="date" id="fechaInicio" th:field="*{fechaInicio}" required style="border: 1px solid #ccc; padding: 10px; width: 100%; border-radius: 6px; background: #fff;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label for="fechaFin" class="info-label">Fecha de Fin:</label>
+                    <input type="date" id="fechaFin" th:field="*{fechaFin}" required style="border: 1px solid #ccc; padding: 10px; width: 100%; border-radius: 6px; background: #fff;">
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%;">💾 Guardar Jornada</button>
+            </form>
+            
+            <div style="text-align: center; margin-top: 15px;">
+                <a th:href="@{/mantenimiento/admin/panel}" style="color: #666; text-decoration: none;">← Volver al Panel</a>
+            </div>
+        </section>
+    </div>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

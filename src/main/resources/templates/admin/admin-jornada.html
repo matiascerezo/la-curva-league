@@ -8,6 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/estilos-jornadas.css}">
     <link rel="stylesheet" th:href="@{/css/estilos-admin.css}">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos-tops.css}">
     <link rel="stylesheet" th:href="@{/css/estilos-records.css}">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -18,6 +19,12 @@
     <nav th:replace="~{admin/admin-navbar :: nav}"></nav>
 
     <div class="pitch-container">
+
+        <div class="contador-puntos-flotante" id="badgePuntosTotalesContainer">
+            <span class="contador-puntos-titulo">Total Pts</span>
+            <span class="contador-puntos-valor" id="totalPuntosJornada">0</span>
+        </div>
+
         <h2 style="color: white; text-align: center; margin-top: 0; display: flex; justify-content: center; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
             Alineación - Jornada 
             <select id="selectJornada" 
@@ -30,7 +37,6 @@
                 </option>
             </select>
         </h2>
-
         <!-- Selector de Equipo/Míster y Formación Táctica -->
         <div class="tactic-selector-container">
             <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -75,9 +81,26 @@
     </div>
 
     <!-- Modal de Estadísticas del Jugador -->
+    <!-- Modal de Estadísticas del Jugador -->
     <div class="modal" id="modalJugador">
-        <div class="modal-content">
-            <h3 id="modalTitulo">Estadísticas del Jugador</h3>
+        <div class="modal-content-jugador">
+            
+            <!-- CABECERA: Título a la izquierda y Control de Capitán a la derecha -->
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.8rem;">
+                <h3 id="modalTitulo" style="margin: 0; white-space: nowrap;">Estadísticas del Jugador</h3>
+                
+                <!-- Control Integrado de Capitán -->
+                <div style="display: flex; align-items: center; gap: 0.35rem; background: #f8fafc; padding: 0.25rem 0.5rem; border-radius: 6px; border: 1px solid #e2e8f0;">
+                    <label style="font-size: 0.85rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 0.2rem; margin: 0; white-space: nowrap;">
+                        <input type="checkbox" id="checkCapitan" onchange="toggleMultiplicadorCapitan()" style="cursor: pointer;"> 👑
+                    </label>
+                    <select id="selectMultiplicadorCapitan" disabled style="padding: 0.15rem 0.3rem; border-radius: 4px; border: 1px solid #ccc; font-weight: bold; font-size: 0.8rem; background: #fff;">
+                        <option value="1.5">x1.5</option>
+                        <option value="2.0" selected>x2</option>
+                        <option value="3.0">x3</option>
+                    </select>
+                </div>
+            </div>
             
             <div class="stat-input">
                 <label for="inputNombre">Nombre del Jugador:</label>

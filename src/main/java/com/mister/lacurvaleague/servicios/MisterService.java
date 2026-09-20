@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -32,24 +31,20 @@ import com.mister.lacurvaleague.repository.MisterRepository;
 public class MisterService {
 
     private final JugadorRepository jugadorRepository;
+    private final JornadaRepository jornadaRepository; 
+    private final EquipoRepository equipoRepository;
+    private final MisterRepository misterRepository;
+    private final LlorometroRepository llorometroRepository;
+    private final ClausulazoRepository clausulazoRepository;
 
-    @Autowired
-    private JornadaRepository jornadaRepository;
-    
-    @Autowired
-    private EquipoRepository equipoRepository;
-
-    @Autowired
-    private MisterRepository misterRepository;
-
-    @Autowired
-    private LlorometroRepository llorometroRepository;
-
-    @Autowired
-    private ClausulazoRepository clausulazoRepository;
-
-    MisterService(JugadorRepository jugadorRepository) {
+    MisterService(JugadorRepository jugadorRepository, JornadaRepository jornadaRepository, EquipoRepository equipoRepository,
+                    MisterRepository misterRepository, LlorometroRepository llorometroRepository, ClausulazoRepository clausulazoRepository) {
         this.jugadorRepository = jugadorRepository;
+        this.jornadaRepository = jornadaRepository;
+        this.equipoRepository = equipoRepository;
+        this.misterRepository = misterRepository;
+        this.llorometroRepository = llorometroRepository;
+        this.clausulazoRepository = clausulazoRepository;
     }
 
     /**
@@ -64,6 +59,8 @@ public class MisterService {
     public record MistersMasClausulazosDTO(String imgEquipo, String nombreEquipo, Long totalClausulazos) {}
 
     public record MistersMasGastonesDTO(String imgEquipo, String nombreEquipo, Double totalGastado) {}
+
+    public record PuntosCapitanesDTO(String imgEquipo, String nombreEquipo, Long puntosXCapitan) {}
 
     public List<ClasificacionEquipoDTO> obtenerPuntosEquipoXJornada(String nombreMister){
         return equipoRepository.getClasificacionEquipo(getIdEquipo(nombreMister));
@@ -189,6 +186,10 @@ public class MisterService {
 
     public Set<Integer> getListaJornadas() {
         return jornadaRepository.findAllNumerosJornada();
+    }
+
+    public List<PuntosCapitanesDTO> getPuntosXCapitanes() {
+        return jugadorRepository.findTotalPuntosCapitan();
     }
     
 }

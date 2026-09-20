@@ -33,6 +33,23 @@
             <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
             <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
         </section>
+        <!-- Nueva tarjeta: Añadir Nueva Jornada -->
+        <section class="admin-card">
+            <h3>📅 Gestión de Jornadas</h3>
+            <p class="info-label">Añade un nuevo registro de jornada a la base de datos.</p>
+            <a th:href="@{/mantenimiento/admin/jornada/nuevo}" class="btn-primary" style="display: block; text-align: center; text-decoration: none; margin-top: 20px;">
+                ➕ Añadir Nueva Jornada
+            </a>
+        </section>
+
+        <!-- Nueva tarjeta: Añadir Jugadores Reales -->
+        <section class="admin-card">
+            <h3>⚽ Jugadores Reales</h3>
+            <p class="info-label">Da de alta a nuevos jugadores en el sistema.</p>
+            <a th:href="@{/mantenimiento/admin/jugadores/nuevo}" class="btn-primary" style="display: block; text-align: center; text-decoration: none; margin-top: 20px;">
+                👤 Añadir Jugador Real
+            </a>
+        </section>
     </div>
 </div>
 

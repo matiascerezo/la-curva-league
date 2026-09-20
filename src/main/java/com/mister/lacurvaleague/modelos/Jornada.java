@@ -1,6 +1,6 @@
 package com.mister.lacurvaleague.modelos;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -27,8 +27,8 @@ public class Jornada {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long jornadaId; //Deberia coincidir con el numero de Jornada.
     private int numeroJornada;
-    private Date fechaInicio;
-    private Date fechaFin;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
 
     @OneToMany(mappedBy = "jornada", cascade = CascadeType.ALL)
     @JsonManagedReference

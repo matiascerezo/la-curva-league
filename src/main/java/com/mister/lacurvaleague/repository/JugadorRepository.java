@@ -5,15 +5,13 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-
 import com.mister.lacurvaleague.modelos.Equipo;
 import com.mister.lacurvaleague.modelos.Jugador;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.JugadorDTO;
 import com.mister.lacurvaleague.servicios.MisterService.EquipoLastreDTO;
 import com.mister.lacurvaleague.servicios.MisterService.JugadoresMasPuntosDTO;
+import com.mister.lacurvaleague.servicios.MisterService.PuntosCapitanesDTO;
 
-@Repository
 public interface JugadorRepository extends JpaRepository<Jugador, Long> {
 
     @Query("SELECT new com.mister.lacurvaleague.servicios.MisterService$EquipoLastreDTO(" +
@@ -38,4 +36,17 @@ public interface JugadorRepository extends JpaRepository<Jugador, Long> {
     List<JugadoresMasPuntosDTO> getJugadoresMasPuntos(String nombreEquipo, Pageable pageable);
 
     List<JugadorDTO> findByEquipo(Equipo equipo);
+
+    @Query("SELECT new com.mister.lacurvaleague.servicios.MisterService$PuntosCapitanesDTO( " +
+            "m.imgEquipo, " +
+            "m.nombreEquipo, " +
+            "CAST(COALESCE(SUM(ROUND(j.puntos - (1.0 * j.puntos / j.multiplicadorCapitan))), 0) AS long)) " +
+            "FROM Jugador j " +
+            "JOIN j.equipo e " +
+            "JOIN e.mister m " +
+            "WHERE j.capitan = true " +
+            "GROUP BY m.imgEquipo, m.nombreEquipo " +
+            "ORDER BY COALESCE(SUM(ROUND(j.puntos - (1.0 * j.puntos / j.multiplicadorCapitan))), 0) DESC")
+    List<PuntosCapitanesDTO> findTotalPuntosCapitan();
+
 }

@@ -2,21 +2,15 @@ package com.mister.lacurvaleague.servicios;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -61,7 +55,8 @@ import jakarta.transaction.Transactional;
 @Service
 public class MantenimientoDatosService implements FormatPosicion {
 
-    private final MisterService misterService;
+    private static final String ERROR_JUGADORES = "Cantidad de jugadores introducida no válida. \n"+
+                                                    "Jugadores recibidos: ";
 
     @Value("${path.json_jornadas}")
     private String PATH_JSON_JORNADA;
@@ -86,7 +81,7 @@ public class MantenimientoDatosService implements FormatPosicion {
 
     MantenimientoDatosService(JugadorRealRepository jugadorRealRepository, JugadorRepository jugadorRepository, EquipoRepository equipoRepository, 
                                 JornadaRepository jornadaRepository, LlorometroRepository llorometroRepository, MisterRepository misterRepository, 
-                                ClausulazoRepository clausulazosRepository, MisterService misterService, EsquemaRepository esquemaRepository) {
+                                ClausulazoRepository clausulazosRepository, EsquemaRepository esquemaRepository) {
         this.jugadorRealRepository = jugadorRealRepository;
         this.jugadorRepository = jugadorRepository;
         this.equipoRepository = equipoRepository;
@@ -94,7 +89,6 @@ public class MantenimientoDatosService implements FormatPosicion {
         this.llorometroRepository = llorometroRepository;
         this.misterRepository = misterRepository;
         this.clausulazosRepository = clausulazosRepository;
-        this.misterService = misterService;
         this.esquemaRepository = esquemaRepository;
     }
 
@@ -630,11 +624,16 @@ public class MantenimientoDatosService implements FormatPosicion {
 
     @Transactional
     public String guardarJornadaIndividual(AlineacionJornadaIndividualDTO alineacion) {
+
+        int cantidadJugadoresRecibidos = alineacion.getJugadores().size();
+        if(cantidadJugadoresRecibidos == 0 || cantidadJugadoresRecibidos > 11) {
+            return ERROR_JUGADORES + cantidadJugadoresRecibidos ;
+        }
         Jornada jornada = jornadaRepository.findByNumeroJornada(alineacion.getNumeroJornada());
         Mister mister = misterRepository.findById(alineacion.getMisterId())
                 .orElseThrow(() -> new EntityNotFoundException("Míster no encontrado"));
 
-        // 1. Obtener o inicializar el equipo UNA sola vez fuera del bucle
+        // 1. Obtener o crear el equipo
         Equipo equipo = equipoRepository.buscarPorMisterYJornada(mister.getMisterId(), jornada.getJornadaId());
         if (equipo == null) {
             equipo = new Equipo();
@@ -643,26 +642,26 @@ public class MantenimientoDatosService implements FormatPosicion {
             equipo = equipoRepository.save(equipo);
         }
 
-        // 2. Extraer IDs de jugadores existentes que vienen en el DTO
+        // 2. Extraer IDs recibidos
         Set<Long> idsRecibidos = alineacion.getJugadores().stream()
                 .map(Jugador::getJugadorId)
                 .filter(id -> id != null && id > 0)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toSet());              
 
-        // 3. Cargar en memoria todos los jugadores existentes en un solo viaje a BD
+        // 3. Cargar jugadores en memoria
         Map<Long, Jugador> jugadoresExistentesMap = idsRecibidos.isEmpty()
                 ? Collections.emptyMap()
                 : jugadorRepository.findAllById(idsRecibidos).stream()
                         .collect(Collectors.toMap(Jugador::getJugadorId, Function.identity()));
 
-        // 4. Preparar la lista de entidades (Insert / Update)
+        // 4. Mapear Insert / Update
         List<Jugador> jugadoresAGuardar = new ArrayList<>();
         for (Jugador jugadorDto : alineacion.getJugadores()) {
             Jugador jugadorAGuardar;
             if (jugadorDto.getJugadorId() != null && jugadoresExistentesMap.containsKey(jugadorDto.getJugadorId())) {
-                jugadorAGuardar = jugadoresExistentesMap.get(jugadorDto.getJugadorId()); // UPDATE
+                jugadorAGuardar = jugadoresExistentesMap.get(jugadorDto.getJugadorId());
             } else {
-                jugadorAGuardar = new Jugador(); // INSERT
+                jugadorAGuardar = new Jugador();
                 jugadorAGuardar.setEquipo(equipo);
             }
 
@@ -670,7 +669,7 @@ public class MantenimientoDatosService implements FormatPosicion {
             jugadoresAGuardar.add(jugadorAGuardar);
         }
 
-        // 5. Eliminar los jugadores del equipo que ya no están en la nueva alineación
+        // 5. Eliminar sobrantes
         if (equipo.getJugadores() != null && !equipo.getJugadores().isEmpty()) {
             List<Jugador> sobrantes = equipo.getJugadores().stream()
                     .filter(j -> !idsRecibidos.contains(j.getJugadorId()))
@@ -681,10 +680,10 @@ public class MantenimientoDatosService implements FormatPosicion {
             }
         }
 
-        // 6. Guardar todos los jugadores (Inserts y Updates en batch)
+        // 6. Guardar jugadores
         jugadorRepository.saveAll(jugadoresAGuardar);
 
-        // 7. Actualizar esquema y puntos del equipo
+        // 7. Actualizar Esquema
         if (0L != equipo.getEquipoId() && equipo.getEquipoId() > 0) {
             esquemaRepository.eliminarPorEquipoId(equipo.getEquipoId());
         }
@@ -693,11 +692,15 @@ public class MantenimientoDatosService implements FormatPosicion {
         esquema.setEsquema(alineacion.getEsquema());
         esquemaRepository.save(esquema);
 
-        equipo.setPuntosJornada(this.contadorPuntosJornada(alineacion.getJugadores()));
-        equipo.setPosicionJornada(this.calcularPosicionJornada(equipo, jornada.getJornadaId()));
-        equipoRepository.save(equipo);
+        // 8. Calcular puntos con las entidades procesadas y persistir equipo
+        equipo.setPuntosJornada(alineacion.getPuntosJornada());
+        equipoRepository.saveAndFlush(equipo); // Se fuerza la escritura en BD antes de recalcular puestos
 
-        return "Alineación guardada";
+        // 9. Recalcular las posiciones de TODOS los equipos de la jornada
+        recalcularPosicionesJornada(jornada.getJornadaId());
+
+        return "Alineación guardada correctamente! \n"+ 
+                "Jugadores guardados: " + jugadoresAGuardar.size();
     }
 
     
@@ -719,12 +722,8 @@ public class MantenimientoDatosService implements FormatPosicion {
         jugadorAGuardar.setXiIdeal(jugadorDto.isXiIdeal());
         jugadorAGuardar.setPenaltisParados(jugadorDto.getPenaltisParados());
         jugadorAGuardar.setPendiente(jugadorDto.isPendiente());
-    }
-
-    private int contadorPuntosJornada(List<Jugador> listaJugadores) {
-        return listaJugadores.stream()
-                                .mapToInt(p -> p.getPuntos())
-                                .sum();
+        jugadorAGuardar.setMultiplicadorCapitan(jugadorDto.getMultiplicadorCapitan());
+        jugadorAGuardar.setCapitan(jugadorDto.isCapitan());
     }
 
     /**
@@ -733,39 +732,55 @@ public class MantenimientoDatosService implements FormatPosicion {
      * @param jornadaId
      * @return
      */
-    private int calcularPosicionJornada(Equipo equipo, Long jornadaId ) {
+    private void recalcularPosicionesJornada(Long jornadaId) {
+        List<Equipo> equiposOrdenados = equipoRepository.findByJornadaIdPorPuntos(jornadaId);
 
-        List<Equipo> listaEquipos = new ArrayList<>();
-
-        //Recupero la lista de mayor a menor x puntos
-        listaEquipos = equipoRepository.findByJornadaIdPorPuntos(jornadaId);
-
-        if(null == listaEquipos || listaEquipos.isEmpty()) return 1;
-        
-        if(!listaEquipos.isEmpty()) {
-            for (int i = 0; i < listaEquipos.size(); i++) {
-                Equipo e = listaEquipos.get(i);
-        
-                if (e.getEquipoId() == equipo.getEquipoId()) {            
-                    return i + 1;
-                }
+        if (equiposOrdenados != null && !equiposOrdenados.isEmpty()) {
+            for (int i = 0; i < equiposOrdenados.size(); i++) {
+                Equipo eq = equiposOrdenados.get(i);
+                eq.setPosicionJornada(i + 1);
             }
+            equipoRepository.saveAll(equiposOrdenados);
         }
-        return 1;
     }
 
-    public AlineacionJornadaIndividualDTO cargarAlineacionEquipo(int numJornada, Long misterId) {
+    public AlineacionJornadaIndividualDTO cargarAlineacionEquipo(int numJornada, Long misterId) throws Exception {
         AlineacionJornadaIndividualDTO alineacion = new AlineacionJornadaIndividualDTO();
         long jornadaId = jornadaRepository.findIdByNumeroJornada(numJornada);
         Equipo equipo = equipoRepository.buscarPorMisterYJornada(misterId, jornadaId);
-        if(equipo.getJugadores().size() > 0) {
+        
+        if(null == equipo) return null;
+
+        if(equipo.getJugadores().size() > 0 && equipo.getJugadores().size() <= 11) {
             Esquema esquema = esquemaRepository.findByEquipoEquipoId(equipo.getEquipoId());
             alineacion.setJugadores(equipo.getJugadores());
             alineacion.setMisterId(misterId);
             alineacion.setEsquema(esquema.getEsquema());
             alineacion.setNumeroJornada(numJornada);
             return alineacion;
+        } else if (equipo.getJugadores().size() > 11) {
+            throw new Exception("Error. Muchos jugadores recuperados!");
         }
         return null;
+    }
+
+    /**
+     * 
+     * @param jornada
+     * @return
+     */
+    public String insertarNuevaJornada(Jornada jornada) {
+        // Busco las jornadas ya en BBDD
+        Set<Integer> jornadasBBDD = jornadaRepository.findAll()
+            .stream()
+            .map(Jornada::getNumeroJornada)
+            .collect(Collectors.toSet());
+
+        if (jornadasBBDD.contains(jornada.getNumeroJornada())) {
+            throw new RuntimeException("La jornada " + jornada.getNumeroJornada() + " ya existe en la BBDD.");
+        }
+
+        jornadaRepository.save(jornada);
+        return "Jornada insertada: " + jornada.getNumeroJornada();
     }
 }

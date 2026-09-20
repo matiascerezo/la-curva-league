@@ -4,12 +4,9 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-
 import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.TarjetasDTO;
 
-@Repository
 public interface MisterRepository extends JpaRepository<Mister, Long> {
 
     // Devuelve todos los misters ordenados alfabéticamente por 'nombreEquipo'

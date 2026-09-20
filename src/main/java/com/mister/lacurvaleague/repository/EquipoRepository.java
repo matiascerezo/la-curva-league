@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-
 import com.mister.lacurvaleague.modelos.Equipo;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.AsistenciaDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClasificacionEquipoDTO;
@@ -16,7 +14,6 @@ import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingAsistenciasDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.RankingGolesDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.dtoRecordJornadas.MvpDTO;
 
-@Repository
 public interface EquipoRepository extends JpaRepository<Equipo, Long> {
 
         @Query(value = "SELECT m.img_equipo, m.nombre_equipo as nombreEquipo, SUM(e.puntos_jornada) as puntosTotales, "+
@@ -176,7 +173,7 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
 
 		Equipo findByMisterMisterIdAndJornadaJornadaId(Long misterId, Long jornadaId);
 
-		@Query("SELECT e FROM Equipo e WHERE e.mister.misterId = :misterId AND e.jornada.jornadaId = :jornadaId")
+		@Query("SELECT DISTINCT e FROM Equipo e WHERE e.mister.misterId = :misterId AND e.jornada.jornadaId = :jornadaId")
 		Equipo buscarPorMisterYJornada(@Param("misterId") Long misterId, @Param("jornadaId") Long jornadaId);
 
 		@Query("SELECT e FROM Equipo e WHERE e.jornada.jornadaId = :jornadaId ORDER BY coalesce(e.puntosJornada, 0) DESC")

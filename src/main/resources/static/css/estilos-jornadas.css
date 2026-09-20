@@ -1,20 +1,26 @@
+/* ==========================================================================
+   1. RESET Y CONFIGURACIÓN BASE
+   ========================================================================== */
 *, *::before, *::after {
     box-sizing: border-box;
 }
 
-/* Contenedor Principal del Campo */
+/* ==========================================================================
+   2. TERRENO DE JUEGO (PITCH CONTAINER)
+   ========================================================================== */
 .pitch-container {
     max-width: 850px;
     margin: 1rem auto 2rem;
-    background: linear-gradient(180deg, #1e7029 0%, #134e1b 100%);
+    background: #149966;
     border: 4px solid #ffffff;
     border-radius: 12px;
     padding: 16px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     width: calc(100% - 1.5rem);
+    position: relative
 }
 
-/* Selectores Superiores */
+/* Selectores tácticos superiores */
 .tactic-selector-container {
     display: flex;
     justify-content: center;
@@ -33,17 +39,17 @@
     font-size: 0.85rem;
 }
 
-/* Botón Guardar */
+/* Botón principal de guardado */
 .btn-guardar-alineacion {
     padding: 12px 28px;
     font-size: 1rem;
     font-weight: bold;
     background: #ffffff;
-    color: #1b5e20;
+    color: #137c55;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: transform 0.1s ease;
 }
 
@@ -51,7 +57,7 @@
     transform: scale(0.97);
 }
 
-/* Filas y Terreno de Juego */
+/* Filas tácticas del campo (DF, MC, DL, PT) */
 .pitch-row {
     display: flex;
     justify-content: space-around;
@@ -60,9 +66,11 @@
     gap: 4px;
 }
 
-/* Slots de Jugadores */
+/* ==========================================================================
+   3. SLOTS DE JUGADORES Y CASILLAS
+   ========================================================================== */
 .slot-jugador {
-    width: 110px;
+    width: 126px;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 8px;
     padding: 6px;
@@ -70,12 +78,12 @@
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     border: 2px dashed #999;
-    position: relative;
+    position: relative; /* Clave para el anclaje de badges en esquinas */
 }
 
 .slot-jugador:hover {
     transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .slot-jugador.ocupado {
@@ -84,13 +92,21 @@
 }
 
 .slot-jugador.xi-ideal {
-    border: 2px solid #ffd700;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    border: 2px solid #00b7ff;
+    box-shadow: 0 0 10px rgba(0, 208, 255, 0.8);
+    background: hsl(192, 87%, 39%);
+}
+
+.slot-jugador.pendiente {
+    border: 2px solid #413e2e;
+    box-shadow: 0 0 10px rgba(159, 158, 149, 0.8);
+    opacity: 0.8;
+    filter: grayscale(40%);
 }
 
 .slot-jugador.no-jugo {
-    opacity: 0.6;
-    filter: grayscale(80%);
+    border: 2px solid #2e7d32;
+    background: #ffffff;
 }
 
 .slot-posicion {
@@ -119,25 +135,107 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.badge-vacio { background: #ffebee; color: #c62828; }
-.badge-listo { background: #e8f5e9; color: #2e7d32; }
 
-.star-icon {
+.badge-vacio { 
+    background: #ffebee; 
+    color: #c62828; 
+}
+
+.badge-listo { 
+    background: #e8f5e9; 
+    color: #2e7d32; 
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   4. BADGES EN ESQUINAS DE MINIATURAS (RENOMBRADOS)
+   ========================================================================== */
+/* Regla general para badges absolutos */
+.badge-corner {
     position: absolute;
+    font-size: 0.65rem;
+    font-weight: 800;
+    line-height: 1;
+    padding: 2px 4px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 1px;
+}
+
+/* Esquina superior izquierda: Capitán */
+.corner-top-left {
     top: -6px;
-    right: -6px;
-    background: #ffd700;
+    left: -6px;
+}
+
+.badge-capitan {
+    background: #fbbf24;
+    color: #78350f;
+    border: 1px solid #f59e0b;
+}
+
+/* Esquina superior derecha: Gol */
+.goles-icon-corner {
+    position: absolute;
+    top: -0.500rem;     /* Equivalente a -6px */
+    right: -0.800rem;    /* Equivalente a -6px */
+    background: #fff;
     border-radius: 50%;
-    width: 18px;
-    height: 18px;
+    width: 1.55rem;      /* Equivalente a 20px */
+    height: 1.26rem;     /* Equivalente a 20px */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    font-size: 0.625rem; /* Equivalente a 10px */
+    font-weight: bold;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3); /* 0 2px 4px en rem */
+    z-index: 5;
 }
 
-/* Modal y Formulario de Estadísticas */
+/* Esquina superior derecha: Gol */
+.asistencias-icon-corner {
+    position: absolute;
+    top: -0.500rem;     /* Equivalente a -6px */
+    right: 0.625rem;    /* Equivalente a -6px */
+    background: #fff;
+    border-radius: 50%;
+    width: 1.55rem;      /* Equivalente a 20px */
+    height: 1.26rem;     /* Equivalente a 20px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.625rem; /* Equivalente a 10px */
+    font-weight: bold;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3); /* 0 2px 4px en rem */
+    z-index: 5;
+}
+
+/* Esquina inferior izquierda: Tarjetas Amarillas / Rojas */
+.corner-bottom-left {
+    bottom: -4px;
+    left: -4px;
+}
+
+.badge-card-amarilla {
+    background: #fef08a;
+    color: #854d0e;
+    border: 1px solid #facc15;
+    padding: 1px 3px;
+}
+
+.badge-card-roja {
+    background: #fca5a5;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+    padding: 1px 3px;
+}
+
+/* ==========================================================================
+   5. MODAL DE ESTADÍSTICAS DEL JUGADOR
+   ========================================================================== */
 .modal {
     display: none;
     position: fixed;
@@ -145,7 +243,7 @@
     left: 0; 
     width: 100%; 
     height: 100%;
-    background: rgba(0,0,0,0.65);
+    background: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(2px);
     justify-content: center;
     align-items: center;
@@ -153,18 +251,18 @@
     padding: 12px;
 }
 
-.modal-content {
-    background: #fff;
+.modal-content-jugador {
+    background: #ffffff;
     padding: 20px;
     border-radius: 12px;
     width: 100%;
     max-width: 420px;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
-.modal-content h3 {
+.modal-content-jugador h3 {
     margin-top: 0;
     margin-bottom: 12px;
     font-size: 1.15rem;
@@ -260,14 +358,59 @@
     flex-grow: 1;
 }
 
-/* Pantallas Móviles (Pixel, iPhone) */
+/* ==========================================================================
+   CONTADOR FLOTANTE DE PUNTOS TOTALES
+   ========================================================================== */
+
+.contador-puntos-flotante {
+    position: absolute;
+    top: 0.75rem;     /* Más pegado al borde superior */
+    right: 0.75rem;    /* Más pegado al borde derecho */
+    background: rgba(15, 46, 20, 0.48);
+    backdrop-filter: blur(6px); /* Efecto cristal moderno */
+    border: 0.125rem solid #ffd700;
+    border-radius: 0.5rem;
+    padding: 0.35rem 0.6rem;
+    text-align: center;
+    color: #ffffff;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.25);
+    z-index: 10;
+    min-width: 7.5rem;
+    min-height: 3.5rem;
+}
+
+.contador-puntos-titulo {
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: #ffd700;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.1rem;
+}
+
+.contador-puntos-valor {
+    font-size: 1.50rem; /* Ligeramente más compacto para que el de 3 dígitos (ej. 102) encaje holgado */
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+}
+
+/* ==========================================================================
+   6. RESPONSIVE MÓVIL
+   ========================================================================== */
 @media (max-width: 480px) {
+
+    .btn-guardar-alineacion {
+        max-width: 15rem;
+    }
     .pitch-container {
         padding: 10px 6px;
     }
 
     .slot-jugador {
-        width: 19%;
+        width: 23%;
         min-width: 60px;
         padding: 4px 2px;
     }
@@ -285,7 +428,33 @@
         padding: 2px;
     }
 
-    .modal-content {
+    .modal-content-jugador {
         padding: 16px;
     }
+
+    .contador-puntos-flotante {
+        top: 30.45rem;     /* Más pegado al borde superior */
+        min-width: 3.5rem;
+        max-width: 4.5rem;
+        min-height: 0rem;
+    }
+
+    .contador-puntos-titulo {
+        font-size: 0.55rem;
+    }
+
+    .contador-puntos-valor {
+        font-size: 1.15rem; 
+    }
+}
+
+/* Estilo mejorado para que la etiqueta parezca un badge de color */
+.slot-posicion-jornadas {
+    font-size: 0.65rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: block;
+    margin-bottom: 2px;
 }
