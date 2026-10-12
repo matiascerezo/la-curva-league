@@ -477,7 +477,7 @@ public class MantenimientoDatosService implements FormatPosicion {
     }
 
     /**
-     * Procesa un fchero independiente de jugadores_reales.
+     * Procesa un fichero independiente de jugadores_reales.
      * @param inputStream
      * @return
      */
@@ -724,6 +724,7 @@ public class MantenimientoDatosService implements FormatPosicion {
         jugadorAGuardar.setPendiente(jugadorDto.isPendiente());
         jugadorAGuardar.setMultiplicadorCapitan(jugadorDto.getMultiplicadorCapitan());
         jugadorAGuardar.setCapitan(jugadorDto.isCapitan());
+        jugadorAGuardar.setJugadorRealId(jugadorDto.getJugadorRealId());
     }
 
     /**
@@ -782,5 +783,13 @@ public class MantenimientoDatosService implements FormatPosicion {
 
         jornadaRepository.save(jornada);
         return "Jornada insertada: " + jornada.getNumeroJornada();
+    }
+
+    /**
+     * Devuelve todos los jugadores reales de la tabla de BBDD.
+     * @return
+     */
+    public List<JugadorReal> getAllJugadoresReales() {
+        return jugadorRealRepository.findAllWithEquipoReal();
     }
 }

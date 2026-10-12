@@ -1,7 +1,6 @@
 package com.mister.lacurvaleague.modelos;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -46,5 +45,8 @@ public class Jugador {
     @JoinColumn(name = "equipo_id")
     @JsonBackReference
     private Equipo equipo;
+
+    @Column(name = "jugador_real_id")
+    private Long jugadorRealId;
 
 }

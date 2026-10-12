@@ -12,45 +12,9 @@
     <nav th:replace="~{admin/admin-navbar :: nav}"></nav>
 <div class="admin-container">
     <header class="admin-header">
-        <h1>⚙️Panel de Control⚙️</h1>
+        <h1>⚙️Bienvenido al panel de Control⚙️</h1>
+        <h3>Selecciona que deseas hacer en la barra superior</h3>
     </header>
-
-    <div class="admin-grid">
-        <section class="admin-card">
-            <h3>📤 Importar Datos (JSON)</h3>
-            <p class="info-label">Selecciona el archivo (jornadaX.json, lloros.json, etc.)</p>
-            
-            <form th:action="@{/mantenimiento/admin/subirJson}" method="post" enctype="multipart/form-data" class="upload-form">
-                <div class="file-drop-area" id="drop-area">
-                    <span class="fake-btn" id="file-box">Elegir archivo</span>
-                    <span class="file-msg" id="file-msg">o arrastra y suelta aquí</span>
-                    <span id="remove-file" class="boton-eliminar" style="display: none;">&times;</span>
-                    <input class="file-input" type="file" name="file" id="file-input" accept=".json" required>
-                </div>
-                <button type="submit" class="btn-primary">🚀 Cargar datos</button>
-            </form>
-            
-            <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
-            <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
-        </section>
-        <!-- Nueva tarjeta: Añadir Nueva Jornada -->
-        <section class="admin-card">
-            <h3>📅 Gestión de Jornadas</h3>
-            <p class="info-label">Añade un nuevo registro de jornada a la base de datos.</p>
-            <a th:href="@{/mantenimiento/admin/jornada/nuevo}" class="btn-primary" style="display: block; text-align: center; text-decoration: none; margin-top: 20px;">
-                ➕ Añadir Nueva Jornada
-            </a>
-        </section>
-
-        <!-- Nueva tarjeta: Añadir Jugadores Reales -->
-        <section class="admin-card">
-            <h3>⚽ Jugadores Reales</h3>
-            <p class="info-label">Da de alta a nuevos jugadores en el sistema.</p>
-            <a th:href="@{/mantenimiento/admin/jugadores/nuevo}" class="btn-primary" style="display: block; text-align: center; text-decoration: none; margin-top: 20px;">
-                👤 Añadir Jugador Real
-            </a>
-        </section>
-    </div>
 </div>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>

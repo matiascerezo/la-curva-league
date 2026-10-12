@@ -21,4 +21,5 @@ public class JugadorDTO {
     private Integer penaltisParados;
     private String posicion;
     private boolean pendiente;
+    private Long jugadorRealId;
 }

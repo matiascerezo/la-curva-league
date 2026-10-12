@@ -84,6 +84,11 @@ body {
     display: none; /* Oculta scroll Chrome/Safari */
 }
 
+.escudo-tabla.nav{
+    width: 1.25rem;  /* Ancho pequeño adaptado a la barra */
+    height: 1.25rem; /* Alto adaptado */
+}
+
 .nav-list-equipos, .nav-list-tops {
     display: flex;
     width: 100%;
@@ -94,6 +99,12 @@ body {
 }
 
 .nav-list-equipos{    border-top: 1px solid rgba(255, 255, 255, 0.15);}
+
+.nav-list-equipos a {
+    display: flex;
+    align-items: center;      /* Centra verticalmente el escudo y el texto */
+    gap: 0.250rem;            /* Espacio de separación entre el escudo y el nombre */
+}
 
 .nav-item a {
     color: rgba(255,255,255,0.8);

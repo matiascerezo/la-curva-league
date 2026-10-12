@@ -37,10 +37,10 @@ public interface JornadaRepository extends JpaRepository<Jornada, Long> {
                     SELECT 
                         m.img_equipo AS imgEquipo, 
                         m.nombre_equipo AS equipo, 
-                        COALESCE(SUM(CASE WHEN e.puntos_jornada < 0 THEN e.puntos_jornada ELSE 0 END), 0) AS puntos 
+                        CAST(e.puntos_jornada AS BIGINT) AS puntos
                     FROM mister m
                     LEFT JOIN equipo e ON e.mister_id = m.mister_id
-                        GROUP BY m.img_equipo, m.nombre_equipo
+                        GROUP BY m.img_equipo, m.nombre_equipo, e.puntos_jornada
                     ORDER BY puntos ASC, equipo ASC
                     LIMIT 3
                     """, nativeQuery = true)

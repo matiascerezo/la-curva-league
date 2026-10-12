@@ -2,6 +2,7 @@
 let alineacionActual = {};
 let slotSeleccionado = null;
 let listaEquiposGlobal = [];
+let listaGlobalJugadores = [];
 
 // Inicialización de eventos al cargar el DOM
 document.addEventListener('DOMContentLoaded', () => {
@@ -34,8 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. Carga inicial de datos y táctica
+    // 2. Carga inicial de datos, táctica y jugadores reales de la bbdd
     cargarEquipos();
+    precargarJugadores();
     const selectEsquema = document.getElementById('selectEsquema');
     if (selectEsquema) {
         cambiarEsquemaTactico(selectEsquema.value);
@@ -83,7 +85,6 @@ function renderizarLinea(idContenedor, posicion, cantidad) {
             }
         }
 
-        // Badges independientes de esquina
         let badgeCapitanHtml = '';
         if (datos?.capitan) {
             const multText = datos.multiplicadorCapitan ? `x${datos.multiplicadorCapitan}` : '';
@@ -100,13 +101,28 @@ function renderizarLinea(idContenedor, posicion, cantidad) {
             badgeTarjetasHtml = `<span class="badge-corner corner-bottom-left badge-card-amarilla">🟨 ${datos.amarillas > 1 ? datos.amarillas : ''}</span>`;
         }
 
+        let imgEscudoHtml = '';
+        if (estaOcupado) {
+            const realIdNum = datos.jugadorRealId ? parseInt(datos.jugadorRealId, 10) : null;
+            const jugadorReal = listaGlobalJugadores.find(j => 
+                (realIdNum && j.id === realIdNum) || 
+                j.nombreCortoJugador === datos.nombre
+            );
+
+            if (jugadorReal && jugadorReal.imgEquipo) {
+                imgEscudoHtml = `<img src="${jugadorReal.imgEquipo}" alt="Escudo" style="width: 16px; height: 16px; object-fit: contain; vertical-align: middle; margin-right: 4px;" />`;
+            }
+        }
+
         div.innerHTML = `
             ${badgeCapitanHtml}
             ${badgeGoles}
             ${badgeAsistencias}
             ${badgeTarjetasHtml}
             <div class="slot-posicion-jornadas pos-${posicion}">${posicion}</div>
-            <div class="slot-nombre" id="nombre-${slotId}">${datos ? datos.nombre : 'Sin jugador'}</div>
+            <div class="slot-nombre" id="nombre-${slotId}">
+                ${imgEscudoHtml}${datos ? datos.nombre : 'Sin jugador'}
+            </div>
             <span class="status-badge ${estaOcupado ? 'badge-listo' : 'badge-vacio'}" id="badge-${slotId}">
                 ${infoBadge}
             </span>
@@ -122,6 +138,7 @@ function abrirEdicionJugador(posicion, indice) {
     slotSeleccionado = `${posicion}-${indice}`;
     const datos = alineacionActual[slotSeleccionado] || {
         jugadorId: null,
+        jugadorRealId: null,
         nombre: '',
         puntos: 0,
         goles: 0,
@@ -133,11 +150,19 @@ function abrirEdicionJugador(posicion, indice) {
         penaltisParados: 0,
         pendiente: false,
         capitan: false,
-        multiplicadorCapitan: 2.0 //Por defecto lo dejo en 2.0
+        multiplicadorCapitan: 2.0
     };
 
     document.getElementById('modalTitulo').textContent = `Posición ${posicion} #${indice}`;
     document.getElementById('inputNombre').value = datos.nombre;
+    document.getElementById('inputJugadorId').value = datos.jugadorId || '';
+    
+    const realIdNum = datos.jugadorRealId ? parseInt(datos.jugadorRealId, 10) : null;
+    document.getElementById('inputJugadorRealId').value = realIdNum || '';
+
+    // Sincronizar el escudo únicamente mediante actualizarEscudoModal
+    actualizarEscudoModal(realIdNum);
+
     document.getElementById('inputPuntos').value = datos.puntos;
     document.getElementById('inputGoles').value = datos.goles;
     document.getElementById('inputAsistencias').value = datos.asistencias;
@@ -151,12 +176,9 @@ function abrirEdicionJugador(posicion, indice) {
     document.getElementById('checkCapitan').checked = datos.capitan;
     document.getElementById('selectMultiplicadorCapitan').value = datos.multiplicadorCapitan;
 
-    //Para habilitat el check de capitan o no
     toggleMultiplicadorCapitan();
 
-    //Si es portero muestro el contenedor final de penaltis parados y sino, no
     document.getElementById('contenedorPenaltisParados').style.display = posicion === 'PT' ? 'block' : 'none';
-
     document.getElementById('modalJugador').style.display = 'flex';
 }
 
@@ -175,6 +197,12 @@ function guardarDatosJugador() {
     if (!slotSeleccionado) return;
 
     const nombre = document.getElementById('inputNombre').value.trim();
+    const jugadorIdVal = document.getElementById('inputJugadorId').value;
+    const jugadorId = jugadorIdVal ? parseInt(jugadorIdVal, 10) : null;
+    
+    const jugadorRealIdVal = document.getElementById('inputJugadorRealId').value;
+    const jugadorRealId = jugadorRealIdVal ? parseInt(jugadorRealIdVal, 10) : null;
+
     const puntos = parseInt(document.getElementById('inputPuntos').value, 10) || 0;
     const goles = parseInt(document.getElementById('inputGoles').value, 10) || 0;
     const asistencias = parseInt(document.getElementById('inputAsistencias').value, 10) || 0;
@@ -188,12 +216,10 @@ function guardarDatosJugador() {
     const capitan = document.getElementById('checkCapitan').checked;
     const multiplicadorCapitan = document.getElementById('selectMultiplicadorCapitan').value;
 
-    // Recuperamos los datos previos para no perder el jugadorId si ya existía
-    const datosPrevios = alineacionActual[slotSeleccionado] || {};
-
     if (nombre !== '') {
         alineacionActual[slotSeleccionado] = {
-            jugadorId: datosPrevios.jugadorId || null,
+            jugadorId: jugadorId,
+            jugadorRealId: jugadorRealId,
             nombre,
             puntos,
             goles,
@@ -285,10 +311,8 @@ function actualizarLogo(selectId, imgId) {
  */
 async function cargarAlineacionEquipo() {
     const equipoId = document.getElementById('selectEquipo').value;
-    // Corregido: Ahora lee el valor del select, no del span
     const jornadaNum = document.getElementById('selectJornada').value; 
 
-    // Clausura limpia: Si falta alguno de los dos, reseteamos el campo y paramos
     if (!equipoId || !jornadaNum) {
         alineacionActual = {};
         const esquemaSelect = document.getElementById('selectEsquema');
@@ -298,16 +322,13 @@ async function cargarAlineacionEquipo() {
         return; 
     }
 
-    // Si llega aquí, es porque AMBOS están informados (conEquipoYJornada es true)
     try {
-
-        // Añadimos ?_=' + new Date().getTime() para que la URL sea única siempre (por problemas de caché)
         const respuesta = await fetch(`/mantenimiento/admin/cargarAlineacionEquipo/${jornadaNum}/equipo/${equipoId}?_=${new Date().getTime()}`);
         
         if (respuesta.ok) {
             const textoRespuesta = await respuesta.text();
             
-            alineacionActual = {}; //Reinicio la alineacion actual por si se queda algun jugador cacheado.
+            alineacionActual = {};
             const data = textoRespuesta.trim() ? JSON.parse(textoRespuesta) : alineacionActual = {};
 
             if (data.esquema) {
@@ -315,28 +336,24 @@ async function cargarAlineacionEquipo() {
             }
 
             if (data.jugadores && Array.isArray(data.jugadores)) {
-                // Llevamos la cuenta de cuántos jugadores van entrando por posición (DL, DF, MC...)
                 const contadorPorPosicion = {};
 
                 data.jugadores.forEach(j => {
-                    const pos = j.posicionCorta; // Usa "DL", "DF", "MC", "POR" directamente de tu JSON
+                    const pos = j.posicionCorta;
 
-                    // Si es el primer jugador de esta posición, empezamos en 1. Si no, sumamos +1
                     if (!contadorPorPosicion[pos]) {
                         contadorPorPosicion[pos] = 1;
                     } else {
                         contadorPorPosicion[pos]++;
                     }
 
-                    // Si tu JSON en el futuro trae indiceSlot, lo usa. Si no, usa nuestro contador automático
                     const slotIndex = j.indiceSlot || contadorPorPosicion[pos];
-
-                    // Construimos la clave que tu campo de fútbol sí entiende: "DL-1", "DL-2", etc.
                     const slotKey = `${pos}-${slotIndex}`;
+
                     
-                    // Guardamos toda la información vinculada a ese hueco del campo
                     alineacionActual[slotKey] = {
-                        jugadorId: j.jugadorId, // Guardamos el ID dentro por si lo necesitas al hacer click
+                        jugadorId: j.jugadorId,
+                        jugadorRealId: j.jugadorRealId,
                         nombre: j.nombre,
                         puntos: j.puntos || 0,
                         goles: j.goles || 0,
@@ -362,7 +379,6 @@ async function cargarAlineacionEquipo() {
         console.error('Error cargando la alineación del equipo:', error);
         alineacionActual = {};
     } finally {
-        // Esto se ejecuta SIEMPRE (tanto si funciona el fetch como si da error)
         const esquemaSelect = document.getElementById('selectEsquema');
         if (esquemaSelect) {
             cambiarEsquemaTactico(esquemaSelect.value);
@@ -371,12 +387,10 @@ async function cargarAlineacionEquipo() {
     }
 }
 
-
 /**
  * Guarda la alineación actual en el servidor.
  */
 async function guardarAlineacion() {
-
     const misterId = document.getElementById('selectEquipo').value;
     const jornadaNum = document.getElementById('selectJornada').value;
     const esquema = document.getElementById('selectEsquema').value;
@@ -394,6 +408,7 @@ async function guardarAlineacion() {
         if (datos && datos.nombre !== '') {
             listaJugadores.push({
                 jugadorId: datos.jugadorId,
+                jugadorRealId: datos.jugadorRealId,
                 posicion: posicion,
                 indiceSlot: parseInt(indice, 10),
                 nombre: datos.nombre,
@@ -450,7 +465,6 @@ function toggleMultiplicadorCapitan() {
     }
 }
 
-
 /**
  * Recorre todos los jugadores de la alineación actual y actualiza el contador flotante.
  */
@@ -466,7 +480,84 @@ function actualizarPuntosTotales() {
 
     const elementoTotal = document.getElementById('totalPuntosJornada');
     if (elementoTotal) {
-        // Limitamos visualmente por si acaso a 3 posiciones (ej: 999 max)
         elementoTotal.textContent = sumaTotal > 999 ? 999 : sumaTotal;
     }
 }
+
+// Llamar a esto cuando cargue el DOM por primera vez
+async function precargarJugadores() {
+    try {
+        const response = await fetch('/mantenimiento/admin/jugadores_reales');
+        if (response.ok) {
+            listaGlobalJugadores = await response.json();
+            poblarDatalist();
+        }
+    } catch (error) {
+        console.error('Error al precargar los jugadores:', error);
+    }
+}
+
+function poblarDatalist() {
+    const datalist = document.getElementById('listaSugerenciasJugadores');
+    if (!datalist) return;
+    
+    datalist.innerHTML = '';
+    listaGlobalJugadores.forEach(j => {
+        const option = document.createElement('option');
+        
+        option.value = j.nombreCortoJugador;
+        option.setAttribute('data-id', j.id);
+        
+        // Lo que muestro por pantalla en el buscador
+        option.label = `${j.equipoReal}`;
+        
+        datalist.appendChild(option);
+    });
+}
+
+function actualizarEscudoModal(jugadorRealId) {
+    const inputRealId = document.getElementById('inputJugadorRealId');
+    const imgEscudo = document.getElementById('imgEscudoEquipoReal');
+
+    // Asignamos el valor en el input oculto
+    if (inputRealId) {
+        inputRealId.value = jugadorRealId || '';
+    }
+
+    // Buscamos unívocamente por ID en la lista global
+    let jugadorEncontrado = null;
+    if (jugadorRealId) {
+        jugadorEncontrado = listaGlobalJugadores.find(j => j.id === parseInt(jugadorRealId, 10));
+    }
+
+    // Mostramos u ocultamos la imagen
+    if (imgEscudo) {
+        if (jugadorEncontrado && jugadorEncontrado.imgEquipo) {
+            imgEscudo.src = jugadorEncontrado.imgEquipo;
+            imgEscudo.style.display = 'inline-block';
+        } else {
+            imgEscudo.src = '';
+            imgEscudo.style.display = 'none';
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const inputNombre = document.getElementById('inputNombre');
+    if (inputNombre) {
+        inputNombre.addEventListener('input', (e) => {
+            const nombreIngresado = e.target.value.trim();
+            const datalist = document.getElementById('listaSugerenciasJugadores');
+            if (!datalist) return;
+
+            const optionSeleccionada = Array.from(datalist.options).find(opt => opt.value === nombreIngresado);
+
+            if (optionSeleccionada) {
+                const idReal = optionSeleccionada.getAttribute('data-id');
+                actualizarEscudoModal(idReal ? parseInt(idReal, 10) : null);
+            } else {
+                actualizarEscudoModal(null);
+            }
+        });
+    }
+});

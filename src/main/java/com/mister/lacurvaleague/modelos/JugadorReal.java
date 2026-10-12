@@ -1,10 +1,12 @@
 package com.mister.lacurvaleague.modelos;
 
-import org.springframework.data.domain.Persistable;
-import org.springframework.lang.Nullable;
-
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,20 +17,19 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class JugadorReal implements Persistable<String>{
+public class JugadorReal {
 
-    @Id
+   @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String nombreCortoJugador;
     private String nombreJugador;
     private String posicion;
     private String posicionCorta;
 
-    @Nullable
-    public String getId() {
-        return this.getNombreCortoJugador();
-    }
-    @Override
-    public boolean isNew() {
-        return true;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "equipo_real_id", nullable = false)
+    private EquipoReal equipoReal;
+
 }

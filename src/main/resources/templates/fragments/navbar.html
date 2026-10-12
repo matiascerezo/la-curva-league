@@ -29,22 +29,38 @@
     </div>
     <div class="nav-scroll-container">
         <ul class="nav-list-equipos">
-            <li class="nav-item"><a th:href="@{/club/maccabi}" th:classappend="${seccionActual.contains('/club/maccabi')} ? 'activo' : ''"
-                                    th:text="#{equipo.maccabi}">Club Maccabi de Levantar</a></li>
-            <li class="nav-item"><a th:href="@{/club/gudi-legends}" th:classappend="${seccionActual.contains('/club/gudi-legends')} ? 'activo' : ''"
-                                    th:text="#{equipo.gudi}">GUDI LEGENDS</a></li>
-            <li class="nav-item"><a th:href="@{/club/los-11-yonkos}" th:classappend="${seccionActual.contains('/club/los-11-yonkos')} ? 'activo' : ''"
-                                    th:text="#{equipo.yonkos}">Los 11 Yonkos</a></li>
-            <li class="nav-item"><a th:href="@{/club/los-pollos-hermanos}" th:classappend="${seccionActual.contains('/club/los-pollos-hermanos')} ? 'activo' : ''"
-                                    th:text="#{equipo.pollos}">Los Pollos Hermanos</a></li>
-            <li class="nav-item"><a th:href="@{/club/los-titanes-de-merles}" th:classappend="${seccionActual.contains('/club/los-titanes-de-merles')} ? 'activo' : ''"
-                                    th:text="#{equipo.titanes}">Los Titanes de Merlès</a></li>
-            <li class="nav-item"><a th:href="@{/club/nersy}" th:classappend="${seccionActual.contains('/club/nersy')} ? 'activo' : ''"
-                                    th:text="#{equipo.nersy}">Nersy FC</a></li>
-            <li class="nav-item"><a th:href="@{/club/petri-united}" th:classappend="${seccionActual.contains('/club/petri-united')} ? 'activo' : ''"
-                                    th:text="#{equipo.petri}">Petri United FC</a></li>
-            <li class="nav-item"><a th:href="@{/club/shalke-megino}" th:classappend="${seccionActual.contains('/club/shalke-megino')} ? 'activo' : ''"
-                                    th:text="#{equipo.shalke}">Shalke Megiño</a></li>
+            <li class="nav-item">
+                <a th:href="@{/club/maccabi}" th:classappend="${seccionActual.contains('/club/maccabi')} ? 'activo' : ''">
+                    <img th:src="#{escudo.maccabi}" alt="Escudo" class="escudo-tabla nav">
+                    <span th:text="#{equipo.maccabi}">Club Maccabi de Levantar</span></a></li>
+            <li class="nav-item">
+                <a th:href="@{/club/gudi-legends}" th:classappend="${seccionActual.contains('/club/gudi-legends')} ? 'activo' : ''">
+                    <img th:src="#{escudo.gudi}" alt="Escudo" class="escudo-tabla nav">
+                    <span th:text="#{equipo.gudi}">GUDI LEGENDS</span></a></li>
+            <li class="nav-item">
+                <a th:href="@{/club/los-11-yonkos}" th:classappend="${seccionActual.contains('/club/los-11-yonkos')} ? 'activo' : ''">
+                    <img th:src="#{escudo.yonkos}" alt="Escudo" class="escudo-tabla nav">
+                    <span th:text="#{equipo.yonkos}">Los 11 Yonkos</span></a></li>
+            <li class="nav-item">
+                <a th:href="@{/club/los-pollos-hermanos}" th:classappend="${seccionActual.contains('/club/los-pollos-hermanos')} ? 'activo' : ''">
+                    <img th:src="#{escudo.pollos}" alt="Escudo" class="escudo-tabla nav">
+                    <span th:text="#{equipo.pollos}">Los Pollos Hermanos</span></a></li>
+            <li class="nav-item">
+                <a th:href="@{/club/los-titanes-de-merles}" th:classappend="${seccionActual.contains('/club/los-titanes-de-merles')} ? 'activo' : ''">
+                    <img th:src="#{escudo.titanes}" alt="Escudo" class="escudo-tabla nav">
+                    <span th:text="#{equipo.titanes}">Los Titanes de Merlès</span></a></li>
+            <li class="nav-item">
+                <a th:href="@{/club/nersy}" th:classappend="${seccionActual.contains('/club/nersy')} ? 'activo' : ''">
+                    <img th:src="#{escudo.nersy}" alt="Escudo" class="escudo-tabla nav">
+                    <span th:text="#{equipo.nersy}">Nersy FC</span></a></li>
+            <li class="nav-item">
+                <a th:href="@{/club/petri-united}" th:classappend="${seccionActual.contains('/club/petri-united')} ? 'activo' : ''">
+                    <img th:src="#{escudo.petri}" alt="Escudo" class="escudo-tabla nav">
+                    <span th:text="#{equipo.petri}">Petri United FC</span></a></li>
+            <li class="nav-item">
+                <a th:href="@{/club/shalke-megino}" th:classappend="${seccionActual.contains('/club/shalke-megino')} ? 'activo' : ''">
+                    <img th:src="#{escudo.shalke}" alt="Escudo" class="escudo-tabla nav">
+                    <span th:text="#{equipo.shalke}">Shalke Megiño</span></a></li>
         </ul>
     </div>
     </nav>

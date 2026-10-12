@@ -9,8 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor // Crea un constructor con todos los campos
 public class JugadorRealDTO {
 
+    private Long id;
     private String nombreCortoJugador;
     private String nombreJugador;
     private String posicion;
+    private String equipoReal;
+    private String imgEquipo;
     
 }

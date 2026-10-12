@@ -47,7 +47,6 @@ public class MantenimientoControlador {
     public String cargarLlorometro() {
         return mantenimientoService.procesarTodosLosLloros(true, null, null);
     }
-
     
     @GetMapping(value = "/cargarTodo")
     public ResponseEntity<Void> cargarTodo(){

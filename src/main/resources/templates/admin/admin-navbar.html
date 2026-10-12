@@ -53,6 +53,18 @@
                 th:text="#{admin.lloros}">Gestionar lloros</a>
             </li>
 
+           <li class="nav-item">
+                <a th:href="@{/mantenimiento/admin/numero-jornadas}" 
+                th:classappend="${seccionActual.contains('/mantenimiento/admin/numero-jornadas')} ? 'activo' : ''"
+                th:text="#{admin.numero-jornadas}">Gestionar número jornadas</a>
+            </li>
+
+            <li class="nav-item">
+                <a th:href="@{/mantenimiento/admin/datos-masivos}" 
+                th:classappend="${seccionActual.contains('/mantenimiento/admin/datos-masivos')} ? 'activo' : ''"
+                th:text="#{admin.datos-masivos}">Gestionar datos masivos</a>
+            </li>
+
             <!-- <li class="nav-item">
                 <a th:href="@{/mantenimiento/admin/mister}" 
                 th:classappend="${seccionActual.contains('/mantenimiento/admin/mister')} ? 'activo' : ''"

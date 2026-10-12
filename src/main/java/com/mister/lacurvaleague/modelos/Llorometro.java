@@ -1,5 +1,6 @@
 package com.mister.lacurvaleague.modelos;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +22,7 @@ public class Llorometro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long lloroId;
+    @Column(length = 300)
     private String motivo;
 
     @ManyToOne

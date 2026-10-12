@@ -62,3 +62,13 @@ async function guardarClausulazo(event) {
         alert('Error de comunicación con el servidor.');
     }
 }
+
+//Al añadir importe en el clausulazo, lo formateo simplemente para ayudarme a ver que he puesto 
+// los millones del importe correctamente
+document.getElementById('precioPagado')?.addEventListener('input', function (e) {
+    const val = e.target.value;
+    const help = document.getElementById('precioPagadoFormat');
+    const num = Number(val);
+    help.textContent = `💡 Importe parseado: ${new Intl.NumberFormat('es-ES').format(num)} €`;
+});
+

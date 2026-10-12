@@ -2,6 +2,7 @@ package com.mister.lacurvaleague.controladores;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import com.mister.lacurvaleague.modelos.Mister;
 import com.mister.lacurvaleague.modelos.dto.dtoAdmin.AdminEquipoDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.AlineacionJornadaIndividualDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.ClausulazoIndividualDTO;
+import com.mister.lacurvaleague.modelos.dto.dtoFronts.JugadorRealDTO;
 import com.mister.lacurvaleague.modelos.dto.dtoFronts.LloroIndividualDTO;
 import com.mister.lacurvaleague.servicios.MantenimientoDatosService;
 import com.mister.lacurvaleague.servicios.MisterService;
@@ -112,6 +114,17 @@ public class AdminController {
         return "admin/admin-lloros";
     }
 
+    @GetMapping("/numero-jornadas")
+    public String mostrarInsertarNumeroJornadas() {
+        return "admin/admin-numero-jornadas";
+    }
+    
+    @GetMapping("/datos-masivos")
+    public String mostrarInsertarDatosMasivos(Model model) {
+        model.addAttribute("jornada", new Jornada());
+        return "admin/admin-datos-masivos";
+    }
+
     @GetMapping("/jornada/nuevo")
     public String insertaNuevoRegistroJornada(Model model) {
         model.addAttribute("jornada", new Jornada());
@@ -172,6 +185,22 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
         return "redirect:/mantenimiento/admin/panel";
+    }
+
+    @GetMapping("/jugadores_reales")
+    public ResponseEntity<List<JugadorRealDTO>> obtenerTodosLosJugadores() {
+        List<JugadorRealDTO> jugadores = mantenimientoDatosService.getAllJugadoresReales().stream()
+                .map(jr -> new JugadorRealDTO(
+                        jr.getId(), 
+                        jr.getNombreCortoJugador(), 
+                        jr.getNombreJugador(), 
+                        jr.getPosicion(),
+                        jr.getEquipoReal() != null ? jr.getEquipoReal().getNombreEquipoReal() : null,
+                        jr.getEquipoReal() != null ? jr.getEquipoReal().getImgEquipo() : null
+                ))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(jugadores);
     }
 
 }

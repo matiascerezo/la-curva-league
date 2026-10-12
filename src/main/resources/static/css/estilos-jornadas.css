@@ -119,7 +119,7 @@
 .slot-nombre {
     font-size: 0.8rem;
     font-weight: bold;
-    margin: 3px 0;
+    margin: 0.8rem 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
