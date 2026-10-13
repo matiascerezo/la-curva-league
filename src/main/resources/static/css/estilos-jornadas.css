@@ -97,6 +97,10 @@
     background: hsl(192, 87%, 39%);
 }
 
+.slot-jugador.xi-ideal .slot-nombre {
+    color: #ffffff;
+}
+
 .slot-jugador.pendiente {
     border: 2px solid #413e2e;
     box-shadow: 0 0 10px rgba(159, 158, 149, 0.8);

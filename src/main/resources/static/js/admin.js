@@ -103,11 +103,8 @@ function renderizarLinea(idContenedor, posicion, cantidad) {
 
         let imgEscudoHtml = '';
         if (estaOcupado) {
-            const realIdNum = datos.jugadorRealId ? parseInt(datos.jugadorRealId, 10) : null;
-            const jugadorReal = listaGlobalJugadores.find(j => 
-                (realIdNum && j.id === realIdNum) || 
-                j.nombreCortoJugador === datos.nombre
-            );
+            const realIdNum = datos.jugadorRealId ? parseInt(datos.jugadorRealId, 10) : 0;
+            const jugadorReal = realIdNum ? listaGlobalJugadores.find(j => j.id === realIdNum) : 0;
 
             if (jugadorReal && jugadorReal.imgEquipo) {
                 imgEscudoHtml = `<img src="${jugadorReal.imgEquipo}" alt="Escudo" style="width: 16px; height: 16px; object-fit: contain; vertical-align: middle; margin-right: 4px;" />`;
@@ -497,6 +494,10 @@ async function precargarJugadores() {
     }
 }
 
+/**
+ * Relleno el desplegable con el nombre del jugador y (equipo).
+ * @returns 
+ */
 function poblarDatalist() {
     const datalist = document.getElementById('listaSugerenciasJugadores');
     if (!datalist) return;
@@ -505,11 +506,10 @@ function poblarDatalist() {
     listaGlobalJugadores.forEach(j => {
         const option = document.createElement('option');
         
-        option.value = j.nombreCortoJugador;
+        // Al poner el equipo o ID en el value, el navegador no los confunde:
+        option.value = `${j.nombreCortoJugador} (${j.equipoReal})`;
         option.setAttribute('data-id', j.id);
-        
-        // Lo que muestro por pantalla en el buscador
-        option.label = `${j.equipoReal}`;
+        option.setAttribute('data-nombre', j.nombreCortoJugador);
         
         datalist.appendChild(option);
     });
@@ -542,22 +542,24 @@ function actualizarEscudoModal(jugadorRealId) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const inputNombre = document.getElementById('inputNombre');
-    if (inputNombre) {
-        inputNombre.addEventListener('input', (e) => {
-            const nombreIngresado = e.target.value.trim();
-            const datalist = document.getElementById('listaSugerenciasJugadores');
-            if (!datalist) return;
+document.getElementById('inputNombre').addEventListener('input', (e) => {
+    const textoIngresado = e.target.value.trim();
+    const datalist = document.getElementById('listaSugerenciasJugadores');
+    if (!datalist) return;
 
-            const optionSeleccionada = Array.from(datalist.options).find(opt => opt.value === nombreIngresado);
+    // Ahora la coincidencia es 100% exacta con la opción de ese equipo concreto
+    const optionSeleccionada = Array.from(datalist.options).find(opt => opt.value === textoIngresado);
 
-            if (optionSeleccionada) {
-                const idReal = optionSeleccionada.getAttribute('data-id');
-                actualizarEscudoModal(idReal ? parseInt(idReal, 10) : null);
-            } else {
-                actualizarEscudoModal(null);
-            }
-        });
+    if (optionSeleccionada) {
+        const idReal = optionSeleccionada.getAttribute('data-id');
+        const nombreCorto = optionSeleccionada.getAttribute('data-nombre');
+        
+        // Asignamos el ID real unívoco (ej: el del Levante)
+        actualizarEscudoModal(idReal ? parseInt(idReal, 10) : null);
+        
+        // Limpiamos el texto para que en el input quede solo "I.Romero" si así lo prefieres:
+        e.target.value = nombreCorto;
+    } else {
+        actualizarEscudoModal(null);
     }
 });
