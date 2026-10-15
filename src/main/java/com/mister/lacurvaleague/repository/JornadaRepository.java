@@ -49,6 +49,9 @@ public interface JornadaRepository extends JpaRepository<Jornada, Long> {
     @Query("SELECT j.jornadaId FROM Jornada j WHERE j.numeroJornada = :numeroJornada")
     Long findIdByNumeroJornada(@Param("numeroJornada") int numeroJornada);
 
+    @Query("SELECT j.observaciones FROM Jornada j WHERE j.jornadaId = :jornada")
+    String findObservacionesByJornadaId(@Param("jornada") int jornada );
+
 
 }
 

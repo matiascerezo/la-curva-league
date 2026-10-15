@@ -33,4 +33,6 @@ public class Jornada {
     @OneToMany(mappedBy = "jornada", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Equipo> equipos;
+
+    private String observaciones;
 }

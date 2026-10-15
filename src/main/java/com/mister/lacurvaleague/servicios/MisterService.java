@@ -83,6 +83,10 @@ public class MisterService {
         return equipoRepository.getClasificacionGeneral();
     }
 
+    public List<ClasificacionGeneralDTO> getClasificacionGeneralXJornada(int jornada){
+        return equipoRepository.getClasificacionGeneralXJornada(jornada);
+    }
+
     public List<ClasificacionGeneralDTO> getClasificacionPrimeraVuelta(){
         return equipoRepository.getClasificacionGeneralPorRango(1,19);
     }
@@ -190,6 +194,10 @@ public class MisterService {
 
     public List<PuntosCapitanesDTO> getPuntosXCapitanes() {
         return jugadorRepository.findTotalPuntosCapitan();
+    }
+
+    public String getObservacionesJornada(int jornada) {
+        return jornadaRepository.findObservacionesByJornadaId(jornada);
     }
     
 }

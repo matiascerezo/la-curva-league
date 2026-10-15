@@ -25,6 +25,15 @@ public interface EquipoRepository extends JpaRepository<Equipo, Long> {
         List<ClasificacionGeneralDTO> getClasificacionGeneral();
 
 		@Query(value = "SELECT m.img_equipo, m.nombre_equipo as nombreEquipo, SUM(e.puntos_jornada) as puntosTotales, "+
+								"SUM(e.puntos_jornada) - COALESCE(LEAD(SUM(e.puntos_jornada)) OVER (ORDER BY SUM(e.puntos_jornada) DESC), SUM(e.puntos_jornada)) AS puntos_ventaja " +
+						"FROM mister m " +
+						"join equipo e on e.mister_id = m.MISTER_ID " +
+						"WHERE e.jornada_id = :jornada " +
+						"GROUP BY m.nombre_equipo, m.img_equipo " +
+						"ORDER BY puntosTotales DESC", nativeQuery = true)
+        List<ClasificacionGeneralDTO> getClasificacionGeneralXJornada(int jornada);
+
+		@Query(value = "SELECT m.img_equipo, m.nombre_equipo as nombreEquipo, SUM(e.puntos_jornada) as puntosTotales, "+
 								"SUM(e.puntos_jornada) - LAG(SUM(e.puntos_jornada)) OVER (ORDER BY SUM(e.puntos_jornada) DESC) AS difPuntos "+
 						"FROM mister m " +
 						"join equipo e on e.mister_id = m.MISTER_ID " +

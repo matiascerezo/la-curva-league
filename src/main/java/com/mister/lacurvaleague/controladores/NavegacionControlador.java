@@ -125,8 +125,12 @@ public class NavegacionControlador {
     @GetMapping("/clasificacion/{rango}")
     public String getClasificacionRango(@PathVariable String rango, Model model) {
         List<ClasificacionGeneralDTO> lista;
+        int jornadaActual = (int) model.asMap().get("jornadaActual");
         
         switch (rango) {
+            case "0": //Jornada Actual
+                lista = misterControlador.getClasificacionGeneralXJornada(jornadaActual);
+                break;
             case "1": // Primera Vuelta
                 lista = misterControlador.getClasificacionPrimeraVuelta();
                 break;

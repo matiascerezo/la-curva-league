@@ -104,3 +104,48 @@ function cargarTablaClasificacionPorRango(rango, elemento) {
         })
         .catch(err => console.error("Error al cargar el rango:", err));
 }
+
+async function compartirImagenClasificacion() {
+    // 1. Elemento HTML que contiene la tabla de clasificación
+    const tablaElemento = document.querySelector('#tabla-clasificacion'); 
+
+    if (!tablaElemento) {
+        alert('No se encontró la tabla de clasificación.');
+        return;
+    }
+
+    try {
+        // 2. Generar el canvas de la tabla
+        const canvas = await html2canvas(tablaElemento, {
+            scale: 2, // Mayor resolución
+            useCORS: true, // Permitir cargar escudos/imágenes externas
+            backgroundColor: '#ffffff'
+        });
+
+        // 3. Convertir a Blob/Imagen
+        canvas.toBlob(async (blob) => {
+            const file = new File([blob], 'clasificacion-lcl.png', { type: 'image/png' });
+
+            // 4. Usar la Web Share API (Nativa en móviles iOS/Android)
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({
+                    files: [file],
+                    title: 'La Curva League',
+                    text: '🏆 ¡Así va la clasificación de La Curva League!'
+                });
+            } else {
+                // Fallback para escritorio: Descargar la imagen y abrir WhatsApp Web
+                const link = document.createElement('a');
+                link.download = 'clasificacion-lcl.png';
+                link.href = canvas.toDataURL();
+                link.click();
+                
+                const textoWhatsApp = encodeURIComponent("🏆 ¡Mira la clasificación actualizada de La Curva League! https://www.lacurvaleague.es/inicio");
+                window.open(`https://api.whatsapp.com/send?text=${textoWhatsApp}`, '_blank');
+            }
+        }, 'image/png');
+
+    } catch (error) {
+        console.error('Error al generar la imagen:', error);
+    }
+}
