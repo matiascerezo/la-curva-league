@@ -31,5 +31,7 @@ public class ClausulazoIndividualDTO {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate fechaCompra;
+
+    private Long jugadorRealId;
  
 }

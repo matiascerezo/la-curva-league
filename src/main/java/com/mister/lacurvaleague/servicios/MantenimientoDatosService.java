@@ -604,6 +604,7 @@ public class MantenimientoDatosService implements FormatPosicion {
                     c.setPosicionJugador(clausulazoDTO.getPosicionJugador());
                     c.setPrecioPagado(clausulazoDTO.getPrecioPagado());
                     c.setFechaCompra(clausulazoDTO.getFechaCompra());
+                    c.setJugadorRealId(clausulazoDTO.getJugadorRealId());
                     listaClausulazosOK.add(c);
                 }
             }

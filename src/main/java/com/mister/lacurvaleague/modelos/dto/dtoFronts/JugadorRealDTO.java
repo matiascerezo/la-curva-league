@@ -13,6 +13,7 @@ public class JugadorRealDTO {
     private String nombreCortoJugador;
     private String nombreJugador;
     private String posicion;
+    private String posicionCorta;
     private String equipoReal;
     private String imgEquipo;
     

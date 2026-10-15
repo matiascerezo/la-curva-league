@@ -195,6 +195,7 @@ public class AdminController {
                         jr.getNombreCortoJugador(), 
                         jr.getNombreJugador(), 
                         jr.getPosicion(),
+                        jr.getPosicionCorta(),
                         jr.getEquipoReal() != null ? jr.getEquipoReal().getNombreEquipoReal() : null,
                         jr.getEquipoReal() != null ? jr.getEquipoReal().getImgEquipo() : null
                 ))

@@ -35,7 +35,8 @@ async function guardarClausulazo(event) {
         nombreJugador: document.getElementById('nombreJugador').value.trim(),
         posicionJugador: document.getElementById('posicionJugador').value,
         precioPagado: parseInt(document.getElementById('precioPagado').value, 10),
-        fechaCompra: document.getElementById('fechaCompra').value
+        fechaCompra: document.getElementById('fechaCompra').value,
+        jugadorRealId: parseInt(document.getElementById('').value, 10)
     }];
 
     try {
@@ -72,3 +73,17 @@ document.getElementById('precioPagado')?.addEventListener('input', function (e) 
     help.textContent = `💡 Importe parseado: ${new Intl.NumberFormat('es-ES').format(num)} €`;
 });
 
+document.getElementById('inputNombre')?.addEventListener('input', function (e) {
+    const jugadorRealId = parseInt(document.getElementById('inputJugadorRealId').value, 10);
+    const jugador = listaGlobalJugadores.find(j => j.id === parseInt(jugadorRealId, 10));
+    if (jugador) {
+        // Obtenemos la posición de las propiedades del objeto encontrado
+        const posicion = jugador.posicionCorta;
+
+        // La asignamos al <select>
+        const selectPosicion = document.getElementById('posicionJugador');
+        if (selectPosicion && posicion) {
+            selectPosicion.value = posicion; // 'PT', 'DF', 'MC' o 'DL'
+        }
+    }
+});

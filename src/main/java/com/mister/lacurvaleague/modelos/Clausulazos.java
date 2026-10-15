@@ -2,6 +2,7 @@ package com.mister.lacurvaleague.modelos;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,4 +29,7 @@ public class Clausulazos {
     private String posicionJugador;
     private Double precioPagado;
     private LocalDate fechaCompra;
+
+    @Column(name = "jugador_real_id")
+    private Long jugadorRealId;
 }
